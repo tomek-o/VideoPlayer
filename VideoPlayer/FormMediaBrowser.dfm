@@ -39,6 +39,10 @@ object frmMediaBrowser: TfrmMediaBrowser
       Caption = 'New playlist'
       OnClick = miNewPlaylistClick
     end
+    object miRenamePlaylist: TMenuItem
+      Caption = 'Rename playlist'
+      OnClick = miRenamePlaylistClick
+    end
     object miDeletePlaylist: TMenuItem
       Caption = 'Delete playlist'
       OnClick = miDeletePlaylistClick

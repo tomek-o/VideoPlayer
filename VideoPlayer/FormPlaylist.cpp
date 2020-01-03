@@ -46,8 +46,11 @@ int TfrmPlaylist::deletePlaylistFile(void)
 {
 	if (fileName == "")
 		return -1;
-	if (DeleteFile(fileName) == false)
-		return -2;
+	if (FileExists(fileName))
+	{
+		if (DeleteFile(fileName) == false)
+			return -2;
+	}
 	return 0;
 }
 
@@ -198,4 +201,13 @@ void TfrmPlaylist::playNextFile(void)
 	}
 }
 
+int TfrmPlaylist::renamePlaylistFile(AnsiString newName)
+{
+	if (RenameFile(fileName, newName) == false)
+	{
+		return -1;
+	}
+	fileName = newName;
+	return 0;
+}
 

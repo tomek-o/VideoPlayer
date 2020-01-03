@@ -28,6 +28,7 @@ __published:	// IDE-managed Components
 	TImageList *imListListView;
 	TSaveDialog *SaveDialog;
 	TMenuItem *miDeletePlaylist;
+	TMenuItem *miRenamePlaylist;
 	void __fastcall lvCachedFilesKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
 	void __fastcall miGoToFileClick(TObject *Sender);
@@ -40,6 +41,7 @@ __published:	// IDE-managed Components
           int Y, TDragState State, bool &Accept);
 	void __fastcall pcSourceDragDrop(TObject *Sender, TObject *Source, int X,
           int Y);
+	void __fastcall miRenamePlaylistClick(TObject *Sender);
 private:	// User declarations
 	AnsiString asLastSelectedFile;
 	typedef void (__closure *CallbackStartPlaying)(void);

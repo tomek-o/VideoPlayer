@@ -47,7 +47,11 @@ public:		// User declarations
 	AnsiString getFileToPlay(void);
 	void setFiles(const std::vector<AnsiString>& filenames);
 	CallbackStartPlaying callbackStartPlaying;
-	void playNextFile(void);		
+	void playNextFile(void);
+	AnsiString getFileName(void) const {
+    	return fileName;
+	}
+	int renamePlaylistFile(AnsiString newName);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfrmPlaylist *frmPlaylist;

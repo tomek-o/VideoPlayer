@@ -224,14 +224,64 @@ void __fastcall TfrmMediaBrowser::miNewPlaylistClick(TObject *Sender)
 	if (ret == false)
 		return;
 	LoadPlaylist(GetPlaylistsDir() + "\\" + name + "." + PLAYLIST_EXTENSION);
+	// switch to new playlist (bug with new playlist visible already)
+	pcSource->ActivePage = pcSource->Pages[pcSource->PageCount - 1];
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmMediaBrowser::miRenamePlaylistClick(TObject *Sender)
+{
+	if (mouseDownTabIndex < 0)
+	{
+		LOG("Rename playlist failed: tabIndex = %d", mouseDownTabIndex);
+		return;
+	}
+	if (mouseDownTabIndex == 0)
+	{
+		MessageBox(this->Handle, "Default playlist cannot be renamed", Application->Title.c_str(), MB_ICONINFORMATION);
+		return;
+	}
+	TTabSheet *ts = pcSource->Pages[mouseDownTabIndex];
+
+	AnsiString name = ts->Caption;
+	bool ret = InputQuery("Playlist name", "Name for the playlist", name);
+	if (ret == false || name == ts->Caption)
+		return;
+
+	AnsiString fileName = GetPlaylistsDir() + "\\" + name + "." + PLAYLIST_EXTENSION;
+	for (int i=0; i<pcSource->PageCount; i++)
+	{
+		TfrmPlaylist *frm = getPlaylist(i);
+		assert(frm);
+		if (frm->getFileName() == fileName)
+		{
+			MessageBox(this->Handle, "Playlist with this name already exists.",
+				Application->Title.c_str(), MB_ICONEXCLAMATION);
+			return;
+		}
+	}
+
+	TfrmPlaylist *frm = getPlaylist(mouseDownTabIndex);
+	assert(frm);
+	if (frm->renamePlaylistFile(fileName))
+	{
+		MessageBox(this->Handle, "Failed to rename playlist file. Check if file is write protected.",
+			Application->Title.c_str(), MB_ICONEXCLAMATION);
+		return;
+	}
+
+	ts->Caption = name;
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmMediaBrowser::pcSourceMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	mouseDownTabIndex = pcSource->IndexOfTabAt(X, Y);
-	pcSource->BeginDrag(0);	
+	if (Button == mbLeft)
+	{
+		mouseDownTabIndex = pcSource->IndexOfTabAt(X, Y);
+		pcSource->BeginDrag(0);
+	}
 }
 //---------------------------------------------------------------------------
 
@@ -304,4 +354,5 @@ void TfrmMediaBrowser::PlayNextFile(void)
     	frm->playNextFile();
 	}
 }
+
 
