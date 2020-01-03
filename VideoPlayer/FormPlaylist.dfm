@@ -26,8 +26,9 @@ object frmPlaylist: TfrmPlaylist
         Width = 300
       end
       item
-        Caption = 'Size'
-        Width = 80
+        Alignment = taRightJustify
+        Caption = 'Size [MB]'
+        Width = 60
       end>
     HideSelection = False
     MultiSelect = True
