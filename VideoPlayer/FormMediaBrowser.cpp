@@ -129,10 +129,7 @@ TfrmPlaylist* TfrmMediaBrowser::getPlaylist(int id)
 
 AnsiString TfrmMediaBrowser::GetFileToPlay(void)
 {
-	TTabSheet *ts = pcSource->Pages[pcSource->ActivePageIndex];
-	if (ts->ControlCount <= 0)
-		return "";
-	TfrmPlaylist *frm = dynamic_cast<TfrmPlaylist*>(ts->Controls[0]);
+	TfrmPlaylist *frm = getPlaylist(pcSource->ActivePageIndex);
 	if (frm == NULL)
 		return "";
 	return frm->getFileToPlay();		
@@ -151,12 +148,17 @@ void __fastcall TfrmMediaBrowser::lvCachedFilesKeyDown(TObject *Sender,
 
 void TfrmMediaBrowser::Focus(void)
 {
-#if 0
-	if (pcSource->ActivePage == tsOther)
+	this->SetFocus();
+	TfrmPlaylist *frm = getPlaylist(pcSource->ActivePageIndex);
+	if (frm)
 	{
-		edOtherFile->SetFocus();
+        frm->SetFocus();
+		frm->lvPlaylist->SetFocus();
+		if (frm->lvPlaylist->Selected)
+		{
+			frm->lvPlaylist->Selected->Focused = true;
+		}
 	}
-#endif
 }
 
 void __fastcall TfrmMediaBrowser::miGoToFileClick(TObject *Sender)
