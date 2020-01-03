@@ -84,7 +84,7 @@ void __fastcall TfrmPlaylist::lvPlaylistData(TObject *Sender, TListItem *Item)
 
 	Item->Caption = ExtractFileName(entry.entry.fileName);
 	AnsiString asSize;
-	asSize.sprintf("%.1f", static_cast<double>(entry.entry.size) / (1024*1024));
+	asSize.sprintf("%.1f MB", static_cast<double>(entry.entry.size) / (1024*1024));
 	Item->SubItems->Add(asSize);
 }
 //---------------------------------------------------------------------------

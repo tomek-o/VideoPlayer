@@ -54,7 +54,8 @@ void __fastcall TfrmMain::FormCreate(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TfrmMain::FormCloseQuery(TObject *Sender, bool &CanClose)
 {
-	mplayer.stop();
+	mplayer.stop(false);
+	SetState(STOP);
 	WriteSettings();
 	frmMediaBrowser->SavePlaylists();
 	CanClose = true;
@@ -284,7 +285,8 @@ void __fastcall TfrmMain::FormKeyDown(TObject *Sender, WORD &Key,
 		switch(Key)
 		{
 			case VK_RETURN:
-				mplayer.stop();
+				mplayer.stop(false);
+				SetState(STOP);
 				break;
 			case VK_LEFT:
 				mplayer.seekRelative(-3);
@@ -400,8 +402,8 @@ void TfrmMain::Play(void)
 
 void __fastcall TfrmMain::btnStopClick(TObject *Sender)
 {
-    SetState(STOP);
-	mplayer.stop();
+	mplayer.stop(false);
+	SetState(STOP);
 }
 //---------------------------------------------------------------------------
 

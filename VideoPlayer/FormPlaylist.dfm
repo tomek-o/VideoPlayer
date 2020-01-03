@@ -27,7 +27,7 @@ object frmPlaylist: TfrmPlaylist
       end
       item
         Alignment = taRightJustify
-        Caption = 'Size [MB]'
+        Caption = 'Size'
         Width = 60
       end>
     HideSelection = False
