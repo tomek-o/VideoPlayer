@@ -13,6 +13,7 @@
 #include "Playlist.h"
 #include <Menus.hpp>
 #include <Dialogs.hpp>
+#include <ExtCtrls.hpp>
 
 class TfrmPlaylist : public TForm
 {
@@ -21,10 +22,14 @@ __published:	// IDE-managed Components
 	TPopupMenu *popupMenu;
 	TMenuItem *miAddFiles;
 	TOpenDialog *OpenDialog;
+	TPanel *Panel1;
+	TLabel *lblFilter;
+	TEdit *edFilter;
 	void __fastcall miAddFilesClick(TObject *Sender);
 	void __fastcall lvPlaylistData(TObject *Sender, TListItem *Item);
 	void __fastcall lvPlaylistKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
+	void __fastcall edFilterChange(TObject *Sender);
 private:	// User declarations
 	AnsiString fileName;
 	Playlist playlist;

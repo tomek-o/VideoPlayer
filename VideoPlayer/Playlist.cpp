@@ -81,11 +81,15 @@ int Playlist::loadFromFile(AnsiString fileName)
 		}
 	}
 
+	jPlaylist.getAString("filterText", filterText);
+
+	filter(filterText);
+
 	position = jPlaylist.get("position", position).asInt();
-	if (position >= static_cast<int>(entries.size()))
+	if (position >= static_cast<int>(filteredEntries.size()))
 	{
 		position = -1;
-		if (!entries.empty())
+		if (!filteredEntries.empty())
 			position = 0;
 	}
 
@@ -110,6 +114,7 @@ int Playlist::saveToFile(AnsiString fileName)
 	}
 
 	jPlaylist["position"] = position;
+	jPlaylist["filterText"] = filterText;
 
 	std::string outputConfig = writer.write( root );
 
@@ -127,10 +132,10 @@ int Playlist::saveToFile(AnsiString fileName)
 	return 0;
 }
 
-void Playlist::add(AnsiString fileName)
+void Playlist::add(const std::vector<AnsiString>& fileNames)
 {
-	std::vector<PlaylistEntry>::const_iterator iter;
 #if 0
+	std::vector<PlaylistEntry>::const_iterator iter;
 	// skipping duplicates
 	for (iter = entries.begin(); iter != entries.end(); ++iter)
 	{
@@ -141,10 +146,52 @@ void Playlist::add(AnsiString fileName)
 		}
 	}
 #endif
-	PlaylistEntry newEntry;
-	newEntry.fileName = fileName;
-    newEntry.size = getFileSize(fileName.c_str());
+	for (unsigned int i=0; i<fileNames.size(); i++)
+	{
+		PlaylistEntry newEntry;
+		const AnsiString& fileName = fileNames[i];
+		newEntry.fileName = fileName;
+		newEntry.size = getFileSize(fileName.c_str());
 
-	entries.push_back(newEntry);
+		entries.push_back(newEntry);
+	}
+	filter(filterText);
 }
+
+void Playlist::remove(const std::set<unsigned int>& ids)
+{
+	std::vector<PlaylistEntry> newEntries;
+
+	for (unsigned int i=0; i<entries.size(); i++)
+	{
+		if (ids.find(i) == ids.end())
+		{
+        	newEntries.push_back(entries[i]);
+		}
+	}
+
+	entries = newEntries;
+	filter(filterText);
+}
+
+void Playlist::filter(AnsiString text)
+{
+	filteredEntries.clear();
+	filterText = text;
+	std::vector<PlaylistEntry>::const_iterator iter;
+	bool empty = (text == "");
+	AnsiString needle = UpperCase(filterText);
+	for (unsigned int i=0; i<entries.size(); i++)
+	{
+		const PlaylistEntry& entry = entries[i];
+		if (empty || UpperCase(entry.fileName).Pos(needle) > 0)
+		{
+			FilteredPlaylistEntry fpe;
+			fpe.entry = entry;
+			fpe.id = i;
+			filteredEntries.push_back(fpe);
+		}
+	}
+}
+
 
