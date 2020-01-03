@@ -64,6 +64,15 @@ object frmPlaylist: TfrmPlaylist
       TabOrder = 0
       OnChange = edFilterChange
     end
+    object btnFilterClear: TButton
+      Left = 196
+      Top = 3
+      Width = 38
+      Height = 21
+      Caption = 'Clear'
+      TabOrder = 1
+      OnClick = btnFilterClearClick
+    end
   end
   object popupMenu: TPopupMenu
     Left = 8

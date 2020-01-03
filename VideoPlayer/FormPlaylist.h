@@ -25,11 +25,13 @@ __published:	// IDE-managed Components
 	TPanel *Panel1;
 	TLabel *lblFilter;
 	TEdit *edFilter;
+	TButton *btnFilterClear;
 	void __fastcall miAddFilesClick(TObject *Sender);
 	void __fastcall lvPlaylistData(TObject *Sender, TListItem *Item);
 	void __fastcall lvPlaylistKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
 	void __fastcall edFilterChange(TObject *Sender);
+	void __fastcall btnFilterClearClick(TObject *Sender);
 private:	// User declarations
 	AnsiString fileName;
 	Playlist playlist;

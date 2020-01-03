@@ -160,3 +160,9 @@ void __fastcall TfrmPlaylist::edFilterChange(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmPlaylist::btnFilterClearClick(TObject *Sender)
+{
+	edFilter->Text = "";	
+}
+//---------------------------------------------------------------------------
+
