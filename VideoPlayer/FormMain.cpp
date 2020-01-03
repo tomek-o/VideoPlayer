@@ -305,6 +305,10 @@ void __fastcall TfrmMain::FormKeyDown(TObject *Sender, WORD &Key,
 			case 'F':
 				ToggleFullscreen();
 				break;
+			case 'm':
+			case 'M':
+				Application->Minimize();
+				break;
 			case 'o':
 			case 'O':
 				mplayer.toggleOsd();
