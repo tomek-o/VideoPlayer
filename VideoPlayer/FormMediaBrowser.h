@@ -28,7 +28,6 @@ __published:	// IDE-managed Components
 	TImageList *imListListView;
 	TSaveDialog *SaveDialog;
 	TMenuItem *miDeletePlaylist;
-	void __fastcall btnMplayerInstanceBrowseClick(TObject *Sender);
 	void __fastcall lvCachedFilesKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
 	void __fastcall miGoToFileClick(TObject *Sender);
@@ -37,14 +36,17 @@ __published:	// IDE-managed Components
 	void __fastcall pcSourceMouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
 	void __fastcall miDeletePlaylistClick(TObject *Sender);
+	void __fastcall pcSourceDragOver(TObject *Sender, TObject *Source, int X,
+          int Y, TDragState State, bool &Accept);
+	void __fastcall pcSourceDragDrop(TObject *Sender, TObject *Source, int X,
+          int Y);
 private:	// User declarations
 	AnsiString asLastSelectedFile;
 	typedef void (__closure *CallbackStartPlaying)(void);
 	int LoadPlaylist(AnsiString fileName);
 	void LoadPlaylists(void);
-	std::list<TfrmPlaylist*> playlistForms;
 	TfrmPlaylist* getPlaylist(int id);
-	int mouseDownTabIndex;				
+	int mouseDownTabIndex;
 public:		// User declarations
 	__fastcall TfrmMediaBrowser(TComponent* Owner);
 	AnsiString GetFileToPlay(void);

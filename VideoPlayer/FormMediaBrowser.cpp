@@ -8,6 +8,7 @@
 #include "Log.h"
 #include <SysUtils.hpp>
 #include <shellapi.h>
+#include <assert.h>
 #include <algorithm>
 
 //---------------------------------------------------------------------------
@@ -26,6 +27,18 @@ AnsiString GetPlaylistsDir(void) {
 
 const AnsiString DEFAULT_PLAYLIST_NAME = "Default";
 const AnsiString PLAYLIST_EXTENSION = "json";
+
+int ItemAtPos(HWND ControlHandle, int X, int Y)
+{
+	TTCHitTestInfo HitTestInfo;
+	int HitIndex;
+
+	HitTestInfo.pt.x= X;
+	HitTestInfo.pt.y= Y;
+	HitTestInfo.flags= 0;
+	HitIndex = SendMessage(ControlHandle, TCM_HITTEST, 0, long(&HitTestInfo));
+	return HitIndex;
+}
 
 }
 
@@ -61,8 +74,6 @@ int TfrmMediaBrowser::LoadPlaylist(AnsiString fileName)
 	}
 	frmPlaylist->Visible = true;
 	frmPlaylist->Parent = ts;
-
-	playlistForms.push_back(frmPlaylist);
 
 	return rc;
 }
@@ -106,48 +117,25 @@ void TfrmMediaBrowser::LoadPlaylists(void)
 
 TfrmPlaylist* TfrmMediaBrowser::getPlaylist(int id)
 {
-	std::list<TfrmPlaylist*>::iterator iter;
-	int i = 0;
-	for (iter = playlistForms.begin(); iter != playlistForms.end(); ++iter)
-	{
-		if (i == id)
-		{
-			TfrmPlaylist *frm = *iter;
-			return frm;
-		}
-		i++;
-	}
-	return NULL;
+	if (id < 0 || id >= pcSource->PageCount)
+		return NULL;
+	TTabSheet *ts = pcSource->Pages[id];
+	if (ts->ControlCount <= 0)
+		return NULL;
+	TfrmPlaylist *frm = dynamic_cast<TfrmPlaylist*>(ts->Controls[0]);
+	return frm;
 }
 
 AnsiString TfrmMediaBrowser::GetFileToPlay(void)
 {
-	std::list<TfrmPlaylist*>::iterator iter;
-	int id = 0;
-	for (iter = playlistForms.begin(); iter != playlistForms.end(); ++iter)
-	{
-		if (id == pcSource->ActivePageIndex)
-		{
-			TfrmPlaylist *frm = *iter;
-			return frm->getFileToPlay();
-		}
-		id++;
-	}
-	return "";
+	TTabSheet *ts = pcSource->Pages[pcSource->ActivePageIndex];
+	if (ts->ControlCount <= 0)
+		return "";
+	TfrmPlaylist *frm = dynamic_cast<TfrmPlaylist*>(ts->Controls[0]);
+	if (frm == NULL)
+		return "";
+	return frm->getFileToPlay();		
 }
-
-void __fastcall TfrmMediaBrowser::btnMplayerInstanceBrowseClick(TObject *Sender)
-{
-#if 0
-	OpenDialog->InitialDir = ExtractFileDir(edOtherFile->Text);
-	OpenDialog->FileName = edOtherFile->Text;
-	OpenDialog->Filter = "Video files|*.mp4;*.avi;*.mpg;*.wmv;*.flv;*.mov;*.rmvb|All files|*.*";
-	OpenDialog->FilterIndex = 0;
-	if (OpenDialog->Execute())
-		edOtherFile->Text = OpenDialog->FileName;
-#endif
-}
-//---------------------------------------------------------------------------
 
 void __fastcall TfrmMediaBrowser::lvCachedFilesKeyDown(TObject *Sender,
       WORD &Key, TShiftState Shift)
@@ -217,10 +205,10 @@ void TfrmMediaBrowser::SetFiles(const std::vector<AnsiString>& filenames, bool s
 
 void TfrmMediaBrowser::SavePlaylists(void)
 {
-	std::list<TfrmPlaylist*>::iterator iter;
-	for (iter = playlistForms.begin(); iter != playlistForms.end(); ++iter)
+	for (int i=0; i<pcSource->PageCount; i++)
 	{
-		TfrmPlaylist *frm = *iter;
+		TfrmPlaylist *frm = getPlaylist(i);
+		assert(frm);
 		frm->saveToFile();
 	}
 }
@@ -240,6 +228,7 @@ void __fastcall TfrmMediaBrowser::pcSourceMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
 	mouseDownTabIndex = pcSource->IndexOfTabAt(X, Y);
+	pcSource->BeginDrag(0);	
 }
 //---------------------------------------------------------------------------
 
@@ -265,24 +254,35 @@ void __fastcall TfrmMediaBrowser::miDeletePlaylistClick(TObject *Sender)
 		return;
 	}
 
-	delete ts;	
-
-	std::list<TfrmPlaylist*>::iterator iter;
-	int id = 0;
-	for (iter = playlistForms.begin(); iter != playlistForms.end(); ++iter)
+	TfrmPlaylist *frm = getPlaylist(mouseDownTabIndex);
+	assert(frm);
+	if (frm->deletePlaylistFile())
 	{
-		if (id == mouseDownTabIndex)
-		{
-			TfrmPlaylist *frm = *iter;
-			if (frm->deletePlaylistFile())
-			{
-				MessageBox(this->Handle, "Failed to delete playlist file. Check if file is write protected.",
-					Application->Title.c_str(), MB_ICONEXCLAMATION);
-			}
-			playlistForms.erase(iter);
-			break;
-		}
-		id++;
+		MessageBox(this->Handle, "Failed to delete playlist file. Check if file is write protected.",
+			Application->Title.c_str(), MB_ICONEXCLAMATION);
+	}
+
+	delete ts;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmMediaBrowser::pcSourceDragOver(TObject *Sender,
+      TObject *Source, int X, int Y, TDragState State, bool &Accept)
+{
+	Accept = Sender->ClassNameIs("TPageControl");
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmMediaBrowser::pcSourceDragDrop(TObject *Sender,
+      TObject *Source, int X, int Y)
+{
+	if (!Sender->ClassNameIs("TPageControl"))
+		return;
+	TPageControl *pc = (TPageControl*)Sender;
+	int i = ItemAtPos(pc->Handle, X, Y); //GetTabIndex(Sender, X, Y);
+	if (i != pc->ActivePage->PageIndex)
+	{
+		pc->ActivePage->PageIndex = i;
 	}
 }
 //---------------------------------------------------------------------------

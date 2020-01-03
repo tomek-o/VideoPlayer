@@ -13,8 +13,6 @@ object frmMediaBrowser: TfrmMediaBrowser
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
-  ExplicitWidth = 320
-  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
   object pcSource: TPageControl
@@ -25,6 +23,8 @@ object frmMediaBrowser: TfrmMediaBrowser
     Align = alClient
     PopupMenu = PopupMenu
     TabOrder = 0
+    OnDragDrop = pcSourceDragDrop
+    OnDragOver = pcSourceDragOver
     OnMouseDown = pcSourceMouseDown
   end
   object OpenDialog: TOpenDialog
