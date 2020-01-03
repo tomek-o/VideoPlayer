@@ -348,6 +348,7 @@ void TfrmMain::CallbackStopPlayingFn(void)
     	ToggleFullscreen();
 	}
 	SetState(STOP);
+	frmMediaBrowser->PlayNextFile();
 }
 
 void TfrmMain::CallbackMediaInfoUpdateFn(void)

@@ -38,15 +38,16 @@ private:	// User declarations
 	Playlist playlist;
 	void update(void);
 	typedef void (__closure *CallbackStartPlaying)(void);
-	void Play(void);
+	void play(void);
 public:		// User declarations
 	__fastcall TfrmPlaylist(TComponent* Owner);
 	int loadFromFile(AnsiString fileName);
 	int saveToFile(AnsiString fileName = "");
 	int deletePlaylistFile(void);
 	AnsiString getFileToPlay(void);
-	void SetFiles(const std::vector<AnsiString>& filenames);
-	CallbackStartPlaying callbackStartPlaying;		
+	void setFiles(const std::vector<AnsiString>& filenames);
+	CallbackStartPlaying callbackStartPlaying;
+	void playNextFile(void);		
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfrmPlaylist *frmPlaylist;

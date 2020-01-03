@@ -202,7 +202,7 @@ void __fastcall TfrmMediaBrowser::miCopyFileClick(TObject *Sender)
 void TfrmMediaBrowser::SetFiles(const std::vector<AnsiString>& filenames, bool switchTo)
 {
 	TfrmPlaylist *frm = getPlaylist(pcSource->ActivePageIndex);
-	frm->SetFiles(filenames);
+	frm->setFiles(filenames);
 	//pcSource->ActivePage = pcSource->Pages[0];
 }
 
@@ -294,5 +294,14 @@ void TfrmMediaBrowser::Play(void)
 {
 	if (callbackStartPlaying)
 		callbackStartPlaying();
+}
+
+void TfrmMediaBrowser::PlayNextFile(void)
+{
+	TfrmPlaylist *frm = getPlaylist(pcSource->ActivePageIndex);
+	if (frm)
+	{
+    	frm->playNextFile();
+	}
 }
 

@@ -112,7 +112,7 @@ AnsiString TfrmPlaylist::getFileToPlay(void)
 	}
 }
 
-void TfrmPlaylist::SetFiles(const std::vector<AnsiString>& filenames)
+void TfrmPlaylist::setFiles(const std::vector<AnsiString>& filenames)
 {
 	for (int i=0; i<lvPlaylist->Items->Count; i++)
 	{
@@ -149,7 +149,7 @@ void __fastcall TfrmPlaylist::lvPlaylistKeyDown(TObject *Sender, WORD &Key,
 	}
 	else if (Key == VK_RETURN)
 	{
-    	Play();
+    	play();
 	}
 }
 //---------------------------------------------------------------------------
@@ -170,17 +170,32 @@ void __fastcall TfrmPlaylist::btnFilterClearClick(TObject *Sender)
 
 void __fastcall TfrmPlaylist::lvPlaylistDblClick(TObject *Sender)
 {
-	Play();
+	play();
 }
 //---------------------------------------------------------------------------
 
-void TfrmPlaylist::Play(void)
+void TfrmPlaylist::play(void)
 {
 	assert(callbackStartPlaying);
 	TListItem *item = lvPlaylist->Selected;
 	if (item == NULL)
 		return;
 	callbackStartPlaying();
+}
+
+void TfrmPlaylist::playNextFile(void)
+{
+	TListItem *item = lvPlaylist->Selected;
+	if (item == NULL)
+		return;
+	int id = item->Index;
+	if (id < lvPlaylist->Items->Count - 1)
+	{
+		item->Selected = false;
+		id++;
+		lvPlaylist->Items->Item[id]->Selected = true;
+		play();
+	}
 }
 
 
