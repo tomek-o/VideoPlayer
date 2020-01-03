@@ -10,7 +10,8 @@
 TfrmPlaylist *frmPlaylist;
 //---------------------------------------------------------------------------
 __fastcall TfrmPlaylist::TfrmPlaylist(TComponent* Owner)
-	: TForm(Owner)
+	: TForm(Owner),
+	callbackStartPlaying(NULL)
 {
 }
 //---------------------------------------------------------------------------
@@ -113,8 +114,6 @@ AnsiString TfrmPlaylist::getFileToPlay(void)
 
 void TfrmPlaylist::SetFiles(const std::vector<AnsiString>& filenames)
 {
-	unsigned int test0 = lvPlaylist->Items->Count;
-	unsigned int test1 = filenames.size();
 	for (int i=0; i<lvPlaylist->Items->Count; i++)
 	{
 		lvPlaylist->Items->Item[i]->Selected = false;
@@ -123,7 +122,6 @@ void TfrmPlaylist::SetFiles(const std::vector<AnsiString>& filenames)
 
 	playlist.add(filenames);
 	update();
-	unsigned int test2 = lvPlaylist->Items->Count;
 	if (lvPlaylist->Items->Count > originalCount)
 	{
 		lvPlaylist->Items->Item[originalCount]->Selected = true;
@@ -149,6 +147,10 @@ void __fastcall TfrmPlaylist::lvPlaylistKeyDown(TObject *Sender, WORD &Key,
 		playlist.remove(ids);
 		update();
 	}
+	else if (Key == VK_RETURN)
+	{
+    	Play();
+	}
 }
 //---------------------------------------------------------------------------
 
@@ -165,4 +167,20 @@ void __fastcall TfrmPlaylist::btnFilterClearClick(TObject *Sender)
 	edFilter->Text = "";	
 }
 //---------------------------------------------------------------------------
+
+void __fastcall TfrmPlaylist::lvPlaylistDblClick(TObject *Sender)
+{
+	Play();
+}
+//---------------------------------------------------------------------------
+
+void TfrmPlaylist::Play(void)
+{
+	assert(callbackStartPlaying);
+	TListItem *item = lvPlaylist->Selected;
+	if (item == NULL)
+		return;
+	callbackStartPlaying();
+}
+
 

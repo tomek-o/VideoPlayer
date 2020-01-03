@@ -22,7 +22,7 @@ __published:	// IDE-managed Components
 	TPopupMenu *popupMenu;
 	TMenuItem *miAddFiles;
 	TOpenDialog *OpenDialog;
-	TPanel *Panel1;
+	TPanel *pnlBottom;
 	TLabel *lblFilter;
 	TEdit *edFilter;
 	TButton *btnFilterClear;
@@ -32,17 +32,21 @@ __published:	// IDE-managed Components
           TShiftState Shift);
 	void __fastcall edFilterChange(TObject *Sender);
 	void __fastcall btnFilterClearClick(TObject *Sender);
+	void __fastcall lvPlaylistDblClick(TObject *Sender);
 private:	// User declarations
 	AnsiString fileName;
 	Playlist playlist;
 	void update(void);
+	typedef void (__closure *CallbackStartPlaying)(void);
+	void Play(void);
 public:		// User declarations
 	__fastcall TfrmPlaylist(TComponent* Owner);
 	int loadFromFile(AnsiString fileName);
 	int saveToFile(AnsiString fileName = "");
 	int deletePlaylistFile(void);
 	AnsiString getFileToPlay(void);
-	void SetFiles(const std::vector<AnsiString>& filenames);	
+	void SetFiles(const std::vector<AnsiString>& filenames);
+	CallbackStartPlaying callbackStartPlaying;		
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfrmPlaylist *frmPlaylist;

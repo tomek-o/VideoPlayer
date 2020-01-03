@@ -38,10 +38,11 @@ object frmPlaylist: TfrmPlaylist
     TabOrder = 0
     ViewStyle = vsReport
     OnData = lvPlaylistData
+    OnDblClick = lvPlaylistDblClick
     OnKeyDown = lvPlaylistKeyDown
     ExplicitHeight = 297
   end
-  object Panel1: TPanel
+  object pnlBottom: TPanel
     Left = 0
     Top = 317
     Width = 480

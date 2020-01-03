@@ -74,6 +74,7 @@ int TfrmMediaBrowser::LoadPlaylist(AnsiString fileName)
 	}
 	frmPlaylist->Visible = true;
 	frmPlaylist->Parent = ts;
+	frmPlaylist->callbackStartPlaying = Play;
 
 	return rc;
 }
@@ -286,4 +287,10 @@ void __fastcall TfrmMediaBrowser::pcSourceDragDrop(TObject *Sender,
 	}
 }
 //---------------------------------------------------------------------------
+
+void TfrmMediaBrowser::Play(void)
+{
+	if (callbackStartPlaying)
+		callbackStartPlaying();
+}
 

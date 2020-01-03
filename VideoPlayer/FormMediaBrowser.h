@@ -47,6 +47,7 @@ private:	// User declarations
 	void LoadPlaylists(void);
 	TfrmPlaylist* getPlaylist(int id);
 	int mouseDownTabIndex;
+	void Play(void);
 public:		// User declarations
 	__fastcall TfrmMediaBrowser(TComponent* Owner);
 	AnsiString GetFileToPlay(void);
