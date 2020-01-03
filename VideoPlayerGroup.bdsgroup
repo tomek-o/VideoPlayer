@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<PersonalityInfo>
+		<Option>
+			<Option Name="Personality">Default.Personality</Option>
+			<Option Name="ProjectType"></Option>
+			<Option Name="Version">1.0</Option>
+			<Option Name="GUID">{23D32AC2-B4C2-4C5A-A6FA-11087BE0397B}</Option>
+		</Option>
+	</PersonalityInfo>
+	<Default.Personality>  <Projects>
+      <Projects Name="jsoncpp.lib">jsoncpp\jsoncpp.bdsproj</Projects>
+      <Projects Name="VideoPlayer.exe">VideoPlayer\VideoPlayer.bdsproj</Projects>
+      <Projects Name="Targets">jsoncpp.lib VideoPlayer.exe</Projects>
+    </Projects>
+    <Dependencies/>
+  </Default.Personality>
+</BorlandProject>
