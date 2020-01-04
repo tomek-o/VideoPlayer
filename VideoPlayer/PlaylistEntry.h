@@ -11,6 +11,7 @@ struct PlaylistEntry
 {
 	AnsiString fileName;
 	uint64_t size;
+	AnsiString timeStamp;
 	PlaylistEntry(void):
 		size(0)
 	{}

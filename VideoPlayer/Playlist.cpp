@@ -18,20 +18,40 @@
 namespace
 {
 
-LONGLONG getFileSize(char* fileName) {
+int getFileDetails(char* fileName, uint64_t& usize, AnsiString& timeStamp) {
+	usize = 0;
+	timeStamp = "";
+
 	/* Gets the size of the file passed in fileName */
 	HANDLE hFile = CreateFile(fileName, GENERIC_READ, FILE_SHARE_READ , NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hFile == INVALID_HANDLE_VALUE) {
-		return 0;
+		return -1;
 	}
 
 	LARGE_INTEGER size;
 	if (!GetFileSizeEx(hFile, &size)) {
-		CloseHandle(hFile);
-		return -1; // error condition, could call GetLastError to find out more
+		LOG("Failed to read file size for %s", fileName);
+	} else {
+		usize = size.QuadPart;
 	}
+
+	FILETIME ftCreate, ftAccess, ftWrite;
+	if (!GetFileTime(hFile, &ftCreate, &ftAccess, &ftWrite))
+	{
+		LOG("Failed to retrieve time stamps for %s\n", fileName);
+	}
+	else
+	{
+		SYSTEMTIME st;
+		FileTimeToLocalFileTime( &ftWrite, &ftWrite );
+		FileTimeToSystemTime( &ftWrite, &st );
+		timeStamp.sprintf("%04d.%02d.%02d %02d:%02d:%02d",
+			st.wYear, st.wMonth, st.wDay, st.wHour, st.wMinute, st.wSecond
+			);
+	}
+
 	CloseHandle(hFile);
-	return size.QuadPart;
+	return 0;
 }
 
 }
@@ -79,6 +99,7 @@ int Playlist::loadFromFile(AnsiString fileName)
 			PlaylistEntry entry;
 			jv.getAString("fileName", entry.fileName);
 			entry.size = jv.get("size", entry.size).asUInt64();
+			jv.getAString("timeStamp", entry.timeStamp);
 			if (entry.isValid())
 			{
             	entries.push_back(entry);
@@ -122,6 +143,7 @@ int Playlist::saveToFile(AnsiString fileName)
 		const PlaylistEntry &entry = entries[i];
 		jEntry["fileName"] = entry.fileName;
 		jEntry["size"] = entry.size;
+		jEntry["timeStamp"] = entry.timeStamp;
 	}
 
 	jPlaylist["position"] = position;
@@ -170,7 +192,7 @@ void Playlist::add(const std::vector<AnsiString>& fileNames)
 		PlaylistEntry newEntry;
 		const AnsiString& fileName = fileNames[i];
 		newEntry.fileName = fileName;
-		newEntry.size = getFileSize(fileName.c_str());
+		getFileDetails(fileName.c_str(), newEntry.size, newEntry.timeStamp);
 
 		entries.push_back(newEntry);
 	}
@@ -281,6 +303,16 @@ bool compareSizeDesc(const PlaylistEntry& e1, const PlaylistEntry& e2)
 	return e1.size < e2.size;
 }
 
+bool compareTimeStampAsc(const PlaylistEntry& e1, const PlaylistEntry& e2)
+{
+	return UpperCase(e1.timeStamp).AnsiCompare(UpperCase(e2.timeStamp)) > 0;
+}
+
+bool compareTimeStampDesc(const PlaylistEntry& e1, const PlaylistEntry& e2)
+{
+	return UpperCase(e1.timeStamp).AnsiCompare(UpperCase(e2.timeStamp)) < 0;
+}
+
 }
 
 int Playlist::sort(enum SortType type, bool ascending)
@@ -300,6 +332,12 @@ int Playlist::sort(enum SortType type, bool ascending)
 			std::stable_sort(entries.begin(), entries.end(), compareSizeAsc);
 		else
 			std::stable_sort(entries.begin(), entries.end(), compareSizeDesc);
+		break;
+	case SortByTimeStamp:
+		if (ascending)
+			std::stable_sort(entries.begin(), entries.end(), compareTimeStampAsc);
+		else
+			std::stable_sort(entries.begin(), entries.end(), compareTimeStampDesc);
 		break;
 	default:
 		return -1;

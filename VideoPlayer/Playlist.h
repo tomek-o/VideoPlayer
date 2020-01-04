@@ -53,6 +53,7 @@ public:
 		SortRandom = 0,
 		SortByFileName,
 		SortBySize,
+		SortByTimeStamp,
 
 		SortTypeLimiter
 	};

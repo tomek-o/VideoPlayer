@@ -94,6 +94,7 @@ void __fastcall TfrmPlaylist::lvPlaylistData(TObject *Sender, TListItem *Item)
 	AnsiString asSize;
 	asSize.sprintf("%.1f MB", static_cast<double>(entry.entry.size) / (1024*1024));
 	Item->SubItems->Add(asSize);
+	Item->SubItems->Add(entry.entry.timeStamp);
 }
 //---------------------------------------------------------------------------
 
@@ -315,6 +316,9 @@ void __fastcall TfrmPlaylist::lvPlaylistColumnClick(TObject *Sender,
 		break;
 	case 1:
 		sortType = Playlist::SortBySize;
+		break;
+	case 2:
+		sortType = Playlist::SortByTimeStamp;
 		break;
 	default:
 		assert(!"Unhandled sort column!");
