@@ -44,12 +44,3 @@ Version ...
 
 */
 
-/*
-TODO:
-- multiselect?
-- about button
-- disable screensaver while playing
-- przy pewnych proporcjach obrazu obraz zas³ania pnlControl ca³kowicie lub czêœciowo
-- mplayer pan / wide (zoom: W/E keys)
-
-*/

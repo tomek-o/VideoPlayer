@@ -233,15 +233,16 @@
         <FILE FILENAME="FormPlaylist.cpp" CONTAINERID="CCompiler" LOCALCOMMAND="" UNITNAME="FormPlaylist" FORMNAME="frmPlaylist" DESIGNCLASS="" ADDITIONAL="FormPlaylist.h"/>
         <FILE FILENAME="PlaylistEntry.cpp" CONTAINERID="CCompiler" LOCALCOMMAND="" UNITNAME="PlaylistEntry" FORMNAME="" DESIGNCLASS="" ADDITIONAL="PlaylistEntry.h"/>
         <FILE FILENAME="Playlist.cpp" CONTAINERID="CCompiler" LOCALCOMMAND="" UNITNAME="Playlist" FORMNAME="" DESIGNCLASS="" ADDITIONAL="Playlist.h"/>
+        <FILE FILENAME="doc\roadmap.h" CONTAINERID="" LOCALCOMMAND="" UNITNAME="" FORMNAME="" DESIGNCLASS=""/>
       </FILELIST>
       <IDEOPTIONS>
         <VersionInfo>
           <VersionInfo Name="IncludeVerInfo">True</VersionInfo>
           <VersionInfo Name="AutoIncBuild">False</VersionInfo>
-          <VersionInfo Name="MajorVer">1</VersionInfo>
-          <VersionInfo Name="MinorVer">6</VersionInfo>
+          <VersionInfo Name="MajorVer">2</VersionInfo>
+          <VersionInfo Name="MinorVer">0</VersionInfo>
           <VersionInfo Name="Release">0</VersionInfo>
-          <VersionInfo Name="Build">1</VersionInfo>
+          <VersionInfo Name="Build">0</VersionInfo>
           <VersionInfo Name="Debug">False</VersionInfo>
           <VersionInfo Name="PreRelease">False</VersionInfo>
           <VersionInfo Name="Special">False</VersionInfo>
@@ -253,13 +254,13 @@
         <VersionInfoKeys>
           <VersionInfoKeys Name="CompanyName">Tomasz Ostrowski</VersionInfoKeys>
           <VersionInfoKeys Name="FileDescription"></VersionInfoKeys>
-          <VersionInfoKeys Name="FileVersion">1.6.0.1</VersionInfoKeys>
+          <VersionInfoKeys Name="FileVersion">2.0.0.0</VersionInfoKeys>
           <VersionInfoKeys Name="InternalName"></VersionInfoKeys>
           <VersionInfoKeys Name="LegalCopyright"></VersionInfoKeys>
           <VersionInfoKeys Name="LegalTrademarks"></VersionInfoKeys>
           <VersionInfoKeys Name="OriginalFilename"></VersionInfoKeys>
           <VersionInfoKeys Name="ProductName"></VersionInfoKeys>
-          <VersionInfoKeys Name="ProductVersion">1.0</VersionInfoKeys>
+          <VersionInfoKeys Name="ProductVersion">2</VersionInfoKeys>
           <VersionInfoKeys Name="Comments"></VersionInfoKeys>
         </VersionInfoKeys>
         <Debugging>
@@ -299,10 +300,10 @@
       </IDEOPTIONS>
     </BCBPROJECT>
 		<buildevents>
-			<buildevent file="turbocpp_template.bdsproj">
-				<precompile mode="0" cancancel="-1" capture="0" showconsole="0">$(PROJECTDIR)\build-tools\touch.exe $(PROJECTDIR)\FormAbout.cpp
+      <buildevent file="turbocpp_template.bdsproj">
+        <precompile mode="0" cancancel="-1" capture="0" showconsole="0">$(PROJECTDIR)\build-tools\touch.exe $(PROJECTDIR)\FormAbout.cpp
 </precompile>
-			</buildevent>
-		</buildevents>
+      </buildevent>
+    </buildevents>
 	</CPlusPlusBuilder.Personality>
 </BorlandProject>
