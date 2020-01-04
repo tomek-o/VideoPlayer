@@ -174,6 +174,18 @@ void Playlist::remove(const std::set<unsigned int>& ids)
 	filter(filterText);
 }
 
+int Playlist::rename(unsigned int id, AnsiString newFileName)
+{
+	PlaylistEntry& entry = entries[id];
+	if (RenameFile(entry.fileName, newFileName) == false)
+	{
+		return -1;
+	}
+	entry.fileName = newFileName;
+	filter(filterText);
+	return 0;
+}
+
 void Playlist::filter(AnsiString text)
 {
 	filteredEntries.clear();

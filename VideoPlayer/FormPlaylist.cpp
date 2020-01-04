@@ -211,3 +211,30 @@ int TfrmPlaylist::renamePlaylistFile(AnsiString newName)
 	return 0;
 }
 
+void __fastcall TfrmPlaylist::miRenameFileClick(TObject *Sender)
+{
+	TListItem *item = lvPlaylist->Selected;
+	if (item == NULL)
+		return;
+
+	int id = item->Index;
+	const std::vector<FilteredPlaylistEntry>& entries = playlist.getFilteredEntries();
+	const FilteredPlaylistEntry &entry = entries[id];
+
+	AnsiString name = ExtractFileName(entry.entry.fileName);
+	bool ret = InputQuery("File name", "Name for the file", name);
+	if (ret == false || name == ExtractFileName(entry.entry.fileName))
+		return;
+
+	AnsiString newFileName = ExtractFileDir(entry.entry.fileName) + "\\" + name;
+	int status = playlist.rename(entry.id, newFileName);
+	if (status != 0)
+	{
+		MessageBox(this->Handle, "Failed to rename file.", Application->Title.c_str(), MB_ICONEXCLAMATION);
+		return;
+	}
+
+	update();
+}
+//---------------------------------------------------------------------------
+

@@ -83,6 +83,10 @@ object frmPlaylist: TfrmPlaylist
       Caption = 'Add file(s)'
       OnClick = miAddFilesClick
     end
+    object miRenameFile: TMenuItem
+      Caption = 'Rename file'
+      OnClick = miRenameFileClick
+    end
   end
   object OpenDialog: TOpenDialog
     Options = [ofHideReadOnly, ofAllowMultiSelect, ofFileMustExist, ofEnableSizing]
