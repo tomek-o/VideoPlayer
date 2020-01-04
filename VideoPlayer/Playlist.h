@@ -41,9 +41,13 @@ public:
 	AnsiString getFilterText(void) const {
     	return filterText;
 	}
+	const PlaylistEntry& getEntry(unsigned int id) {
+    	return entries[id];
+	}
 	void add(const std::vector<AnsiString>& fileNames);
 	void remove(const std::set<unsigned int>& ids);
 	int rename(unsigned int id, AnsiString newFileName);
+	void removeWithFiles(const std::set<unsigned int>& ids);
 	void filter(AnsiString text);
 };
 

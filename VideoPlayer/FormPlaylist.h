@@ -27,6 +27,7 @@ __published:	// IDE-managed Components
 	TEdit *edFilter;
 	TButton *btnFilterClear;
 	TMenuItem *miRenameFile;
+	TMenuItem *miDeleteFiles;
 	void __fastcall miAddFilesClick(TObject *Sender);
 	void __fastcall lvPlaylistData(TObject *Sender, TListItem *Item);
 	void __fastcall lvPlaylistKeyDown(TObject *Sender, WORD &Key,
@@ -35,6 +36,7 @@ __published:	// IDE-managed Components
 	void __fastcall btnFilterClearClick(TObject *Sender);
 	void __fastcall lvPlaylistDblClick(TObject *Sender);
 	void __fastcall miRenameFileClick(TObject *Sender);
+	void __fastcall miDeleteFilesClick(TObject *Sender);
 private:	// User declarations
 	AnsiString fileName;
 	Playlist playlist;

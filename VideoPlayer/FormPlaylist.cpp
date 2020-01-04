@@ -154,6 +154,7 @@ void __fastcall TfrmPlaylist::lvPlaylistKeyDown(TObject *Sender, WORD &Key,
 		}
 		playlist.remove(ids);
 		update();
+		lvPlaylist->ClearSelection();
 	}
 	else if (Key == VK_RETURN)
 	{
@@ -244,6 +245,42 @@ void __fastcall TfrmPlaylist::miRenameFileClick(TObject *Sender)
 	}
 
 	update();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmPlaylist::miDeleteFilesClick(TObject *Sender)
+{
+	if (!lvPlaylist->Selected)
+		return;
+	std::set<unsigned int> ids;
+	const std::vector<FilteredPlaylistEntry>& entries = playlist.getFilteredEntries();
+	for (int i=0; i<lvPlaylist->Items->Count; i++)
+	{
+		if (lvPlaylist->Items->Item[i]->Selected)
+		{
+			ids.insert(entries[i].id);
+		}
+	}
+	AnsiString msg;
+	if (ids.size() == 1)
+	{
+		const PlaylistEntry& entry = playlist.getEntry(*ids.begin());
+		msg.sprintf("Delete %s?", entry.fileName.c_str());
+	}
+	else
+	{
+		msg.sprintf("Delete %u files?", ids.size());
+	}
+
+	if (MessageBox(this->Handle, msg.c_str(),
+		Application->Title.c_str(), MB_YESNO | MB_DEFBUTTON2 | MB_ICONEXCLAMATION) != IDYES)
+	{
+		return;
+	}
+
+	playlist.removeWithFiles(ids);
+	update();
+	lvPlaylist->ClearSelection();
 }
 //---------------------------------------------------------------------------
 

@@ -4,6 +4,7 @@
 #pragma hdrstop
 
 #include "Playlist.h"
+#include "Log.h"
 #include <algorithm>
 #include <fstream>
 #include <json/json.h>
@@ -166,7 +167,32 @@ void Playlist::remove(const std::set<unsigned int>& ids)
 	{
 		if (ids.find(i) == ids.end())
 		{
-        	newEntries.push_back(entries[i]);
+			newEntries.push_back(entries[i]);
+		}
+	}
+
+	entries = newEntries;
+	filter(filterText);
+}
+
+void Playlist::removeWithFiles(const std::set<unsigned int>& ids)
+{
+	std::vector<PlaylistEntry> newEntries;
+
+	for (unsigned int i=0; i<entries.size(); i++)
+	{
+		PlaylistEntry& entry = entries[i];
+		if (ids.find(i) == ids.end())
+		{
+			newEntries.push_back(entry);
+		}
+		else
+		{
+			if (DeleteFile(entry.fileName) == false)
+			{
+				LOG("Failed to delete %s", entry.fileName.c_str());
+				newEntries.push_back(entry);
+			}
 		}
 	}
 
