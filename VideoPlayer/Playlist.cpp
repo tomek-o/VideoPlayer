@@ -37,7 +37,8 @@ LONGLONG getFileSize(char* fileName) {
 }
 
 Playlist::Playlist(void):
-	position(-1)
+	position(-1),
+	modified(false)
 {
 
 }
@@ -46,6 +47,8 @@ int Playlist::loadFromFile(AnsiString fileName)
 {
 	Json::Value root;   // will contains the root value after parsing.
 	Json::Reader reader;
+
+    LOG("Loading %s...", fileName.c_str());
 
 	try
 	{
@@ -69,6 +72,7 @@ int Playlist::loadFromFile(AnsiString fileName)
 	entries.clear();
 	if (jEntries.type() == Json::arrayValue)
 	{
+        LOG("    %u entries", jEntries.size());
 		for (unsigned int i=0; i<jEntries.size(); i++)
 		{
 			const Json::Value& jv = jEntries[i];
@@ -99,6 +103,12 @@ int Playlist::loadFromFile(AnsiString fileName)
 
 int Playlist::saveToFile(AnsiString fileName)
 {
+	if (!modified)
+	{
+		LOG("Skipping saving %s (not modified)", fileName.c_str());
+		return 0;
+	}
+
 	Json::Value root;
 	Json::StyledWriter writer("\t");
 
@@ -133,6 +143,14 @@ int Playlist::saveToFile(AnsiString fileName)
 	return 0;
 }
 
+void Playlist::setPosition(int position) {
+	if (this->position != position)
+	{
+		this->position = position;
+		modified = true;
+	}
+}
+
 void Playlist::add(const std::vector<AnsiString>& fileNames)
 {
 #if 0
@@ -157,6 +175,7 @@ void Playlist::add(const std::vector<AnsiString>& fileNames)
 		entries.push_back(newEntry);
 	}
 	filter(filterText);
+	modified = true;
 }
 
 void Playlist::remove(const std::set<unsigned int>& ids)
@@ -173,6 +192,7 @@ void Playlist::remove(const std::set<unsigned int>& ids)
 
 	entries = newEntries;
 	filter(filterText);
+	modified = true;
 }
 
 void Playlist::removeWithFiles(const std::set<unsigned int>& ids)
@@ -198,6 +218,7 @@ void Playlist::removeWithFiles(const std::set<unsigned int>& ids)
 
 	entries = newEntries;
 	filter(filterText);
+	modified = true;
 }
 
 int Playlist::rename(unsigned int id, AnsiString newFileName)
@@ -209,11 +230,16 @@ int Playlist::rename(unsigned int id, AnsiString newFileName)
 	}
 	entry.fileName = newFileName;
 	filter(filterText);
+	modified = true;
 	return 0;
 }
 
 void Playlist::filter(AnsiString text)
 {
+	if (filterText != text)
+	{
+		modified = true;
+	}
 	filteredEntries.clear();
 	filterText = text;
 	std::vector<PlaylistEntry>::const_iterator iter;

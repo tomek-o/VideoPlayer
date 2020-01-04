@@ -22,6 +22,7 @@ class Playlist
 {
 private:
 	int position;
+	bool modified;
 	std::vector<PlaylistEntry> entries;
 	std::vector<FilteredPlaylistEntry> filteredEntries;
 	AnsiString filterText;
@@ -35,9 +36,7 @@ public:
 	int getPosition(void) const {
 		return position;
 	}
-	void setPosition(int position) {
-    	this->position = position;
-	}
+	void setPosition(int position);
 	AnsiString getFilterText(void) const {
     	return filterText;
 	}
