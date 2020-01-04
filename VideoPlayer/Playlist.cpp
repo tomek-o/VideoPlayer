@@ -258,4 +258,56 @@ void Playlist::filter(AnsiString text)
 	}
 }
 
+namespace
+{
+
+bool compareFileNameAsc(const PlaylistEntry& e1, const PlaylistEntry& e2)
+{
+	return UpperCase(e1.fileName).AnsiCompare(UpperCase(e2.fileName)) > 0;
+}
+
+bool compareFileNameDesc(const PlaylistEntry& e1, const PlaylistEntry& e2)
+{
+	return UpperCase(e1.fileName).AnsiCompare(UpperCase(e2.fileName)) < 0;
+}
+
+bool compareSizeAsc(const PlaylistEntry& e1, const PlaylistEntry& e2)
+{
+	return e1.size > e2.size;
+}
+
+bool compareSizeDesc(const PlaylistEntry& e1, const PlaylistEntry& e2)
+{
+	return e1.size < e2.size;
+}
+
+}
+
+int Playlist::sort(enum SortType type, bool ascending)
+{
+#pragma warn -8091	// incorrectly issued by BDS2006
+
+	switch(type)
+	{
+	case SortByFileName:
+		if (ascending)
+			std::stable_sort(entries.begin(), entries.end(), compareFileNameAsc);
+		else
+			std::stable_sort(entries.begin(), entries.end(), compareFileNameDesc);
+		break;
+	case SortBySize:
+		if (ascending)
+			std::stable_sort(entries.begin(), entries.end(), compareSizeAsc);
+		else
+			std::stable_sort(entries.begin(), entries.end(), compareSizeDesc);
+		break;
+	default:
+		return -1;
+	}
+	filter(filterText);
+	modified = true;
+	return 0;
+}
+
+
 

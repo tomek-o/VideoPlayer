@@ -284,3 +284,47 @@ void __fastcall TfrmPlaylist::miDeleteFilesClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmPlaylist::lvPlaylistColumnClick(TObject *Sender,
+      TListColumn *Column)
+{
+	bool ascending = true;
+	if (Column->ImageIndex == 0)
+	{
+		ascending = false;
+	}
+
+	for (int i=0; i<lvPlaylist->Columns->Count; i++)
+	{
+    	lvPlaylist->Column[i]->ImageIndex = -1;
+	}
+
+	if (ascending)
+	{
+		Column->ImageIndex = 0;
+	}
+	else
+	{
+		Column->ImageIndex = 1;
+	}
+
+	enum Playlist::SortType sortType = Playlist::SortTypeLimiter;
+	switch (Column->Index)
+	{
+	case 0:
+		sortType = Playlist::SortByFileName;
+		break;
+	case 1:
+		sortType = Playlist::SortBySize;
+		break;
+	default:
+		assert(!"Unhandled sort column!");
+		return;
+	}
+
+	playlist.sort(sortType, ascending);
+
+	update();
+	lvPlaylist->ClearSelection();	
+}
+//---------------------------------------------------------------------------
+

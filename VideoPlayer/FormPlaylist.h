@@ -14,6 +14,7 @@
 #include <Menus.hpp>
 #include <Dialogs.hpp>
 #include <ExtCtrls.hpp>
+#include <ImgList.hpp>
 
 class TfrmPlaylist : public TForm
 {
@@ -28,6 +29,7 @@ __published:	// IDE-managed Components
 	TButton *btnFilterClear;
 	TMenuItem *miRenameFile;
 	TMenuItem *miDeleteFiles;
+	TImageList *imagelistPlaylist;
 	void __fastcall miAddFilesClick(TObject *Sender);
 	void __fastcall lvPlaylistData(TObject *Sender, TListItem *Item);
 	void __fastcall lvPlaylistKeyDown(TObject *Sender, WORD &Key,
@@ -37,6 +39,7 @@ __published:	// IDE-managed Components
 	void __fastcall lvPlaylistDblClick(TObject *Sender);
 	void __fastcall miRenameFileClick(TObject *Sender);
 	void __fastcall miDeleteFilesClick(TObject *Sender);
+	void __fastcall lvPlaylistColumnClick(TObject *Sender, TListColumn *Column);
 private:	// User declarations
 	AnsiString fileName;
 	Playlist playlist;
