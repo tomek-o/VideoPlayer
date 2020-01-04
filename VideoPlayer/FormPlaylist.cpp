@@ -22,8 +22,13 @@ int TfrmPlaylist::loadFromFile(AnsiString fileName)
 	int rc = playlist.loadFromFile(this->fileName);
 	edFilter->Text = playlist.getFilterText();
 	update();
-	if (playlist.getPosition() < lvPlaylist->Items->Count)
-		lvPlaylist->Selected = lvPlaylist->Items->Item[playlist.getPosition()];
+	int position = playlist.getPosition();
+	int count = lvPlaylist->Items->Count;
+	if (position >= 0 && position < count)
+	{
+		lvPlaylist->Items->Item[position]->Selected = true;
+		lvPlaylist->Selected->MakeVisible(false);
+	}
 	return rc;
 }
 
@@ -183,6 +188,7 @@ void TfrmPlaylist::play(void)
 	TListItem *item = lvPlaylist->Selected;
 	if (item == NULL)
 		return;
+	item->MakeVisible(false);
 	callbackStartPlaying();
 }
 
@@ -196,7 +202,8 @@ void TfrmPlaylist::playNextFile(void)
 	{
 		item->Selected = false;
 		id++;
-		lvPlaylist->Items->Item[id]->Selected = true;
+		TListItem *nextItem = lvPlaylist->Items->Item[id];
+		nextItem->Selected = true;
 		play();
 	}
 }
@@ -216,6 +223,8 @@ void __fastcall TfrmPlaylist::miRenameFileClick(TObject *Sender)
 	TListItem *item = lvPlaylist->Selected;
 	if (item == NULL)
 		return;
+
+	item->MakeVisible(false);
 
 	int id = item->Index;
 	const std::vector<FilteredPlaylistEntry>& entries = playlist.getFilteredEntries();
