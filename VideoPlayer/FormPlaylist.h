@@ -30,6 +30,8 @@ __published:	// IDE-managed Components
 	TMenuItem *miRenameFile;
 	TMenuItem *miDeleteFiles;
 	TImageList *imagelistPlaylist;
+	TMenuItem *miShufflePlaylist;
+	TMenuItem *N1;
 	void __fastcall miAddFilesClick(TObject *Sender);
 	void __fastcall lvPlaylistData(TObject *Sender, TListItem *Item);
 	void __fastcall lvPlaylistKeyDown(TObject *Sender, WORD &Key,
@@ -40,6 +42,7 @@ __published:	// IDE-managed Components
 	void __fastcall miRenameFileClick(TObject *Sender);
 	void __fastcall miDeleteFilesClick(TObject *Sender);
 	void __fastcall lvPlaylistColumnClick(TObject *Sender, TListColumn *Column);
+	void __fastcall miShufflePlaylistClick(TObject *Sender);
 private:	// User declarations
 	AnsiString fileName;
 	Playlist playlist;

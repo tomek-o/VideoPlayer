@@ -332,3 +332,10 @@ void __fastcall TfrmPlaylist::lvPlaylistColumnClick(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmPlaylist::miShufflePlaylistClick(TObject *Sender)
+{
+	playlist.sort(Playlist::SortRandom, false);
+	update();
+}
+//---------------------------------------------------------------------------
+

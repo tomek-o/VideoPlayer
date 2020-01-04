@@ -98,6 +98,13 @@ object frmPlaylist: TfrmPlaylist
       Caption = 'Delete file(s)'
       OnClick = miDeleteFilesClick
     end
+    object N1: TMenuItem
+      Caption = '-'
+    end
+    object miShufflePlaylist: TMenuItem
+      Caption = 'Shuffle playlist'
+      OnClick = miShufflePlaylistClick
+    end
   end
   object OpenDialog: TOpenDialog
     Options = [ofHideReadOnly, ofAllowMultiSelect, ofFileMustExist, ofEnableSizing]

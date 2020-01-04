@@ -321,6 +321,9 @@ int Playlist::sort(enum SortType type, bool ascending)
 
 	switch(type)
 	{
+	case SortRandom:
+		std::random_shuffle(entries.begin(), entries.end());
+		break;
 	case SortByFileName:
 		if (ascending)
 			std::stable_sort(entries.begin(), entries.end(), compareFileNameAsc);
