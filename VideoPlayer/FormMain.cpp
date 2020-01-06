@@ -26,7 +26,8 @@ void __fastcall TfrmMain::CreateParams(TCreateParams &Params)
 }
 
 __fastcall TfrmMain::TfrmMain(TComponent* Owner)
-	: TForm(Owner), allowControlHide(true), state(STOP)
+	: TForm(Owner), allowControlHide(true), state(STOP),
+	mouseMoveLastX(-1), mouseMoveLastY(-1)
 {
 	// inform OS that we accepting dropping files
 	DragAcceptFiles(Handle, True);
@@ -201,6 +202,11 @@ void __fastcall TfrmMain::pnlControlMouseLeave(TObject *Sender)
 void __fastcall TfrmMain::pnlVideoMouseMove(TObject *Sender, TShiftState Shift,
       int X, int Y)
 {
+	if (X == mouseMoveLastX && Y == mouseMoveLastY)
+		return;
+	//LOG("X=%d, Y=%d", X, Y);
+	mouseMoveLastX = X;
+	mouseMoveLastY = Y;
 	TPoint Position = ScreenToClient(Mouse->CursorPos);
 	if (pnlControl->Visible == false)
 	{
@@ -216,11 +222,11 @@ void __fastcall TfrmMain::pnlVideoMouseMove(TObject *Sender, TShiftState Shift,
 		}
 	}
 	tmrShowControl->Enabled = true;
-	if (Cursor != crDefault)
+	if (pnlMain->Cursor != crDefault)
 	{
 		tmrCursorHide->Enabled = false;
 		tmrCursorHide->Enabled = true;
-		Cursor = crDefault;
+		pnlMain->Cursor = crDefault;
 	}
 }
 //---------------------------------------------------------------------------
@@ -409,8 +415,8 @@ void __fastcall TfrmMain::btnStopClick(TObject *Sender)
 
 void __fastcall TfrmMain::tmrCursorHideTimer(TObject *Sender)
 {
-	if (Cursor != crNone)
-		Cursor = crNone;
+	if (pnlMain->Cursor != crNone)
+		pnlMain->Cursor = crNone;
 }
 //---------------------------------------------------------------------------
 
@@ -437,9 +443,10 @@ void TfrmMain::ToggleFullscreen(void)
 {
 	if (WindowState == wsMaximized)
 	{
+        // maximized -> normal switch
 		WindowState = wsNormal;
 		tmrCursorHide->Enabled = false;
-		Cursor = crDefault;
+		pnlMain->Cursor = crDefault;
 		btnFullscreen->Down = false;
 	}
 	else

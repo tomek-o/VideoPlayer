@@ -78,6 +78,7 @@ private:	// User declarations
 	void OpenFiles(std::vector<AnsiString> filenames);
 	void WriteSettings(void);
 	void __fastcall WMDropFiles(TWMDropFiles &message);
+	int mouseMoveLastX, mouseMoveLastY;	// MouseMove is called 2x per second even if mouse is not moving - ?
 protected:
 	void __fastcall CreateParams(TCreateParams   &Params);
 public:		// User declarations
