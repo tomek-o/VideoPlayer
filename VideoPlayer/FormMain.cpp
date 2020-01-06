@@ -207,21 +207,6 @@ void __fastcall TfrmMain::pnlVideoMouseMove(TObject *Sender, TShiftState Shift,
 	//LOG("X=%d, Y=%d", X, Y);
 	mouseMoveLastX = X;
 	mouseMoveLastY = Y;
-	TPoint Position = ScreenToClient(Mouse->CursorPos);
-	if (pnlControl->Visible == false)
-	{
-		if (Position.y >= Height - pnlControl->Height &&
-			Position.y < Height &&
-			Position.x >= 0 &&
-			Position.x < Width)
-		{
-		}
-		else
-		{
-			tmrShowControl->Enabled = false;
-		}
-	}
-	tmrShowControl->Enabled = true;
 	if (pnlMain->Cursor != crDefault)
 	{
 		tmrCursorHide->Enabled = false;
@@ -234,7 +219,6 @@ void __fastcall TfrmMain::pnlVideoMouseMove(TObject *Sender, TShiftState Shift,
 
 void __fastcall TfrmMain::tmrShowControlTimer(TObject *Sender)
 {
-	//tmrShowControl->Enabled = false;
 	TPoint Position;
 	try
 	{
@@ -340,6 +324,7 @@ void TfrmMain::ShowMediaBrowser(bool state)
 	else
 	{
 		frmMediaBrowser->Visible = false;
+		tmrShowControl->Enabled = true;
 		allowControlHide = true;
 	}
 }
