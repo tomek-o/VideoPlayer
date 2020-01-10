@@ -205,7 +205,6 @@ int MPlayer::stop(bool useCallback)
 	if (mplayerWaitThread) {
 		mplayerWaitThread->Terminate();
 		mplayerWaitThread = NULL;
-		Sleep(100);
 	}
 	return 0;
 }
