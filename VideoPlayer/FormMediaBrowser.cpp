@@ -346,13 +346,14 @@ void TfrmMediaBrowser::Play(void)
 		callbackStartPlaying();
 }
 
-void TfrmMediaBrowser::PlayNextFile(void)
+int TfrmMediaBrowser::PlayNextFile(void)
 {
 	TfrmPlaylist *frm = getPlaylist(pcSource->ActivePageIndex);
 	if (frm)
 	{
-    	frm->playNextFile();
+    	return frm->playNextFile();
 	}
+	return -1;
 }
 
 

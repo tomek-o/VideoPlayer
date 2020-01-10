@@ -194,11 +194,11 @@ void TfrmPlaylist::play(void)
 	callbackStartPlaying();
 }
 
-void TfrmPlaylist::playNextFile(void)
+int TfrmPlaylist::playNextFile(void)
 {
 	TListItem *item = lvPlaylist->Selected;
 	if (item == NULL)
-		return;
+		return -2;
 	int id = item->Index;
 	if (id < lvPlaylist->Items->Count - 1)
 	{
@@ -207,7 +207,9 @@ void TfrmPlaylist::playNextFile(void)
 		TListItem *nextItem = lvPlaylist->Items->Item[id];
 		nextItem->Selected = true;
 		play();
+		return 0;
 	}
+	return -3;
 }
 
 int TfrmPlaylist::renamePlaylistFile(AnsiString newName)

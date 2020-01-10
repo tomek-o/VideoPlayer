@@ -336,12 +336,15 @@ void TfrmMain::CallbackStartPlayingFn(void)
 
 void TfrmMain::CallbackStopPlayingFn(void)
 {
-	if (appSettings.frmMain.bExitFullScreenOnStop && (WindowState == wsMaximized))
+	int status = frmMediaBrowser->PlayNextFile();
+	if (status != 0)
 	{
-    	ToggleFullscreen();
+		if (appSettings.frmMain.bExitFullScreenOnStop && (WindowState == wsMaximized))
+		{
+			ToggleFullscreen();
+		}
+		SetState(STOP);
 	}
-	SetState(STOP);
-	frmMediaBrowser->PlayNextFile();
 }
 
 void TfrmMain::CallbackMediaInfoUpdateFn(void)
@@ -370,7 +373,7 @@ void TfrmMain::CallbackMediaInfoUpdateFn(void)
 
 void TfrmMain::Play(void)
 {
-	if (state == STOP)
+	if (state == STOP || state == PLAY /* playing next file immediately from Stop callbak */)
 	{
 		AnsiString file = frmMediaBrowser->GetFileToPlay();
 		if (file != "")

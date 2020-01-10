@@ -57,7 +57,7 @@ public:		// User declarations
 	void SetFiles(const std::vector<AnsiString>& filenames, bool switchTo);
 	CallbackStartPlaying callbackStartPlaying;
 	void SavePlaylists(void);
-	void PlayNextFile(void);
+	int PlayNextFile(void);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfrmMediaBrowser *frmMediaBrowser;
