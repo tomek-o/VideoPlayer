@@ -74,6 +74,7 @@ private:	// User declarations
 	void SetState(enum STATE state);
 	void Play(void);
 	void Pause(void);
+	void Skip(void);
 	void ToggleFullscreen(void);
 	void OpenFiles(std::vector<AnsiString> filenames);
 	void WriteSettings(void);

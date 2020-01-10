@@ -19,7 +19,7 @@ TfrmMain *frmMain;
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmMain::CreateParams(TCreateParams &Params) 
-{ 
+{
 	TForm::CreateParams(Params);
 	Params.ExStyle |= WS_EX_STATICEDGE;
 	Params.Style |= WS_SIZEBOX;
@@ -301,6 +301,10 @@ void __fastcall TfrmMain::FormKeyDown(TObject *Sender, WORD &Key,
 			case 'M':
 				Application->Minimize();
 				break;
+			case 'n':
+			case 'N':
+				Skip();
+				break;
 			case 'o':
 			case 'O':
 				mplayer.toggleOsd();
@@ -527,6 +531,25 @@ void TfrmMain::Pause(void)
 	else
 		SetState(PLAY);
 	mplayer.pause();
+}
+
+void TfrmMain::Skip(void)
+{
+	if (state != PLAY && state != PAUSE)
+	{
+    	return;
+	}
+	mplayer.stop(false);
+	state = STOP;	// forcing PAUSE -> STOP transition
+	int status = frmMediaBrowser->PlayNextFile();
+	if (status != 0)
+	{
+		if (appSettings.frmMain.bExitFullScreenOnStop && (WindowState == wsMaximized))
+		{
+			ToggleFullscreen();
+		}
+		SetState(STOP);
+	}	
 }
 
 void TfrmMain::SetState(enum STATE state)
