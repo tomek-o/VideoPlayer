@@ -270,7 +270,7 @@ void Playlist::filter(AnsiString text)
 	for (unsigned int i=0; i<entries.size(); i++)
 	{
 		const PlaylistEntry& entry = entries[i];
-		if (empty || UpperCase(entry.fileName).Pos(needle) > 0)
+		if (empty || UpperCase(ExtractFileName(entry.fileName)).Pos(needle) > 0)
 		{
 			FilteredPlaylistEntry fpe;
 			fpe.entry = entry;
