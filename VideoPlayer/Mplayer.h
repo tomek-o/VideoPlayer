@@ -56,6 +56,7 @@ public:
 	int pause(void);
 	int seekRelative(int seconds);
 	int toggleOsd(void);
+	int setOsdLevel(int level);
 	int changeVolume(int delta);
 	int changeVolumeAbs(int val);
 	int stop(bool useCallback = true);

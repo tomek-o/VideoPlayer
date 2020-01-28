@@ -187,7 +187,7 @@ void __fastcall TfrmMain::pnlDragWindow(TObject *Sender,
 	}
 	else if (Button == mbRight)
 	{
-		mplayer.toggleOsd();
+		ToggleOsd();
 	}
 }
 //---------------------------------------------------------------------------
@@ -307,7 +307,8 @@ void __fastcall TfrmMain::FormKeyDown(TObject *Sender, WORD &Key,
 				break;
 			case 'o':
 			case 'O':
-				mplayer.toggleOsd();
+				ToggleOsd();
+				//mplayer
 				break;
 		}
 	}
@@ -384,6 +385,7 @@ void TfrmMain::Play(void)
 		{
 			SetState(PLAY);
 			mplayer.play(file);
+			mplayer.setOsdLevel(appSettings.Mplayer.osdLevel);
 		}
 		else
 		{
@@ -454,6 +456,14 @@ void TfrmMain::ToggleFullscreen(void)
 		btnFullscreen->Down = true;
 		tmrRefreshControl->Enabled = true;
 	}
+}
+
+void TfrmMain::ToggleOsd(void)
+{
+	appSettings.Mplayer.osdLevel++;
+	if (appSettings.Mplayer.osdLevel > Settings::_Mplayer::OSD_LEVEL_MAX)
+		appSettings.Mplayer.osdLevel = Settings::_Mplayer::OSD_LEVEL_MIN;
+	mplayer.setOsdLevel(appSettings.Mplayer.osdLevel);
 }
 
 void __fastcall TfrmMain::btnFullscreenClick(TObject *Sender)

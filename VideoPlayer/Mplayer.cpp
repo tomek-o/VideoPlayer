@@ -3,6 +3,9 @@
 
 #pragma hdrstop
 
+/** See MPlayer slave mode manual: http://www.mplayerhq.hu/DOCS/tech/slave.txt
+*/
+
 #include "Mplayer.h"
 #include "ThreadMplayerWait.h"
 #include "ThreadMplayerControl.h"
@@ -173,6 +176,15 @@ int MPlayer::seekRelative(int seconds)
 int MPlayer::toggleOsd(void)
 {
 	return sendCommand("osd");
+}
+
+int MPlayer::setOsdLevel(int level)
+{
+	if ((hMPlayer == NULL) || (hPipeWrite == NULL))
+		return -1;
+	AnsiString msg;
+	msg.sprintf("osd %d", level);
+	return sendCommand(msg);
 }
 
 int MPlayer::changeVolume(int delta)

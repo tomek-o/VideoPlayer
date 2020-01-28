@@ -109,6 +109,9 @@ int Settings::Read(AnsiString asFileName)
 		Mplayer.softVolLevel = jv.get("SoftVolLevel", Mplayer.softVolLevel).asInt();
 		if (Mplayer.softVolLevel < 0 || Mplayer.softVolLevel > Mplayer.softVolMax)
 			Mplayer.softVolLevel = 100;
+		jv.getInt("OsdLevel", Mplayer.osdLevel);
+		if (Mplayer.osdLevel < _Mplayer::OSD_LEVEL_MIN || Mplayer.osdLevel > _Mplayer::OSD_LEVEL_MAX)
+			Mplayer.osdLevel = _Mplayer::OSD_LEVEL_DEFAULT;
 	}
 
 	return 0;
@@ -138,6 +141,7 @@ int Settings::Write(AnsiString asFileName)
 		jv["SoftVol"] =  Mplayer.softVol;
 		jv["SoftVolMax"] =  Mplayer.softVolMax;
 		jv["SoftVolLevel"] = Mplayer.softVolLevel;
+		jv["OsdLevel"] = Mplayer.osdLevel;
 	}
 
 	std::string outputConfig = writer.write( root );
