@@ -64,6 +64,16 @@ void __fastcall TfrmPlaylist::miAddFilesClick(TObject *Sender)
 {
 	OpenDialog->Filter = "Video files|*.mp4;*.avi;*.mpg;*.wmv;*.flv;*.mov;*.rmvb|All files|*.*";
 	OpenDialog->FilterIndex = 0;
+	const std::vector<PlaylistEntry>& entries = playlist.getEntries();
+	if (!entries.empty())
+	{
+		const AnsiString& fname = entries[entries.size()-1].fileName;
+		AnsiString dir = ExtractFileDir(fname);
+		if (DirectoryExists(dir))
+		{
+        	OpenDialog->InitialDir = dir;
+		}
+	}
 	if (OpenDialog->Execute())
 	{
 		std::vector<AnsiString> fileNames;

@@ -30,6 +30,9 @@ public:
 	Playlist(void);
 	int loadFromFile(AnsiString fileName);
 	int saveToFile(AnsiString fileName);
+	const std::vector<PlaylistEntry>& getEntries(void) const {
+    	return entries;
+	}
 	const std::vector<FilteredPlaylistEntry>& getFilteredEntries(void) const {
     	return filteredEntries;
 	}
