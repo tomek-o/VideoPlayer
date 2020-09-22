@@ -39,8 +39,18 @@ Version 1.6
 - default extension for saved files changed to mp4
 - added audio/video bitrate display to main window
 
-Version ...
+Version 2.0
 - added mp4 extension to open file dialog
+
+- aplication name changed to VideoPlayer
+- removed functionality related to Opera (v12) cache
+- added playlists
+
+- if single file is passed from command line: search for previous same entry on playlist before adding new entry (e.g. when player would be started multiple time with same source file or rtsp stream)
+- if TEdit filter control is not focused "F"/"f" key works also when stopped (toggling fullscreen)
+- added "About..." button to settings window
+
+- OSD: show file name => 'i' key?
 
 */
 
