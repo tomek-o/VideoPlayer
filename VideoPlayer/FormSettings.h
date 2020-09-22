@@ -38,6 +38,7 @@ __published:	// IDE-managed Components
 	TLabel *lblSoftVolMax;
 	TEdit *edMplayerSoftVolMax;
 	TLabel *lblMplayerPercent;
+	TButton *btnAbout;
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall btnCancelClick(TObject *Sender);
 	void __fastcall btnApplyClick(TObject *Sender);
@@ -47,6 +48,7 @@ __published:	// IDE-managed Components
 	void __fastcall btnShowLogWindowClick(TObject *Sender);
 	void __fastcall chbMplayerSoftVolClick(TObject *Sender);
 	void __fastcall chbMplayerSoftVolKeyPress(TObject *Sender, char &Key);
+	void __fastcall btnAboutClick(TObject *Sender);
 private:	// User declarations
 
 public:		// User declarations

@@ -48,3 +48,10 @@ void __fastcall TfrmAbout::lblInfo2Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmAbout::FormKeyPress(TObject *Sender, char &Key)
+{
+	if (Key == VK_ESCAPE)
+		Close();	
+}
+//---------------------------------------------------------------------------
+

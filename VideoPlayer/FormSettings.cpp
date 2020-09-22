@@ -5,6 +5,7 @@
 
 #include "FormSettings.h"
 #include "LogUnit.h"
+#include "FormAbout.h"
 #include <SysUtils.hpp>
 #include <FileCtrl.hpp>
 
@@ -108,6 +109,12 @@ void __fastcall TfrmSettings::chbMplayerSoftVolKeyPress(TObject *Sender,
       char &Key)
 {
 	edMplayerSoftVolMax->Enabled = chbMplayerSoftVol->Checked;	
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmSettings::btnAboutClick(TObject *Sender)
+{
+	frmAbout->ShowModal();	
 }
 //---------------------------------------------------------------------------
 

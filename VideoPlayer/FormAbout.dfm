@@ -11,8 +11,10 @@ object frmAbout: TfrmAbout
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = True
   Position = poScreenCenter
+  OnKeyPress = FormKeyPress
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
@@ -351,16 +353,16 @@ object frmAbout: TfrmAbout
     object Copyright: TLabel
       Left = 8
       Top = 80
-      Width = 196
+      Width = 199
       Height = 13
-      Caption = 'Copyright '#169' Tomasz Ostrowski 2019-202-'
+      Caption = 'Copyright '#169' Tomasz Ostrowski 2019-2020'
       IsControl = True
     end
     object Comments: TLabel
       Left = 8
       Top = 104
-      Width = 109
-      Height = 26
+      Width = 99
+      Height = 13
       Caption = 'Licensed as GPL v2.'
       WordWrap = True
       IsControl = True

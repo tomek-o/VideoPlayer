@@ -33,6 +33,7 @@ __published:
 	TLabel *lblBuilt;
 	TLabel *lblBuildTimestamp;
 	void __fastcall lblInfo2Click(TObject *Sender);
+	void __fastcall FormKeyPress(TObject *Sender, char &Key);
 private:
 public:
 	virtual __fastcall TfrmAbout(TComponent* AOwner);

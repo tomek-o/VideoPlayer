@@ -54,6 +54,8 @@ object frmSettings: TfrmSettings
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'General'
+      ExplicitLeft = 8
+      ExplicitTop = 22
       object chbAlwaysOnTop: TCheckBox
         Left = 3
         Top = 3
@@ -81,15 +83,20 @@ object frmSettings: TfrmSettings
         TabOrder = 2
         OnClick = chbAlwaysOnTopClick
       end
+      object btnAbout: TButton
+        Left = 3
+        Top = 81
+        Width = 126
+        Height = 25
+        Caption = 'About...'
+        TabOrder = 3
+        OnClick = btnAboutClick
+      end
     end
     object pcLogging: TTabSheet
       Caption = 'Logging'
       ImageIndex = 1
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object lblUiCapacity: TLabel
         Left = 5
         Top = 26
@@ -103,7 +110,7 @@ object frmSettings: TfrmSettings
         Width = 111
         Height = 21
         Style = csDropDownList
-        ItemHeight = 0
+        ItemHeight = 13
         TabOrder = 0
         OnChange = cmbMaxUiLogLinesChange
         Items.Strings = (
