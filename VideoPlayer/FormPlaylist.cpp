@@ -320,7 +320,7 @@ void __fastcall TfrmPlaylist::lvPlaylistColumnClick(TObject *Sender,
 		Column->ImageIndex = 1;
 	}
 
-	enum Playlist::SortType sortType = Playlist::SortTypeLimiter;
+	enum Playlist::SortType sortType;
 	switch (Column->Index)
 	{
 	case 0:
