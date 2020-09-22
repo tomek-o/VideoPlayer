@@ -46,6 +46,7 @@ void __fastcall TfrmSettings::FormShow(TObject *Sender)
 	chbMplayerSoftVol->Checked = tmpSettings.Mplayer.softVol;
 	edMplayerSoftVolMax->Text = tmpSettings.Mplayer.softVolMax;
 	edMplayerSoftVolMax->Enabled = chbMplayerSoftVol->Checked;
+	chbMplayerShowFileNameOnPlayStart->Checked = tmpSettings.Mplayer.showFileNameOnPlayStart;
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmSettings::btnCancelClick(TObject *Sender)
@@ -64,6 +65,8 @@ void __fastcall TfrmSettings::btnApplyClick(TObject *Sender)
 	tmpSettings.Mplayer.softVolMax = StrToIntDef(edMplayerSoftVolMax->Text, 200);
 	if (tmpSettings.Mplayer.softVolMax < 50 || tmpSettings.Mplayer.softVolMax > 1000)
 		tmpSettings.Mplayer.softVolMax = 200;
+
+	tmpSettings.Mplayer.showFileNameOnPlayStart = chbMplayerShowFileNameOnPlayStart->Checked;
 
 	*appSettings = tmpSettings;
 	this->Close();	

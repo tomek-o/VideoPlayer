@@ -49,13 +49,11 @@ object frmSettings: TfrmSettings
     Top = 0
     Width = 341
     Height = 214
-    ActivePage = TabSheet1
+    ActivePage = tsMplayer
     Align = alClient
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'General'
-      ExplicitLeft = 8
-      ExplicitTop = 22
       object chbAlwaysOnTop: TCheckBox
         Left = 3
         Top = 3
@@ -189,6 +187,14 @@ object frmSettings: TfrmSettings
         Height = 21
         TabOrder = 2
         Text = '200'
+      end
+      object chbMplayerShowFileNameOnPlayStart: TCheckBox
+        Left = 3
+        Top = 87
+        Width = 318
+        Height = 17
+        Caption = 'Show file name (OSD) on playback start'
+        TabOrder = 3
       end
     end
   end

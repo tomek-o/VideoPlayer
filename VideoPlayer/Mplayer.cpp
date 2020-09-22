@@ -202,6 +202,18 @@ int MPlayer::changeVolumeAbs(int val)
 	return sendCommand(msg);
 }
 
+int MPlayer::osdShowText(AnsiString text, int duration)
+{
+	AnsiString msg;
+	if (text.Pos("'") != 0)
+	{
+		// not sure how to escape this...
+		return -1;
+	}
+	msg.sprintf("osd_show_text '%s' %d", text.c_str(), duration);
+	return sendCommand(msg);
+}
+
 int MPlayer::stop(bool useCallback)
 {
 	if ((hMPlayer == NULL) || (hPipeWrite == NULL))

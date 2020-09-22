@@ -402,6 +402,12 @@ void TfrmMain::Play(void)
 			SetState(PLAY);
 			mplayer.play(file);
 			mplayer.setOsdLevel(appSettings.Mplayer.osdLevel);
+			if (appSettings.Mplayer.showFileNameOnPlayStart)
+			{
+				AnsiString text;
+				text.sprintf("File: %s", ExtractFileName(file).c_str());
+				mplayer.osdShowText(text, 2000);
+			}
 		}
 		else
 		{
@@ -614,4 +620,5 @@ void __fastcall TfrmMain::tmrRefreshControlTimer(TObject *Sender)
 	}
 }
 //---------------------------------------------------------------------------
+
 

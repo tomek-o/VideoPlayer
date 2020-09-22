@@ -59,6 +59,7 @@ public:
 	int setOsdLevel(int level);
 	int changeVolume(int delta);
 	int changeVolumeAbs(int val);
+	int osdShowText(AnsiString text, int duration);
 	int stop(bool useCallback = true);
 	void kill();
 
