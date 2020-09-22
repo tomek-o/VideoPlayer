@@ -312,6 +312,22 @@ void __fastcall TfrmMain::FormKeyDown(TObject *Sender, WORD &Key,
 				break;
 		}
 	}
+	else if (state == STOP)
+	{
+		switch (Key) {
+			case 'f':
+			case 'F': {
+				AnsiString cname = Screen->ActiveControl->ClassName();
+				if (cname != "TEdit" && cname != "TMemo")
+				{
+					ToggleFullscreen();
+				}
+				break;
+			}
+			default:
+				break;
+		}
+	}
 }
 //---------------------------------------------------------------------------
 
