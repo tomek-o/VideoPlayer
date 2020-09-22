@@ -49,6 +49,7 @@ public:
 	void add(const std::vector<AnsiString>& fileNames);
 	void remove(const std::set<unsigned int>& ids);
 	int rename(unsigned int id, AnsiString newFileName);
+	int findByName(AnsiString fileName);
 	void removeWithFiles(const std::set<unsigned int>& ids);
 	void filter(AnsiString text);
 

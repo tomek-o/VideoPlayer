@@ -137,13 +137,36 @@ void TfrmPlaylist::setFiles(const std::vector<AnsiString>& filenames)
 	{
 		lvPlaylist->Items->Item[i]->Selected = false;
 	}
-	int originalCount = lvPlaylist->Items->Count;
-
-	playlist.add(filenames);
-	update();
-	if (lvPlaylist->Items->Count > originalCount)
+	if (filenames.size() > 1)
 	{
-		lvPlaylist->Items->Item[originalCount]->Selected = true;
+		int originalCount = lvPlaylist->Items->Count;
+		playlist.add(filenames);
+		update();
+		if (lvPlaylist->Items->Count > originalCount)
+		{
+			lvPlaylist->Items->Item[originalCount]->Selected = true;
+		}
+	}
+	else if (filenames.size() == 1)
+	{
+		int id = playlist.findByName(filenames[0]);
+		if (id < 0)
+		{
+			int originalCount = lvPlaylist->Items->Count;
+			playlist.add(filenames);
+			update();
+			if (lvPlaylist->Items->Count > originalCount)
+			{
+				lvPlaylist->Items->Item[originalCount]->Selected = true;
+			}
+		}
+		else
+		{
+			if (lvPlaylist->Items->Count > id)
+			{
+				lvPlaylist->Items->Item[id]->Selected = true;
+			}
+		}
 	}
 }
 
@@ -320,7 +343,7 @@ void __fastcall TfrmPlaylist::lvPlaylistColumnClick(TObject *Sender,
 		Column->ImageIndex = 1;
 	}
 
-	enum Playlist::SortType sortType;
+	enum Playlist::SortType sortType = Playlist::SortTypeLimiter;
 	switch (Column->Index)
 	{
 	case 0:

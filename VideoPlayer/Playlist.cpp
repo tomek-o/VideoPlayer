@@ -256,6 +256,16 @@ int Playlist::rename(unsigned int id, AnsiString newFileName)
 	return 0;
 }
 
+int Playlist::findByName(AnsiString fileName)
+{
+	for (unsigned int i=0; i<entries.size(); i++)
+	{
+		if (entries[i].fileName == fileName)
+			return i;
+	}
+	return -1;
+}
+
 void Playlist::filter(AnsiString text)
 {
 	if (filterText != text)

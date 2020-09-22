@@ -203,7 +203,6 @@ void TfrmMediaBrowser::SetFiles(const std::vector<AnsiString>& filenames, bool s
 {
 	TfrmPlaylist *frm = getPlaylist(pcSource->ActivePageIndex);
 	frm->setFiles(filenames);
-	//pcSource->ActivePage = pcSource->Pages[0];
 }
 
 void TfrmMediaBrowser::SavePlaylists(void)
