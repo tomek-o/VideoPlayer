@@ -247,7 +247,6 @@ void Playlist::removeDuplicates(void)
 {
 	std::set<AnsiString> filenames;
 	std::vector<PlaylistEntry> newEntries;
-
 	for (unsigned int i=0; i<entries.size(); i++)
 	{
 		const PlaylistEntry& entry = entries[i];
@@ -257,7 +256,22 @@ void Playlist::removeDuplicates(void)
 			newEntries.push_back(entry);
 		}
 	}
+	entries = newEntries;
+	filter(filterText);
+	modified = true;
+}
 
+void Playlist::removeMissingFiles(void)
+{
+	std::vector<PlaylistEntry> newEntries;
+	for (unsigned int i=0; i<entries.size(); i++)
+	{
+		const PlaylistEntry& entry = entries[i];
+		if (FileExists(entry.fileName))
+		{
+			newEntries.push_back(entry);
+		}
+	}
 	entries = newEntries;
 	filter(filterText);
 	modified = true;

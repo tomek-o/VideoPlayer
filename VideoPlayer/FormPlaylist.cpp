@@ -381,3 +381,10 @@ void __fastcall TfrmPlaylist::miRemoveDuplicatesClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmPlaylist::miRemoveMissingFromListClick(TObject *Sender)
+{
+	playlist.removeMissingFiles();
+	update();	
+}
+//---------------------------------------------------------------------------
+

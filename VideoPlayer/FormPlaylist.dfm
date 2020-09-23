@@ -110,6 +110,10 @@ object frmPlaylist: TfrmPlaylist
       Caption = 'Remove duplicates from list'
       OnClick = miRemoveDuplicatesClick
     end
+    object miRemoveMissingFromList: TMenuItem
+      Caption = 'Remove missing files from list'
+      OnClick = miRemoveMissingFromListClick
+    end
   end
   object OpenDialog: TOpenDialog
     Options = [ofHideReadOnly, ofAllowMultiSelect, ofFileMustExist, ofEnableSizing]

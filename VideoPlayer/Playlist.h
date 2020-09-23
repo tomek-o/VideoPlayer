@@ -53,6 +53,7 @@ public:
 	void removeWithFiles(const std::set<unsigned int>& ids);
 	void filter(AnsiString text);
 	void removeDuplicates(void);
+	void removeMissingFiles(void);
 
 	enum SortType {
 		SortRandom = 0,
