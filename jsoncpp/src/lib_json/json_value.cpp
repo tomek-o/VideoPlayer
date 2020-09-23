@@ -741,7 +741,13 @@ Value::asString() const
 #pragma warn .8008
 #endif
    }
+#ifdef __BORLANDC__
+#pragma warn -8066
+#endif
    return ""; // unreachable
+#ifdef __BORLANDC__
+#pragma warn .8066
+#endif
 }
 
 #ifdef __BORLANDC__
@@ -808,7 +814,13 @@ Value::asInt() const
 #ifdef __BORLANDC__
 #pragma warn .8008
 #endif
+#ifdef __BORLANDC__
+#pragma warn -8066
+#endif
    return 0; // unreachable
+#ifdef __BORLANDC__
+#pragma warn .8066
+#endif
 }
 
 
@@ -834,7 +846,13 @@ Value::asUInt() const
       break;
    }
    JSON_FAIL_MESSAGE("Value is not convertible to UInt.");
+#ifdef __BORLANDC__
+#pragma warn -8066
+#endif
    return 0; // unreachable
+#ifdef __BORLANDC__
+#pragma warn .8066
+#endif
 }
 
 
@@ -861,7 +879,13 @@ Value::asInt64() const
       break;
    }
    JSON_FAIL_MESSAGE("Value is not convertible to Int64.");
+#ifdef __BORLANDC__
+#pragma warn -8066
+#endif
    return 0; // unreachable
+#ifdef __BORLANDC__
+#pragma warn .8066
+#endif
 }
 
 
@@ -886,7 +910,13 @@ Value::asUInt64() const
       break;
    }
    JSON_FAIL_MESSAGE("Value is not convertible to UInt64.");
+#ifdef __BORLANDC__
+#pragma warn -8066
+#endif
    return 0; // unreachable
+#ifdef __BORLANDC__
+#pragma warn .8066
+#endif
 }
 # endif // if defined(JSON_HAS_INT64)
 
@@ -936,7 +966,13 @@ Value::asDouble() const
       break;
    }
    JSON_FAIL_MESSAGE("Value is not convertible to double.");
+#ifdef __BORLANDC__
+#pragma warn -8066
+#endif
    return 0; // unreachable
+#ifdef __BORLANDC__
+#pragma warn .8066
+#endif
 }
 
 float
@@ -962,7 +998,13 @@ Value::asFloat() const
       break;
    }
    JSON_FAIL_MESSAGE("Value is not convertible to float.");
+#ifdef __BORLANDC__
+#pragma warn -8066
+#endif
    return 0; // unreachable
+#ifdef __BORLANDC__
+#pragma warn .8066
+#endif
 }
 
 bool
@@ -984,7 +1026,13 @@ Value::asBool() const
       break;
    }
    JSON_FAIL_MESSAGE("Value is not convertible to bool.");
+#ifdef __BORLANDC__
+#pragma warn -8066
+#endif
    return false; // unreachable
+#ifdef __BORLANDC__
+#pragma warn .8066
+#endif
 }
 
 
