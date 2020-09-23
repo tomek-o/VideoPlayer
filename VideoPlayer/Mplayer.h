@@ -22,6 +22,8 @@ private:
 //	TExecCallback callback;
 	bool myPlayerExited;
 
+	AnsiString filename;
+
 	int run(AnsiString cmdLine);
 	int sendCommand(AnsiString cmd);
 
@@ -52,6 +54,10 @@ public:
 	void __fastcall playerExited();
 
 	int play(AnsiString filename);
+	AnsiString getFilename(void) const
+	{
+    	return filename;
+	}
 	int frame_step(void);
 	int pause(void);
 	int seekRelative(int seconds);

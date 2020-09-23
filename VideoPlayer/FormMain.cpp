@@ -297,6 +297,13 @@ void __fastcall TfrmMain::FormKeyDown(TObject *Sender, WORD &Key,
 			case 'F':
 				ToggleFullscreen();
 				break;
+			case 'i':
+			case 'I': {
+				AnsiString text;
+				text.sprintf("File: %s", ExtractFileName(mplayer.getFilename()).c_str());
+				mplayer.osdShowText(text, 2000);
+				}
+				break;
 			case 'm':
 			case 'M':
 				Application->Minimize();

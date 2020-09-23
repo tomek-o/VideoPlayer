@@ -117,6 +117,7 @@ void MPlayer::OnStopPlayingFn(void)
 int MPlayer::play(AnsiString filename)
 {
 	AnsiString cmdLine;
+	this->filename = filename;
 
 	mediaInfo.videoBitrate = mediaInfo.audioBitrateKnown = false;
 	if (this->callbackMediaInfoUpdate)
