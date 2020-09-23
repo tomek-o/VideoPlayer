@@ -629,3 +629,12 @@ void __fastcall TfrmMain::tmrRefreshControlTimer(TObject *Sender)
 //---------------------------------------------------------------------------
 
 
+void __fastcall TfrmMain::tmrGetFilePosTimer(TObject *Sender)
+{
+	if (state == PLAY)
+	{
+		mplayer.getTimePos();
+	}
+}
+//---------------------------------------------------------------------------
+

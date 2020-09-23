@@ -9,6 +9,7 @@
 #include "Mplayer.h"
 #include "ThreadMplayerWait.h"
 #include "ThreadMplayerControl.h"
+#include "Log.h"
 #include <SysUtils.hpp>
 #include <math.h>
 #include <stdio.h>
@@ -23,6 +24,10 @@ MPlayer::MPlayer():
 	hMPlayer(NULL),
 	hPipeRead(NULL),
 	hPipeWrite(NULL),
+	filePositionValid(false),
+	filePosition(0.0),
+	fileLengthValid(false),
+	fileLength(0.0),
 	callbackStopPlaying(NULL),
 	callbackMediaInfoUpdate(NULL),
 	mplayerWaitThread(NULL),
@@ -120,6 +125,8 @@ int MPlayer::play(AnsiString filename)
 	this->filename = filename;
 
 	mediaInfo.videoBitrate = mediaInfo.audioBitrateKnown = false;
+	filePositionValid = false;
+	fileLengthValid = false;
 	if (this->callbackMediaInfoUpdate)
 	{
     	callbackMediaInfoUpdate();
@@ -169,8 +176,31 @@ int MPlayer::seekRelative(int seconds)
 {
 	if ((hMPlayer == NULL) || (hPipeWrite == NULL))
 		return -1;
+	if (filePositionValid && fileLengthValid)
+	{
+		if (seconds > 0)
+		{
+            // seeking at time higher than file length => stop/go to next file
+			if (filePosition + seconds >= fileLength - 2)
+			{
+				stop();
+				return 0;				
+			}
+		}
+	}
 	AnsiString msg;
 	msg.sprintf("seek %d", seconds);
+	filePosition += seconds;
+	if (filePositionValid)
+	{
+		if (filePosition < 0)
+			filePosition = 0;
+		if (fileLengthValid)
+		{
+			if (filePosition > fileLength)
+				filePosition = fileLength;
+		}
+	}
 	return sendCommand(msg);
 }
 
@@ -186,6 +216,11 @@ int MPlayer::setOsdLevel(int level)
 	AnsiString msg;
 	msg.sprintf("osd %d", level);
 	return sendCommand(msg);
+}
+
+int MPlayer::getTimePos(void)
+{
+	return sendCommand("get_time_pos");
 }
 
 int MPlayer::changeVolume(int delta)
@@ -250,8 +285,30 @@ void MPlayer::OnConsoleLineReceived(AnsiString line)
 {
 	int bitrate;
 	line = line.Trim();
-
-	if (line.Pos("ID_VIDEO_BITRATE=") == 1)
+	//LOG("%s", line.c_str());
+	if (line.Pos("ANS_TIME_POSITION=") == 1)
+	{
+		if (sscanf(line.c_str(), "ANS_TIME_POSITION=%lf", &filePosition) == 1)
+		{
+			filePositionValid = true;
+		}
+		else
+		{
+			filePositionValid = false;
+		}
+	}
+	else if (line.Pos("ID_LENGTH=") == 1)
+	{
+		if (sscanf(line.c_str(), "ID_LENGTH=%lf", &fileLength) == 1)
+		{
+			fileLengthValid = true;
+		}
+		else
+		{
+			fileLengthValid = false;
+		}
+	}
+	else if (line.Pos("ID_VIDEO_BITRATE=") == 1)
 	{
 		if (sscanf(line.c_str(), "ID_VIDEO_BITRATE=%d", &bitrate) == 1)
 		{
@@ -263,8 +320,7 @@ void MPlayer::OnConsoleLineReceived(AnsiString line)
 			}
 		}
 	}
-
-	if (line.Pos("ID_AUDIO_BITRATE=") == 1)
+	else if (line.Pos("ID_AUDIO_BITRATE=") == 1)
 	{
 		if(sscanf(line.c_str(), "ID_AUDIO_BITRATE=%d", &bitrate) == 1)
 		{

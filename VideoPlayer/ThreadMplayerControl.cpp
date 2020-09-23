@@ -94,7 +94,9 @@ void __fastcall ThreadMplayerControl::Execute()
 				if (ok2) {
 //					if (lastchar == 10) Synchronize(ShowLine);
 					if (Line != "") {
-						LOG(Line.c_str());
+						if (strncmp(Line.c_str(), "ANS_TIME_POSITION=", strlen("ANS_TIME_POSITION="))) {
+							LOG(Line.c_str());
+						}
 						if (onConsoleLineRx) {
                         	onConsoleLineRx(Line);
 						}

@@ -23,6 +23,10 @@ private:
 	bool myPlayerExited;
 
 	AnsiString filename;
+	bool filePositionValid;
+	double filePosition;
+	bool fileLengthValid;
+	double fileLength;
 
 	int run(AnsiString cmdLine);
 	int sendCommand(AnsiString cmd);
@@ -66,6 +70,7 @@ public:
 	int changeVolume(int delta);
 	int changeVolumeAbs(int val);
 	int osdShowText(AnsiString text, int duration);
+	int getTimePos(void);
 	int stop(bool useCallback = true);
 	void kill();
 

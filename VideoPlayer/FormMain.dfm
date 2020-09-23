@@ -244,4 +244,9 @@ object frmMain: TfrmMain
     Left = 8
     Top = 72
   end
+  object tmrGetFilePos: TTimer
+    OnTimer = tmrGetFilePosTimer
+    Left = 8
+    Top = 136
+  end
 end

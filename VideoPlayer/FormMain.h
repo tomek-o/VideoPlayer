@@ -36,6 +36,7 @@ __published:	// IDE-managed Components
 	TLabel *lblV;
 	TLabel *lblA;
 	TPanel *pnlMain;
+	TTimer *tmrGetFilePos;
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
 	void __fastcall actShowAboutExecute(TObject *Sender);
@@ -60,6 +61,7 @@ __published:	// IDE-managed Components
 	void __fastcall btnMinimizeClick(TObject *Sender);
 	void __fastcall btnPauseStillClick(TObject *Sender);
 	void __fastcall tmrRefreshControlTimer(TObject *Sender);
+	void __fastcall tmrGetFilePosTimer(TObject *Sender);
 private:	// User declarations
 	Settings appSettings;
 	void ApplySettings(void);
