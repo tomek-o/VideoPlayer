@@ -52,6 +52,7 @@ public:
 	int findByName(AnsiString fileName);
 	void removeWithFiles(const std::set<unsigned int>& ids);
 	void filter(AnsiString text);
+	void removeDuplicates(void);
 
 	enum SortType {
 		SortRandom = 0,

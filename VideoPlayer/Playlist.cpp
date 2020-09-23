@@ -243,6 +243,26 @@ void Playlist::removeWithFiles(const std::set<unsigned int>& ids)
 	modified = true;
 }
 
+void Playlist::removeDuplicates(void)
+{
+	std::set<AnsiString> filenames;
+	std::vector<PlaylistEntry> newEntries;
+
+	for (unsigned int i=0; i<entries.size(); i++)
+	{
+		const PlaylistEntry& entry = entries[i];
+		if (filenames.find(entry.fileName) == filenames.end())
+		{
+			filenames.insert(entry.fileName);
+			newEntries.push_back(entry);
+		}
+	}
+
+	entries = newEntries;
+	filter(filterText);
+	modified = true;
+}
+
 int Playlist::rename(unsigned int id, AnsiString newFileName)
 {
 	PlaylistEntry& entry = entries[id];

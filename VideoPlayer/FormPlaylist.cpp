@@ -343,7 +343,7 @@ void __fastcall TfrmPlaylist::lvPlaylistColumnClick(TObject *Sender,
 		Column->ImageIndex = 1;
 	}
 
-	enum Playlist::SortType sortType = Playlist::SortTypeLimiter;
+	enum Playlist::SortType sortType;
 	switch (Column->Index)
 	{
 	case 0:
@@ -371,6 +371,13 @@ void __fastcall TfrmPlaylist::miShufflePlaylistClick(TObject *Sender)
 {
 	playlist.sort(Playlist::SortRandom, false);
 	update();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmPlaylist::miRemoveDuplicatesClick(TObject *Sender)
+{
+	playlist.removeDuplicates();
+	update();	
 }
 //---------------------------------------------------------------------------
 

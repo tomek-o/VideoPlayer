@@ -12,8 +12,6 @@ object frmPlaylist: TfrmPlaylist
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
-  ExplicitWidth = 320
-  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
   object lvPlaylist: TListView
@@ -49,7 +47,6 @@ object frmPlaylist: TfrmPlaylist
     OnData = lvPlaylistData
     OnDblClick = lvPlaylistDblClick
     OnKeyDown = lvPlaylistKeyDown
-    ExplicitWidth = 480
   end
   object pnlBottom: TPanel
     Left = 0
@@ -59,7 +56,6 @@ object frmPlaylist: TfrmPlaylist
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitWidth = 480
     object lblFilter: TLabel
       Left = 8
       Top = 6
@@ -106,6 +102,13 @@ object frmPlaylist: TfrmPlaylist
     object miShufflePlaylist: TMenuItem
       Caption = 'Shuffle playlist'
       OnClick = miShufflePlaylistClick
+    end
+    object N2: TMenuItem
+      Caption = '-'
+    end
+    object miRemoveDuplicates: TMenuItem
+      Caption = 'Remove duplicates from list'
+      OnClick = miRemoveDuplicatesClick
     end
   end
   object OpenDialog: TOpenDialog
