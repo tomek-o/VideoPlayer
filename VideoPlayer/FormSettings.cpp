@@ -121,3 +121,10 @@ void __fastcall TfrmSettings::btnAboutClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmSettings::FormKeyPress(TObject *Sender, char &Key)
+{
+	if (Key == VK_ESCAPE)
+		Close();	
+}
+//---------------------------------------------------------------------------
+

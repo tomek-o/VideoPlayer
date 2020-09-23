@@ -50,6 +50,7 @@ __published:	// IDE-managed Components
 	void __fastcall chbMplayerSoftVolClick(TObject *Sender);
 	void __fastcall chbMplayerSoftVolKeyPress(TObject *Sender, char &Key);
 	void __fastcall btnAboutClick(TObject *Sender);
+	void __fastcall FormKeyPress(TObject *Sender, char &Key);
 private:	// User declarations
 
 public:		// User declarations
