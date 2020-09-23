@@ -50,7 +50,11 @@ Version 2.0
 - if TEdit filter control is not focused "F"/"f" key works also when stopped (toggling fullscreen)
 - added "About..." button to settings window
 
-- OSD: show file name => 'i' key?
+- settings window: close with Esc, changed window position to main form center
+- OSD: show file name => 'i' key
+- fluent fast forwarding - reading file length and current position
+- added "Remove duplicates from list"
+- added "Remove missing files from list"
 
 */
 
