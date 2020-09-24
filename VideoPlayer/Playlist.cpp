@@ -235,6 +235,10 @@ void Playlist::removeWithFiles(const std::set<unsigned int>& ids)
 				LOG("Failed to delete %s", entry.fileName.c_str());
 				newEntries.push_back(entry);
 			}
+			else
+			{
+            	LOG("Deleted %s", entry.fileName.c_str());
+			}
 		}
 	}
 

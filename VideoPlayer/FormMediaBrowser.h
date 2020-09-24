@@ -58,6 +58,7 @@ public:		// User declarations
 	CallbackStartPlaying callbackStartPlaying;
 	void SavePlaylists(void);
 	int PlayNextFile(void);
+	void DeleteFile(AnsiString filename);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfrmMediaBrowser *frmMediaBrowser;

@@ -94,6 +94,7 @@ object frmPlaylist: TfrmPlaylist
     end
     object miDeleteFiles: TMenuItem
       Caption = 'Delete file(s)'
+      ShortCut = 16452
       OnClick = miDeleteFilesClick
     end
     object N1: TMenuItem

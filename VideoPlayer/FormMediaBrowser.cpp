@@ -350,9 +350,19 @@ int TfrmMediaBrowser::PlayNextFile(void)
 	TfrmPlaylist *frm = getPlaylist(pcSource->ActivePageIndex);
 	if (frm)
 	{
-    	return frm->playNextFile();
+		return frm->playNextFile();
 	}
 	return -1;
 }
+
+void TfrmMediaBrowser::DeleteFile(AnsiString filename)
+{
+	TfrmPlaylist *frm = getPlaylist(pcSource->ActivePageIndex);
+	if (frm)
+	{
+		frm->deleteFile(filename);
+	}
+}
+
 
 

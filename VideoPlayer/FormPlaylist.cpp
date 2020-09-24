@@ -320,6 +320,20 @@ void __fastcall TfrmPlaylist::miDeleteFilesClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void TfrmPlaylist::deleteFile(AnsiString filename)
+{
+	std::set<unsigned int> ids;
+	const std::vector<PlaylistEntry>& entries = playlist.getEntries();
+	for (unsigned int i=0; i<entries.size(); i++)
+	{
+		if (entries[i].fileName == filename)
+			ids.insert(i);
+	}
+	playlist.removeWithFiles(ids);
+	update();
+	//lvPlaylist->ClearSelection();
+}
+
 void __fastcall TfrmPlaylist::lvPlaylistColumnClick(TObject *Sender,
       TListColumn *Column)
 {

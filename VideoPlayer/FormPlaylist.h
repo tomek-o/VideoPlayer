@@ -67,6 +67,7 @@ public:		// User declarations
     	return fileName;
 	}
 	int renamePlaylistFile(AnsiString newName);
+	void deleteFile(AnsiString filename);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfrmPlaylist *frmPlaylist;

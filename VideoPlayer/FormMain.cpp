@@ -315,7 +315,23 @@ void __fastcall TfrmMain::FormKeyDown(TObject *Sender, WORD &Key,
 			case 'o':
 			case 'O':
 				ToggleOsd();
-				//mplayer
+				break;
+			case 'd':
+			case 'D': {
+				AnsiString filename = mplayer.getFilename();
+				AnsiString msg;
+					msg.sprintf("Delete %s?", filename.c_str());
+
+				if (MessageBox(this->Handle, msg.c_str(),
+					Application->Title.c_str(), MB_YESNO | MB_DEFBUTTON2 | MB_ICONEXCLAMATION) != IDYES)
+				{
+					return;
+				}
+				Skip();
+				frmMediaBrowser->DeleteFile(filename);
+				break;
+			}
+			default:
 				break;
 		}
 	}
