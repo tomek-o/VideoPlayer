@@ -328,6 +328,7 @@ void __fastcall TfrmMain::FormKeyDown(TObject *Sender, WORD &Key,
 					return;
 				}
 				Skip();
+				Sleep(1500);	/** \todo Wait properly until mplayer quits and releases file */
 				frmMediaBrowser->DeleteFile(filename);
 				break;
 			}
