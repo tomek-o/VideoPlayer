@@ -335,6 +335,19 @@ void __fastcall TfrmMain::FormKeyDown(TObject *Sender, WORD &Key,
 				}
 				break;
 			}
+			case 'p':
+			case 'P': {
+				double position = mplayer.getFilePosition();
+				if (position < 10.0)
+				{
+					Prev();
+				}
+				else
+				{
+					mplayer.seekAbsolute(0.0);
+				}
+				break;
+			}
 			default:
 				break;
 		}
@@ -596,7 +609,7 @@ void TfrmMain::Skip(void)
 {
 	if (state != PLAY && state != PAUSE)
 	{
-    	return;
+		return;
 	}
 	mplayer.stop(false);
 	state = STOP;	// forcing PAUSE -> STOP transition
@@ -608,7 +621,26 @@ void TfrmMain::Skip(void)
 			ToggleFullscreen();
 		}
 		SetState(STOP);
-	}	
+	}
+}
+
+void TfrmMain::Prev(void)
+{
+	if (state != PLAY && state != PAUSE)
+	{
+		return;
+	}
+	mplayer.stop(false);
+	state = STOP;	// forcing PAUSE -> STOP transition
+	int status = frmMediaBrowser->PlayPrevFile();
+	if (status != 0)
+	{
+		if (appSettings.frmMain.bExitFullScreenOnStop && (WindowState == wsMaximized))
+		{
+			ToggleFullscreen();
+		}
+		SetState(STOP);
+	}
 }
 
 void TfrmMain::SetState(enum STATE state)

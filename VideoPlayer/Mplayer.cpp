@@ -180,11 +180,11 @@ int MPlayer::seekRelative(int seconds)
 	{
 		if (seconds > 0)
 		{
-            // seeking at time higher than file length => stop/go to next file
+			// seeking at time higher than file length => stop/go to next file
 			if (filePosition + seconds >= fileLength - 2)
 			{
 				stop();
-				return 0;				
+				return 0;
 			}
 		}
 	}
@@ -201,6 +201,23 @@ int MPlayer::seekRelative(int seconds)
 				filePosition = fileLength;
 		}
 	}
+	return sendCommand(msg);
+}
+
+int MPlayer::seekAbsolute(double seconds)
+{
+	if ((hMPlayer == NULL) || (hPipeWrite == NULL))
+		return -1;
+	if (fileLengthValid)
+	{
+		if (seconds > fileLength)
+		{
+			return -1;
+		}
+	}
+	AnsiString msg;
+	msg.sprintf("seek %f 2", seconds);
+	filePosition = seconds;
 	return sendCommand(msg);
 }
 

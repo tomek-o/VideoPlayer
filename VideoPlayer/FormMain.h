@@ -77,6 +77,7 @@ private:	// User declarations
 	void Play(void);
 	void Pause(void);
 	void Skip(void);
+	void Prev(void);
 	void ToggleFullscreen(void);
 	void ToggleOsd(void);
 	void OpenFiles(std::vector<AnsiString> filenames);

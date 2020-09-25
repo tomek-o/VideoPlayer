@@ -63,6 +63,7 @@ public:		// User declarations
 	void setFiles(const std::vector<AnsiString>& filenames);
 	CallbackStartPlaying callbackStartPlaying;
 	int playNextFile(void);
+	int playPrevFile(void);
 	AnsiString getFileName(void) const {
     	return fileName;
 	}

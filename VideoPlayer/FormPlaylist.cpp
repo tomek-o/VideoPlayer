@@ -245,6 +245,24 @@ int TfrmPlaylist::playNextFile(void)
 	return -3;
 }
 
+int TfrmPlaylist::playPrevFile(void)
+{
+	TListItem *item = lvPlaylist->Selected;
+	if (item == NULL)
+		return -2;
+	int id = item->Index;
+	if (id > 0)
+	{
+		item->Selected = false;
+		id--;
+		TListItem *nextItem = lvPlaylist->Items->Item[id];
+		nextItem->Selected = true;
+		play();
+		return 0;
+	}
+	return -3;
+}
+
 int TfrmPlaylist::renamePlaylistFile(AnsiString newName)
 {
 	if (RenameFile(fileName, newName) == false)

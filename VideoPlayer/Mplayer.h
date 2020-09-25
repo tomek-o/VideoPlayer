@@ -65,6 +65,7 @@ public:
 	int frame_step(void);
 	int pause(void);
 	int seekRelative(int seconds);
+	int seekAbsolute(double pos);
 	int toggleOsd(void);
 	int setOsdLevel(int level);
 	int changeVolume(int delta);
@@ -93,6 +94,13 @@ public:
 			audioBitrate(0)
 		{}
 	} mediaInfo;
+
+	double getFilePosition(void) const {
+		if (filePositionValid == false)
+			return -1;
+		return filePosition;
+	}
+
 private:
 	Cfg cfg;
 };
