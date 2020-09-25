@@ -318,18 +318,21 @@ void __fastcall TfrmMain::FormKeyDown(TObject *Sender, WORD &Key,
 				break;
 			case 'd':
 			case 'D': {
-				AnsiString filename = mplayer.getFilename();
-				AnsiString msg;
-					msg.sprintf("Delete %s?", filename.c_str());
-
-				if (MessageBox(this->Handle, msg.c_str(),
-					Application->Title.c_str(), MB_YESNO | MB_DEFBUTTON2 | MB_ICONEXCLAMATION) != IDYES)
+				if (Shift.Contains(ssCtrl))
 				{
-					return;
+					AnsiString filename = mplayer.getFilename();
+					AnsiString msg;
+						msg.sprintf("Delete %s?", filename.c_str());
+
+					if (MessageBox(this->Handle, msg.c_str(),
+						Application->Title.c_str(), MB_YESNO | MB_DEFBUTTON2 | MB_ICONEXCLAMATION) != IDYES)
+					{
+						return;
+					}
+					Skip();
+					Sleep(1500);	/** \todo Wait properly until mplayer quits and releases file */
+					frmMediaBrowser->DeleteFile(filename);
 				}
-				Skip();
-				Sleep(1500);	/** \todo Wait properly until mplayer quits and releases file */
-				frmMediaBrowser->DeleteFile(filename);
 				break;
 			}
 			default:
