@@ -100,6 +100,7 @@ int Playlist::loadFromFile(AnsiString fileName)
 			jv.getAString("fileName", entry.fileName);
 			entry.size = jv.get("size", entry.size).asUInt64();
 			jv.getAString("timeStamp", entry.timeStamp);
+			jv.getBool("mark", entry.mark);
 			if (entry.isValid())
 			{
             	entries.push_back(entry);
@@ -144,6 +145,7 @@ int Playlist::saveToFile(AnsiString fileName)
 		jEntry["fileName"] = entry.fileName;
 		jEntry["size"] = entry.size;
 		jEntry["timeStamp"] = entry.timeStamp;
+		jEntry["mark"] = entry.mark;
 	}
 
 	jPlaylist["position"] = position;
@@ -361,6 +363,17 @@ bool compareTimeStampDesc(const PlaylistEntry& e1, const PlaylistEntry& e2)
 	return UpperCase(e1.timeStamp).AnsiCompare(UpperCase(e2.timeStamp)) < 0;
 }
 
+bool compareMarkAsc(const PlaylistEntry& e1, const PlaylistEntry& e2)
+{
+	return e1.mark > e2.mark;
+}
+
+bool compareMarkDesc(const PlaylistEntry& e1, const PlaylistEntry& e2)
+{
+	return e1.mark < e2.mark;
+}
+
+
 }
 
 int Playlist::sort(enum SortType type, bool ascending)
@@ -390,12 +403,59 @@ int Playlist::sort(enum SortType type, bool ascending)
 		else
 			std::stable_sort(entries.begin(), entries.end(), compareTimeStampDesc);
 		break;
+	case SortByMark:
+		if (ascending)
+			std::stable_sort(entries.begin(), entries.end(), compareMarkAsc);
+		else
+			std::stable_sort(entries.begin(), entries.end(), compareMarkDesc);
+		break;
 	default:
 		return -1;
 	}
 	filter(filterText);
 	modified = true;
 	return 0;
+}
+
+void Playlist::markSet(unsigned int id)
+{
+	PlaylistEntry& entry = entries[id];
+	entry.mark = true;
+	filter(filterText);
+	modified = true;
+}
+
+void Playlist::markClear(unsigned int id)
+{
+	PlaylistEntry& entry = entries[id];
+	entry.mark = false;
+	filter(filterText);	
+	modified = true;
+}
+
+void Playlist::markDuplicatesBySize(void)
+{
+	std::map<uint64_t, unsigned int> sizes;
+	for (unsigned int i=0; i<entries.size(); i++)
+	{
+		PlaylistEntry& entry = entries[i];
+		std::map<uint64_t, unsigned int>::iterator iter = sizes.find(entry.size);
+		if (iter != sizes.end())
+		{
+			entry.mark = true;
+			PlaylistEntry& prevEntry = entries[iter->second];
+			prevEntry.mark = true;
+			modified = true;
+		}
+		else
+		{
+			sizes[entry.size] = i;
+		}
+	}
+	if (modified)
+	{
+		filter(filterText);
+	}
 }
 
 

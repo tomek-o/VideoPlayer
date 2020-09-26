@@ -27,6 +27,7 @@ int TfrmPlaylist::loadFromFile(AnsiString fileName)
 	if (position >= 0 && position < count)
 	{
 		lvPlaylist->Items->Item[position]->Selected = true;
+		//lvPlaylist->Selected->MakeVisible(true);
 		lvPlaylist->Selected->MakeVisible(false);
 	}
 	return rc;
@@ -100,7 +101,15 @@ void __fastcall TfrmPlaylist::lvPlaylistData(TObject *Sender, TListItem *Item)
 	const std::vector<FilteredPlaylistEntry>& entries = playlist.getFilteredEntries();
 	const FilteredPlaylistEntry &entry = entries[id];
 
-	Item->Caption = ExtractFileName(entry.entry.fileName);
+	if (entry.entry.mark)
+	{
+		Item->ImageIndex = 2;
+	}
+	else
+	{
+		Item->ImageIndex = -1;
+	}
+	Item->SubItems->Add(ExtractFileName(entry.entry.fileName));
 	AnsiString asSize;
 	asSize.sprintf("%.1f MB", static_cast<double>(entry.entry.size) / (1024*1024));
 	Item->SubItems->Add(asSize);
@@ -379,12 +388,15 @@ void __fastcall TfrmPlaylist::lvPlaylistColumnClick(TObject *Sender,
 	switch (Column->Index)
 	{
 	case 0:
-		sortType = Playlist::SortByFileName;
+		sortType = Playlist::SortByMark;
 		break;
 	case 1:
-		sortType = Playlist::SortBySize;
+		sortType = Playlist::SortByFileName;
 		break;
 	case 2:
+		sortType = Playlist::SortBySize;
+		break;
+	case 3:
 		sortType = Playlist::SortByTimeStamp;
 		break;
 	default:
@@ -417,6 +429,45 @@ void __fastcall TfrmPlaylist::miRemoveMissingFromListClick(TObject *Sender)
 {
 	playlist.removeMissingFiles();
 	update();	
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmPlaylist::miMarkSetClick(TObject *Sender)
+{
+	if (!lvPlaylist->Selected)
+		return;
+	const std::vector<FilteredPlaylistEntry>& entries = playlist.getFilteredEntries();
+	for (int i=0; i<lvPlaylist->Items->Count; i++)
+	{
+		if (lvPlaylist->Items->Item[i]->Selected)
+		{
+			playlist.markSet(entries[i].id);
+		}
+	}
+	update();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmPlaylist::miMarkRemoveClick(TObject *Sender)
+{
+	if (!lvPlaylist->Selected)
+		return;
+	const std::vector<FilteredPlaylistEntry>& entries = playlist.getFilteredEntries();
+	for (int i=0; i<lvPlaylist->Items->Count; i++)
+	{
+		if (lvPlaylist->Items->Item[i]->Selected)
+		{
+			playlist.markClear(entries[i].id);
+		}
+	}
+	update();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmPlaylist::miMarkDuplicatesBySizeClick(TObject *Sender)
+{
+	playlist.markDuplicatesBySize();
+	update();
 }
 //---------------------------------------------------------------------------
 

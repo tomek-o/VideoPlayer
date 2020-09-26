@@ -35,6 +35,11 @@ __published:	// IDE-managed Components
 	TMenuItem *N2;
 	TMenuItem *miRemoveDuplicates;
 	TMenuItem *miRemoveMissingFromList;
+	TMenuItem *miMark;
+	TMenuItem *N3;
+	TMenuItem *miMarkSet;
+	TMenuItem *miMarkRemove;
+	TMenuItem *miMarkDuplicatesBySize;
 	void __fastcall miAddFilesClick(TObject *Sender);
 	void __fastcall lvPlaylistData(TObject *Sender, TListItem *Item);
 	void __fastcall lvPlaylistKeyDown(TObject *Sender, WORD &Key,
@@ -48,6 +53,9 @@ __published:	// IDE-managed Components
 	void __fastcall miShufflePlaylistClick(TObject *Sender);
 	void __fastcall miRemoveDuplicatesClick(TObject *Sender);
 	void __fastcall miRemoveMissingFromListClick(TObject *Sender);
+	void __fastcall miMarkSetClick(TObject *Sender);
+	void __fastcall miMarkRemoveClick(TObject *Sender);
+	void __fastcall miMarkDuplicatesBySizeClick(TObject *Sender);
 private:	// User declarations
 	AnsiString fileName;
 	Playlist playlist;

@@ -54,12 +54,16 @@ public:
 	void filter(AnsiString text);
 	void removeDuplicates(void);
 	void removeMissingFiles(void);
+	void markSet(unsigned int id);
+	void markClear(unsigned int id);
+	void markDuplicatesBySize(void);
 
 	enum SortType {
 		SortRandom = 0,
 		SortByFileName,
 		SortBySize,
 		SortByTimeStamp,
+		SortByMark,
 
 		SortTypeLimiter
 	};
