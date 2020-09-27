@@ -60,6 +60,7 @@ public:		// User declarations
 	int PlayNextFile(void);
 	int PlayPrevFile(void);
 	void DeleteFile(AnsiString filename);
+	void SetFileLength(double length);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfrmMediaBrowser *frmMediaBrowser;

@@ -4,7 +4,7 @@ object frmPlaylist: TfrmPlaylist
   Align = alClient
   BorderStyle = bsNone
   ClientHeight = 345
-  ClientWidth = 513
+  ClientWidth = 559
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -17,7 +17,7 @@ object frmPlaylist: TfrmPlaylist
   object lvPlaylist: TListView
     Left = 0
     Top = 0
-    Width = 513
+    Width = 559
     Height = 317
     Align = alClient
     Columns = <
@@ -26,12 +26,15 @@ object frmPlaylist: TfrmPlaylist
       end
       item
         Caption = 'File'
-        Width = 300
+        Width = 280
       end
       item
         Alignment = taRightJustify
         Caption = 'Size'
         Width = 60
+      end
+      item
+        Caption = 'Length'
       end
       item
         Caption = 'Timestamp'
@@ -50,15 +53,17 @@ object frmPlaylist: TfrmPlaylist
     OnData = lvPlaylistData
     OnDblClick = lvPlaylistDblClick
     OnKeyDown = lvPlaylistKeyDown
+    ExplicitWidth = 513
   end
   object pnlBottom: TPanel
     Left = 0
     Top = 317
-    Width = 513
+    Width = 559
     Height = 28
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitWidth = 513
     object lblFilter: TLabel
       Left = 8
       Top = 6

@@ -57,6 +57,7 @@ public:
 	void markSet(unsigned int id);
 	void markClear(unsigned int id);
 	void markDuplicatesBySize(void);
+	void setLength(unsigned int id, double length);
 
 	enum SortType {
 		SortRandom = 0,
@@ -64,6 +65,7 @@ public:
 		SortBySize,
 		SortByTimeStamp,
 		SortByMark,
+		SortByLength,
 
 		SortTypeLimiter
 	};

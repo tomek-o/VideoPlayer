@@ -101,6 +101,7 @@ int Playlist::loadFromFile(AnsiString fileName)
 			entry.size = jv.get("size", entry.size).asUInt64();
 			jv.getAString("timeStamp", entry.timeStamp);
 			jv.getBool("mark", entry.mark);
+			jv.getDouble("length", entry.length);
 			if (entry.isValid())
 			{
             	entries.push_back(entry);
@@ -146,6 +147,7 @@ int Playlist::saveToFile(AnsiString fileName)
 		jEntry["size"] = entry.size;
 		jEntry["timeStamp"] = entry.timeStamp;
 		jEntry["mark"] = entry.mark;
+		jEntry["length"] = entry.length;
 	}
 
 	jPlaylist["position"] = position;
@@ -373,6 +375,16 @@ bool compareMarkDesc(const PlaylistEntry& e1, const PlaylistEntry& e2)
 	return e1.mark < e2.mark;
 }
 
+bool compareLengthAsc(const PlaylistEntry& e1, const PlaylistEntry& e2)
+{
+	return e1.length > e2.length;
+}
+
+bool compareLengthDesc(const PlaylistEntry& e1, const PlaylistEntry& e2)
+{
+	return e1.length < e2.length;
+}
+
 
 }
 
@@ -408,6 +420,12 @@ int Playlist::sort(enum SortType type, bool ascending)
 			std::stable_sort(entries.begin(), entries.end(), compareMarkAsc);
 		else
 			std::stable_sort(entries.begin(), entries.end(), compareMarkDesc);
+		break;
+	case SortByLength:
+		if (ascending)
+			std::stable_sort(entries.begin(), entries.end(), compareLengthAsc);
+		else
+			std::stable_sort(entries.begin(), entries.end(), compareLengthDesc);
 		break;
 	default:
 		return -1;
@@ -455,6 +473,17 @@ void Playlist::markDuplicatesBySize(void)
 	if (modified)
 	{
 		filter(filterText);
+	}
+}
+
+void Playlist::setLength(unsigned int id, double length)
+{
+	PlaylistEntry& entry = entries[id];
+	if (entry.length != length)
+	{
+		entry.length = length;
+		filter(filterText);
+		modified = true;
 	}
 }
 

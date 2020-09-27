@@ -13,9 +13,11 @@ struct PlaylistEntry
 	uint64_t size;
 	AnsiString timeStamp;
 	bool mark;
+	double length;			// value < 0 if not checked; value = 0 if not recognized by mplayer
 	PlaylistEntry(void):
 		size(0),
-		mark(false)
+		mark(false),
+		length(-1.0)
 	{}
 	bool isValid(void) const;
 };

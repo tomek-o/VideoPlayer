@@ -101,6 +101,12 @@ public:
 		return filePosition;
 	}
 
+	double getFileLength(void) const {
+		if (fileLengthValid == false)
+			return -1;
+		return fileLength;
+	}
+
 private:
 	Cfg cfg;
 };

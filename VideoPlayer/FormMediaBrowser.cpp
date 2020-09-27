@@ -374,5 +374,14 @@ void TfrmMediaBrowser::DeleteFile(AnsiString filename)
 	}
 }
 
+void TfrmMediaBrowser::SetFileLength(double length)
+{
+	TfrmPlaylist *frm = getPlaylist(pcSource->ActivePageIndex);
+	if (frm)
+	{
+		frm->setFileLength(length);
+	}
+}
+
 
 

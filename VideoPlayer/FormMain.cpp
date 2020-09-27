@@ -55,6 +55,7 @@ void __fastcall TfrmMain::FormCreate(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TfrmMain::FormCloseQuery(TObject *Sender, bool &CanClose)
 {
+	UpdateFileLength();
 	mplayer.stop(false);
 	SetState(STOP);
 	WriteSettings();
@@ -275,6 +276,7 @@ void __fastcall TfrmMain::FormKeyDown(TObject *Sender, WORD &Key,
 		switch(Key)
 		{
 			case VK_RETURN:
+				UpdateFileLength();
 				mplayer.stop(false);
 				SetState(STOP);
 				break;
@@ -464,6 +466,7 @@ void TfrmMain::Play(void)
 
 void __fastcall TfrmMain::btnStopClick(TObject *Sender)
 {
+	UpdateFileLength();
 	mplayer.stop(false);
 	SetState(STOP);
 }
@@ -572,6 +575,7 @@ void __fastcall TfrmMain::WMDropFiles(TWMDropFiles &message)
 void TfrmMain::OpenFiles(std::vector<AnsiString> filenames)
 {
 	frmMediaBrowser->SetFiles(filenames, true);
+	UpdateFileLength();
 	mplayer.stop(false);
 	SetState(STOP);
 	Play();
@@ -611,6 +615,7 @@ void TfrmMain::Skip(void)
 	{
 		return;
 	}
+	UpdateFileLength();
 	mplayer.stop(false);
 	state = STOP;	// forcing PAUSE -> STOP transition
 	int status = frmMediaBrowser->PlayNextFile();
@@ -630,6 +635,7 @@ void TfrmMain::Prev(void)
 	{
 		return;
 	}
+	UpdateFileLength();
 	mplayer.stop(false);
 	state = STOP;	// forcing PAUSE -> STOP transition
 	int status = frmMediaBrowser->PlayPrevFile();
@@ -689,4 +695,13 @@ void __fastcall TfrmMain::tmrGetFilePosTimer(TObject *Sender)
 	}
 }
 //---------------------------------------------------------------------------
+
+void TfrmMain::UpdateFileLength(void)
+{
+	double length = mplayer.getFileLength();
+	if (length >= 0)
+	{
+    	frmMediaBrowser->SetFileLength(length);
+	}
+}
 

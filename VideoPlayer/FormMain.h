@@ -84,6 +84,7 @@ private:	// User declarations
 	void WriteSettings(void);
 	void __fastcall WMDropFiles(TWMDropFiles &message);
 	int mouseMoveLastX, mouseMoveLastY;	// MouseMove is called 2x per second even if mouse is not moving - ?
+	void UpdateFileLength(void);
 protected:
 	void __fastcall CreateParams(TCreateParams   &Params);
 public:		// User declarations

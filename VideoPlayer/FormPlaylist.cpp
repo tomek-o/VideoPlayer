@@ -113,6 +113,26 @@ void __fastcall TfrmPlaylist::lvPlaylistData(TObject *Sender, TListItem *Item)
 	AnsiString asSize;
 	asSize.sprintf("%.1f MB", static_cast<double>(entry.entry.size) / (1024*1024));
 	Item->SubItems->Add(asSize);
+	if (entry.entry.length < 0)
+	{
+		Item->SubItems->Add("");
+	}
+	else if (entry.entry.length > 0.1)
+	{
+		double length = entry.entry.length;
+		int hours = static_cast<int>(length / 3600);
+		length -= hours * 3600;
+		int minutes = static_cast<int>(length / 60);
+		length -= minutes * 60;
+		int seconds = static_cast<int>(length);
+		AnsiString text;
+		text.sprintf("%d:%02d:%02d", hours, minutes, seconds);
+		Item->SubItems->Add(text);
+	}
+	else
+	{
+		Item->SubItems->Add("?");
+	}
 	Item->SubItems->Add(entry.entry.timeStamp);
 }
 //---------------------------------------------------------------------------
@@ -397,6 +417,9 @@ void __fastcall TfrmPlaylist::lvPlaylistColumnClick(TObject *Sender,
 		sortType = Playlist::SortBySize;
 		break;
 	case 3:
+		sortType = Playlist::SortByLength;
+		break;
+	case 4:
 		sortType = Playlist::SortByTimeStamp;
 		break;
 	default:
@@ -470,4 +493,16 @@ void __fastcall TfrmPlaylist::miMarkDuplicatesBySizeClick(TObject *Sender)
 	update();
 }
 //---------------------------------------------------------------------------
+
+void TfrmPlaylist::setFileLength(double length)
+{
+	TListItem *item = lvPlaylist->Selected;
+	if (item == NULL)
+		return;
+	int id = item->Index;
+	const std::vector<FilteredPlaylistEntry>& entries = playlist.getFilteredEntries();
+	const FilteredPlaylistEntry &entry = entries[id];
+    playlist.setLength(entry.id, length);
+	update();
+}
 
