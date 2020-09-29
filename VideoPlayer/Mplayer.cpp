@@ -318,7 +318,14 @@ void MPlayer::OnConsoleLineReceived(AnsiString line)
 	{
 		if (sscanf(line.c_str(), "ID_LENGTH=%lf", &fileLength) == 1)
 		{
-			fileLengthValid = true;
+			if (fileLength > 0.000001)
+			{
+				fileLengthValid = true;
+			}
+			else
+			{
+            	fileLengthValid = false;
+			}
 		}
 		else
 		{
