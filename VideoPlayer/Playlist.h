@@ -22,6 +22,8 @@ class Playlist
 {
 private:
 	int position;
+	AnsiString fileWithPosition;
+	double filePosition;	// position inside file in seconds
 	bool modified;
 	std::vector<PlaylistEntry> entries;
 	std::vector<FilteredPlaylistEntry> filteredEntries;
@@ -40,6 +42,8 @@ public:
 		return position;
 	}
 	void setPosition(int position);
+	double getFilePos(AnsiString file) const;
+	void setFilePos(unsigned int id, double position);	
 	AnsiString getFilterText(void) const {
     	return filterText;
 	}
@@ -58,6 +62,7 @@ public:
 	void markClear(unsigned int id);
 	void markDuplicatesBySize(void);
 	void setLength(unsigned int id, double length);
+
 
 	enum SortType {
 		SortRandom = 0,

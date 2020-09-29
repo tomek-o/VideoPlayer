@@ -58,6 +58,7 @@ int getFileDetails(char* fileName, uint64_t& usize, AnsiString& timeStamp) {
 
 Playlist::Playlist(void):
 	position(-1),
+	filePosition(-1),
 	modified(false)
 {
 
@@ -119,6 +120,7 @@ int Playlist::loadFromFile(AnsiString fileName)
 		position = -1;
 		if (!filteredEntries.empty())
 			position = 0;
+		jPlaylist.getDouble("filePosition", filePosition);
 	}
 
 	return 0;
@@ -151,6 +153,7 @@ int Playlist::saveToFile(AnsiString fileName)
 	}
 
 	jPlaylist["position"] = position;
+	jPlaylist["filePosition"] = filePosition;
 	jPlaylist["filterText"] = filterText;
 
 	std::string outputConfig = writer.write( root );
@@ -175,6 +178,24 @@ void Playlist::setPosition(int position) {
 		this->position = position;
 		modified = true;
 	}
+}
+
+double Playlist::getFilePos(AnsiString file) const {
+	if (file == fileWithPosition)
+	{
+		return filePosition;
+	}
+	else
+	{
+    	return 0.0;
+	}
+}
+
+void Playlist::setFilePos(unsigned int id, double position)
+{
+	fileWithPosition = entries[id].fileName;
+	filePosition = position;
+	modified = true;
 }
 
 void Playlist::add(const std::vector<AnsiString>& fileNames)
@@ -486,6 +507,9 @@ void Playlist::setLength(unsigned int id, double length)
 		modified = true;
 	}
 }
+
+
+
 
 
 

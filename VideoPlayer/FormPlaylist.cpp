@@ -506,3 +506,17 @@ void TfrmPlaylist::setFileLength(double length)
 	update();
 }
 
+void TfrmPlaylist::setFilePosition(double position)
+{
+	TListItem *item = lvPlaylist->Selected;
+	if (item == NULL)
+		return;
+	int id = item->Index;
+	const std::vector<FilteredPlaylistEntry>& entries = playlist.getFilteredEntries();
+	const FilteredPlaylistEntry &entry = entries[id];
+	playlist.setFilePos(entry.id, position);
+}
+
+double TfrmPlaylist::getFilePosition(AnsiString file) const {
+	return playlist.getFilePos(file);
+}

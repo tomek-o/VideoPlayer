@@ -383,5 +383,25 @@ void TfrmMediaBrowser::SetFileLength(double length)
 	}
 }
 
+void TfrmMediaBrowser::SetFilePos(double position)
+{
+	TfrmPlaylist *frm = getPlaylist(pcSource->ActivePageIndex);
+	if (frm)
+	{
+		frm->setFilePosition(position);
+	}
+}
+
+double TfrmMediaBrowser::GetFilePos(AnsiString file)
+{
+	TfrmPlaylist *frm = getPlaylist(pcSource->ActivePageIndex);
+	if (frm)
+	{
+		return frm->getFilePosition(file);
+	}
+	return 0.0;
+}
+
+
 
 

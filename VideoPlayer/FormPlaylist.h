@@ -78,6 +78,8 @@ public:		// User declarations
 	int renamePlaylistFile(AnsiString newName);
 	void deleteFile(AnsiString filename);
 	void setFileLength(double length);
+	void setFilePosition(double position);
+	double getFilePosition(AnsiString file) const;
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfrmPlaylist *frmPlaylist;

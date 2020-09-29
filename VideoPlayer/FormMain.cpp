@@ -56,6 +56,10 @@ void __fastcall TfrmMain::FormCreate(TObject *Sender)
 void __fastcall TfrmMain::FormCloseQuery(TObject *Sender, bool &CanClose)
 {
 	UpdateFileLength();
+	if (state == PLAY || state == PAUSE)
+	{
+		UpdateFilePos();
+	}
 	mplayer.stop(false);
 	SetState(STOP);
 	WriteSettings();
@@ -277,6 +281,7 @@ void __fastcall TfrmMain::FormKeyDown(TObject *Sender, WORD &Key,
 		{
 			case VK_RETURN:
 				UpdateFileLength();
+				UpdateFilePos();
 				mplayer.stop(false);
 				SetState(STOP);
 				break;
@@ -436,9 +441,11 @@ void TfrmMain::CallbackMediaInfoUpdateFn(void)
 
 void TfrmMain::Play(void)
 {
+	enum STATE prevState = state;
 	if (state == STOP || state == PLAY /* playing next file immediately from Stop callbak */)
 	{
 		AnsiString file = frmMediaBrowser->GetFileToPlay();
+		double filePosition = frmMediaBrowser->GetFilePos(file);
 		if (file != "")
 		{
 			SetState(PLAY);
@@ -449,6 +456,13 @@ void TfrmMain::Play(void)
 				AnsiString text;
 				text.sprintf("File: %s", ExtractFileName(file).c_str());
 				mplayer.osdShowText(text, 2000);
+			}
+			if (prevState == STOP)
+			{
+				if (filePosition > 1.0)
+				{
+					mplayer.seekAbsolute(filePosition);
+				}
 			}
 		}
 		else
@@ -467,6 +481,14 @@ void TfrmMain::Play(void)
 void __fastcall TfrmMain::btnStopClick(TObject *Sender)
 {
 	UpdateFileLength();
+	if (state == PLAY || state == PAUSE)
+	{
+		UpdateFilePos();
+	}
+	else if (state == STOP)
+	{
+    	frmMediaBrowser->SetFilePos(0.0);
+	}
 	mplayer.stop(false);
 	SetState(STOP);
 }
@@ -576,6 +598,7 @@ void TfrmMain::OpenFiles(std::vector<AnsiString> filenames)
 {
 	frmMediaBrowser->SetFiles(filenames, true);
 	UpdateFileLength();
+	frmMediaBrowser->SetFilePos(0.0);	
 	mplayer.stop(false);
 	SetState(STOP);
 	Play();
@@ -705,3 +728,11 @@ void TfrmMain::UpdateFileLength(void)
 	}
 }
 
+void TfrmMain::UpdateFilePos(void)
+{
+	double position = mplayer.getFilePosition();
+	if (position >= 0)
+	{
+		frmMediaBrowser->SetFilePos(position);
+	}
+}
