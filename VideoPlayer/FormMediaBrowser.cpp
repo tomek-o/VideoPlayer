@@ -69,8 +69,8 @@ void TfrmMediaBrowser::CreatePlaylistTab(AnsiString fileName)
 
 	TfrmPlaylist *frmPlaylist = new TfrmPlaylist(ts, fileName);
 
-	frmPlaylist->Visible = true;
 	frmPlaylist->Parent = ts;
+	frmPlaylist->Visible = true;
 	frmPlaylist->callbackStartPlaying = Play;
 }
 
@@ -141,7 +141,7 @@ void TfrmMediaBrowser::LoadPlaylists(void)
 		}
 	}
 
-	pcSource->ActivePage = pcSource->Pages[playlistId];	
+	pcSource->ActivePage = pcSource->Pages[playlistId];
 
 	pcSourceChange(NULL);
 }
@@ -434,6 +434,8 @@ double TfrmMediaBrowser::GetFilePos(AnsiString file)
 
 void __fastcall TfrmMediaBrowser::pcSourceChange(TObject *Sender)
 {
+	if (pcSource->PageCount == 0)
+		return;
 	TfrmPlaylist *frm = getPlaylist(pcSource->ActivePageIndex);
 	if (frm)
 	{

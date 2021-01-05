@@ -103,19 +103,20 @@ void __fastcall TfrmMain::FormShow(TObject *Sender)
 		CLog::Instance()->SetLevel(E_LOG_TRACE);
 		CLog::Instance()->callbackLog = frmLog->OnLog;
 
-		frmMediaBrowser = new TfrmMediaBrowser(this);
-		frmMediaBrowser->Parent = this;
-		frmMediaBrowser->callbackStartPlaying = CallbackStartPlayingFn;
+		ApplySettings();
 
 		mplayer.callbackStopPlaying = CallbackStopPlayingFn;
 		mplayer.callbackMediaInfoUpdate = CallbackMediaInfoUpdateFn;
-		ApplySettings();
+
+		frmMediaBrowser = new TfrmMediaBrowser(this);
+		frmMediaBrowser->Parent = this;
+		frmMediaBrowser->callbackStartPlaying = CallbackStartPlayingFn;
 
 		ShowMediaBrowser(true);
 
 		if (ParamCount() == 1)
 		{
-            // switch to default playlist if adding files from command line
+			// switch to default playlist if adding files from command line
 			appSettings.mediaBrowser.asLastPlaylist = "";
 		}
 
@@ -745,3 +746,4 @@ void TfrmMain::UpdateFilePos(void)
 		frmMediaBrowser->SetFilePos(position);
 	}
 }
+
