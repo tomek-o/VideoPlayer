@@ -93,7 +93,7 @@ int Playlist::loadFromFile(AnsiString fileName)
 	entries.clear();
 	if (jEntries.type() == Json::arrayValue)
 	{
-        LOG("    %u entries", jEntries.size());
+		LOG("    %u entries", jEntries.size());
 		for (unsigned int i=0; i<jEntries.size(); i++)
 		{
 			const Json::Value& jv = jEntries[i];
@@ -105,7 +105,7 @@ int Playlist::loadFromFile(AnsiString fileName)
 			jv.getDouble("length", entry.length);
 			if (entry.isValid())
 			{
-            	entries.push_back(entry);
+				entries.push_back(entry);
 			}
 		}
 	}
@@ -120,7 +120,15 @@ int Playlist::loadFromFile(AnsiString fileName)
 		position = -1;
 		if (!filteredEntries.empty())
 			position = 0;
+	}
+	else
+	{
 		jPlaylist.getDouble("filePosition", filePosition);
+		if (filePosition >= 0)
+		{
+			fileWithPosition = entries[position].fileName;
+			LOG("    last file id = %d, last position: %f s", position, filePosition);
+		}
 	}
 
 	return 0;
