@@ -8,7 +8,6 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
-TfrmPlaylist *frmPlaylist;
 //---------------------------------------------------------------------------
 __fastcall TfrmPlaylist::TfrmPlaylist(TComponent* Owner, AnsiString fileName)
 	: TForm(Owner),

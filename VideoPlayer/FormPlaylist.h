@@ -83,6 +83,4 @@ public:		// User declarations
 	double getFilePosition(AnsiString file) const;
 };
 //---------------------------------------------------------------------------
-extern PACKAGE TfrmPlaylist *frmPlaylist;
-//---------------------------------------------------------------------------
 #endif

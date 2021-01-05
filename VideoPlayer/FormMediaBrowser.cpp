@@ -440,7 +440,7 @@ void __fastcall TfrmMediaBrowser::pcSourceChange(TObject *Sender)
 		int rc = frm->load();
 		if (rc != 0)
 		{
-			LOG("Error %d loading playlist from %s", rc, frmPlaylist->getFileName().c_str());
+			LOG("Error %d loading playlist from %s", rc, frm->getFileName().c_str());
 		}
 		appSettings.mediaBrowser.asLastPlaylist = ExtractFileName(frm->getFileName());
 	}
