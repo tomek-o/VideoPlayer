@@ -19,9 +19,9 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		Application->Initialize();
 		Application->Title = "Video Player";
 		Application->CreateForm(__classid(TfrmMain), &frmMain);
+		Application->CreateForm(__classid(TfrmLog), &frmLog);
 		Application->CreateForm(__classid(TfrmSettings), &frmSettings);
 		Application->CreateForm(__classid(TfrmAbout), &frmAbout);
-		Application->CreateForm(__classid(TfrmLog), &frmLog);
 		Application->Run();
 	}
 	catch (Exception &exception)
