@@ -4,21 +4,25 @@
 #pragma hdrstop
 
 #include "FormPlaylist.h"
+#include "Log.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 TfrmPlaylist *frmPlaylist;
 //---------------------------------------------------------------------------
-__fastcall TfrmPlaylist::TfrmPlaylist(TComponent* Owner)
+__fastcall TfrmPlaylist::TfrmPlaylist(TComponent* Owner, AnsiString fileName)
 	: TForm(Owner),
-	callbackStartPlaying(NULL)
+	callbackStartPlaying(NULL),
+	fileName(fileName),
+	fileLoaded(false)
 {
 }
 //---------------------------------------------------------------------------
 
-int TfrmPlaylist::loadFromFile(AnsiString fileName)
+int TfrmPlaylist::load(void)
 {
-	this->fileName = fileName;
+	if (fileLoaded)
+		return 0;
 	int rc = playlist.loadFromFile(this->fileName);
 	edFilter->Text = playlist.getFilterText();
 	update();
@@ -30,6 +34,7 @@ int TfrmPlaylist::loadFromFile(AnsiString fileName)
 		//lvPlaylist->Selected->MakeVisible(true);
 		lvPlaylist->Selected->MakeVisible(false);
 	}
+	fileLoaded = true;
 	return rc;
 }
 
@@ -91,6 +96,7 @@ void __fastcall TfrmPlaylist::miAddFilesClick(TObject *Sender)
 void TfrmPlaylist::update(void)
 {
 	const std::vector<FilteredPlaylistEntry>& entries = playlist.getFilteredEntries();
+	//LOG("%p update: %u filtered entries (%p)", this, entries.size(), &entries);
 	lvPlaylist->Items->Count = entries.size();
 	lvPlaylist->Invalidate(); 
 }
@@ -520,3 +526,4 @@ void TfrmPlaylist::setFilePosition(double position)
 double TfrmPlaylist::getFilePosition(AnsiString file) const {
 	return playlist.getFilePos(file);
 }
+

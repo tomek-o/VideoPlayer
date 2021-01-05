@@ -58,13 +58,14 @@ __published:	// IDE-managed Components
 	void __fastcall miMarkDuplicatesBySizeClick(TObject *Sender);
 private:	// User declarations
 	AnsiString fileName;
+	bool fileLoaded;
 	Playlist playlist;
 	void update(void);
 	typedef void (__closure *CallbackStartPlaying)(void);
 	void play(void);
 public:		// User declarations
-	__fastcall TfrmPlaylist(TComponent* Owner);
-	int loadFromFile(AnsiString fileName);
+	__fastcall TfrmPlaylist(TComponent* Owner, AnsiString fileName);
+	int load(void);
 	int saveToFile(AnsiString fileName = "");
 	int deletePlaylistFile(void);
 	AnsiString getFileToPlay(void);

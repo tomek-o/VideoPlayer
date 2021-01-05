@@ -62,7 +62,13 @@ public:
 			osdLevel(OSD_LEVEL_DEFAULT),
 			showFileNameOnPlayStart(false)
 		{}
-	} Mplayer;	
+	} Mplayer;
+	struct MediaBrowser
+	{
+        AnsiString asLastPlaylist;
+		MediaBrowser(void)
+		{}
+	} mediaBrowser;
 };
 
 extern Settings appSettings;

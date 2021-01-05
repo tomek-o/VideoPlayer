@@ -115,6 +115,11 @@ int Settings::Read(AnsiString asFileName)
 		jv.getBool("ShowFileNameOnPlayStart", Mplayer.showFileNameOnPlayStart);
 	}
 
+	{
+		const Json::Value &jv = root["MediaBrowser"];
+		jv.getAString("LastPlaylist", mediaBrowser.asLastPlaylist);
+	}
+
 	return 0;
 }
 
@@ -144,6 +149,11 @@ int Settings::Write(AnsiString asFileName)
 		jv["SoftVolLevel"] = Mplayer.softVolLevel;
 		jv["OsdLevel"] = Mplayer.osdLevel;
 		jv["ShowFileNameOnPlayStart"] = Mplayer.showFileNameOnPlayStart;
+	}
+
+	{
+		Json::Value &jv = root["MediaBrowser"];
+		jv["LastPlaylist"] = mediaBrowser.asLastPlaylist;
 	}
 
 	std::string outputConfig = writer.write( root );

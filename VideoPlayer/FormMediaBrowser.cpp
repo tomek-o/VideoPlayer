@@ -6,6 +6,7 @@
 #include "FormMediaBrowser.h"
 #include "FormPlaylist.h"
 #include "Log.h"
+#include "Settings.h"
 #include <SysUtils.hpp>
 #include <shellapi.h>
 #include <assert.h>
@@ -33,9 +34,9 @@ int ItemAtPos(HWND ControlHandle, int X, int Y)
 	TTCHitTestInfo HitTestInfo;
 	int HitIndex;
 
-	HitTestInfo.pt.x= X;
-	HitTestInfo.pt.y= Y;
-	HitTestInfo.flags= 0;
+	HitTestInfo.pt.x = X;
+	HitTestInfo.pt.y = Y;
+	HitTestInfo.flags = 0;
 	HitIndex = SendMessage(ControlHandle, TCM_HITTEST, 0, long(&HitTestInfo));
 	return HitIndex;
 }
@@ -55,27 +56,35 @@ __fastcall TfrmMediaBrowser::TfrmMediaBrowser(TComponent* Owner)
         	LOG("Failed to create directory: %s", GetPlaylistsDir().c_str());
 		}
 	}
-	LoadPlaylists();
+	//LoadPlaylists();
 }
 //---------------------------------------------------------------------------
 
-int TfrmMediaBrowser::LoadPlaylist(AnsiString fileName)
+void TfrmMediaBrowser::CreatePlaylistTab(AnsiString fileName)
 {
 	TTabSheet *ts = new TTabSheet(pcSource);
 	ts->Caption = ChangeFileExt(ExtractFileName(fileName), "");
 	ts->PageControl = pcSource;
 	ts->Visible = true;
 
-	TfrmPlaylist *frmPlaylist = new TfrmPlaylist(ts);
-	int rc = frmPlaylist->loadFromFile(fileName);
-	if (rc != 0 && FileExists(fileName))
+	TfrmPlaylist *frmPlaylist = new TfrmPlaylist(ts, fileName);
+
+	frmPlaylist->Visible = true;
+	frmPlaylist->Parent = ts;
+	frmPlaylist->callbackStartPlaying = Play;
+}
+
+int TfrmMediaBrowser::LoadPlaylist(TTabSheet *ts)
+{
+	TfrmPlaylist* frmPlaylist = getPlaylist(ts->TabIndex);
+	int rc = frmPlaylist->load();
+	if (rc != 0 /* && FileExists(fileName)*/)
 	{
-    	LOG("Error %d loading playlist from %s", rc, fileName.c_str());
+		LOG("Error %d loading playlist from %s", rc, frmPlaylist->getFileName().c_str());
 	}
 	frmPlaylist->Visible = true;
 	frmPlaylist->Parent = ts;
 	frmPlaylist->callbackStartPlaying = Play;
-
 	return rc;
 }
 
@@ -84,7 +93,7 @@ void TfrmMediaBrowser::LoadPlaylists(void)
 	AnsiString dir = GetPlaylistsDir();
 	if (dir[dir.Length()] != '\\')
 		dir += "\\";	
-	LOG("Loading playlists from %s...\n", dir.c_str());
+	LOG("Loading playlists from %s...", dir.c_str());
 
 	WIN32_FIND_DATA file;
 	AnsiString asSrchPath = dir + "*." + PLAYLIST_EXTENSION;
@@ -92,8 +101,8 @@ void TfrmMediaBrowser::LoadPlaylists(void)
 	int hasfiles = (hFind != INVALID_HANDLE_VALUE);
 
 	AnsiString defaultPlaylist = DEFAULT_PLAYLIST_NAME + "." + PLAYLIST_EXTENSION;
-	LoadPlaylist(dir + defaultPlaylist);
-
+	CreatePlaylistTab(dir + defaultPlaylist);
+	//LoadPlaylist(dir + defaultPlaylist);
 
 	while (hasfiles)
 	{
@@ -101,7 +110,8 @@ void TfrmMediaBrowser::LoadPlaylists(void)
 
 		if (ExtractFileName(filename) != defaultPlaylist)
 		{
-			LoadPlaylist(filename);
+            CreatePlaylistTab(filename);
+			//LoadPlaylist(filename);
 		}
 
 		hasfiles = FindNextFile(hFind, &file);
@@ -114,6 +124,26 @@ void TfrmMediaBrowser::LoadPlaylists(void)
 		pcSource->ActivePage = pcSource->Pages[1];
 		pcSource->ActivePage = pcSource->Pages[0];
 	}
+
+	int playlistId = 0;
+	for (int i=0; i<pcSource->PageCount; i++)
+	{
+		TfrmPlaylist* frmPlaylist = getPlaylist(i);
+		if (frmPlaylist)
+		{
+			AnsiString name = ExtractFileName(frmPlaylist->getFileName());
+			name = UpperCase(name);
+			if (UpperCase(name) == UpperCase(appSettings.mediaBrowser.asLastPlaylist))
+			{
+				playlistId = i;
+				break;
+			}
+		}
+	}
+
+	pcSource->ActivePage = pcSource->Pages[playlistId];	
+
+	pcSourceChange(NULL);
 }
 
 TfrmPlaylist* TfrmMediaBrowser::getPlaylist(int id)
@@ -222,7 +252,7 @@ void __fastcall TfrmMediaBrowser::miNewPlaylistClick(TObject *Sender)
 	bool ret = InputQuery("Playlist name", "Name for new playlist", name);
 	if (ret == false)
 		return;
-	LoadPlaylist(GetPlaylistsDir() + "\\" + name + "." + PLAYLIST_EXTENSION);
+	CreatePlaylistTab(GetPlaylistsDir() + "\\" + name + "." + PLAYLIST_EXTENSION);
 	// switch to new playlist (bug with new playlist visible already)
 	pcSource->ActivePage = pcSource->Pages[pcSource->PageCount - 1];
 }
@@ -402,6 +432,18 @@ double TfrmMediaBrowser::GetFilePos(AnsiString file)
 	return 0.0;
 }
 
-
-
+void __fastcall TfrmMediaBrowser::pcSourceChange(TObject *Sender)
+{
+	TfrmPlaylist *frm = getPlaylist(pcSource->ActivePageIndex);
+	if (frm)
+	{
+		int rc = frm->load();
+		if (rc != 0)
+		{
+			LOG("Error %d loading playlist from %s", rc, frmPlaylist->getFileName().c_str());
+		}
+		appSettings.mediaBrowser.asLastPlaylist = ExtractFileName(frm->getFileName());
+	}
+}
+//---------------------------------------------------------------------------
 

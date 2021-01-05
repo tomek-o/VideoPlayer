@@ -106,11 +106,20 @@ void __fastcall TfrmMain::FormShow(TObject *Sender)
 		frmMediaBrowser = new TfrmMediaBrowser(this);
 		frmMediaBrowser->Parent = this;
 		frmMediaBrowser->callbackStartPlaying = CallbackStartPlayingFn;
+
 		mplayer.callbackStopPlaying = CallbackStopPlayingFn;
 		mplayer.callbackMediaInfoUpdate = CallbackMediaInfoUpdateFn;
 		ApplySettings();
 
 		ShowMediaBrowser(true);
+
+		if (ParamCount() == 1)
+		{
+            // switch to default playlist if adding files from command line
+			appSettings.mediaBrowser.asLastPlaylist = "";
+		}
+
+		frmMediaBrowser->LoadPlaylists();
 
 		// load file specified with command line
 		if (ParamCount() == 1)

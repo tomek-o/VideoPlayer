@@ -42,16 +42,18 @@ __published:	// IDE-managed Components
 	void __fastcall pcSourceDragDrop(TObject *Sender, TObject *Source, int X,
           int Y);
 	void __fastcall miRenamePlaylistClick(TObject *Sender);
+	void __fastcall pcSourceChange(TObject *Sender);
 private:	// User declarations
 	AnsiString asLastSelectedFile;
 	typedef void (__closure *CallbackStartPlaying)(void);
-	int LoadPlaylist(AnsiString fileName);
-	void LoadPlaylists(void);
+	void CreatePlaylistTab(AnsiString fileName);
+	int LoadPlaylist(TTabSheet *ts);
 	TfrmPlaylist* getPlaylist(int id);
 	int mouseDownTabIndex;
 	void Play(void);
 public:		// User declarations
 	__fastcall TfrmMediaBrowser(TComponent* Owner);
+	void LoadPlaylists(void);
 	AnsiString GetFileToPlay(void);
 	void Focus(void);
 	void SetFiles(const std::vector<AnsiString>& filenames, bool switchTo);

@@ -63,7 +63,6 @@ __published:	// IDE-managed Components
 	void __fastcall tmrRefreshControlTimer(TObject *Sender);
 	void __fastcall tmrGetFilePosTimer(TObject *Sender);
 private:	// User declarations
-	Settings appSettings;
 	void ApplySettings(void);
 	bool allowControlHide;
 	void ShowMediaBrowser(bool state);
