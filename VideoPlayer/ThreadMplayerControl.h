@@ -8,6 +8,7 @@
 class ThreadMplayerControl : public TThread
 {
 private:
+	void __fastcall SynchronizedConsoleLineRx(void);
 protected:
 	void __fastcall Execute();
 	HANDLE hPipe;

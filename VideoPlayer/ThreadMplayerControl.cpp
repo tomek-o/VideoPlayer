@@ -97,9 +97,7 @@ void __fastcall ThreadMplayerControl::Execute()
 						if (strncmp(Line.c_str(), "ANS_TIME_POSITION=", strlen("ANS_TIME_POSITION="))) {
 							LOG(Line.c_str());
 						}
-						if (onConsoleLineRx) {
-                        	onConsoleLineRx(Line);
-						}
+						Synchronize(&SynchronizedConsoleLineRx);
 					}
 				}
 			} while (ok2);
@@ -111,3 +109,10 @@ void __fastcall ThreadMplayerControl::Execute()
 	} while (!Terminated);
 }
 //---------------------------------------------------------------------------
+
+void __fastcall ThreadMplayerControl::SynchronizedConsoleLineRx(void)
+{
+	if (onConsoleLineRx) {
+		onConsoleLineRx(Line);
+	}
+}
