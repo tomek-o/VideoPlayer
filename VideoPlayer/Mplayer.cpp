@@ -298,6 +298,8 @@ int MPlayer::sendCommand(AnsiString cmd)
 	return 0;
 }
 
+/** \note Synchronized (important for callbackMediaInfoUpdate)
+*/
 void MPlayer::OnConsoleLineReceived(AnsiString line)
 {
 	int bitrate;
@@ -321,6 +323,10 @@ void MPlayer::OnConsoleLineReceived(AnsiString line)
 			if (fileLength > 0.000001)
 			{
 				fileLengthValid = true;
+				if (this->callbackMediaInfoUpdate)
+				{
+					callbackMediaInfoUpdate();
+				}
 			}
 			else
 			{
