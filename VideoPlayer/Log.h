@@ -21,7 +21,7 @@
 #ifndef LogH
 #define LogH
 #include <string>
-#include "singleton.h"
+#include "common/singleton.h"
 
 /** \brief Log detail level
 */

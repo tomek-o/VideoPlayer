@@ -26,8 +26,8 @@
 #include <ClipBrd.hpp>
 
 #include "LogUnit.h"
-#include "ScopedLock.h"
-#include "Mutex.h"
+#include "common/ScopedLock.h"
+#include "common/Mutex.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)

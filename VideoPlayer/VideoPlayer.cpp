@@ -11,6 +11,7 @@ USEFORM("FormMediaBrowser.cpp", frmMediaBrowser);
 USEFORM("FormPlaylist.cpp", frmPlaylist);
 //---------------------------------------------------------------------------
 #pragma link "jsoncpp.lib"
+#pragma link "common.lib"
 
 WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {

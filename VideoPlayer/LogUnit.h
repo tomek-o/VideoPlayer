@@ -30,7 +30,7 @@
 #define LogUnitH
 //---------------------------------------------------------------------------
 
-#include "Mutex.h"
+#include "common/Mutex.h"
 #include <Classes.hpp>
 #include <ComCtrls.hpp>
 #include <Controls.hpp>
