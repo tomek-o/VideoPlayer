@@ -227,7 +227,7 @@ int MPlayer::seekAbsolute(double seconds)
 
 int MPlayer::toggleOsd(void)
 {
-	return sendCommand("osd");
+	return sendCommand("pausing_keep osd");
 }
 
 int MPlayer::setOsdLevel(int level)
@@ -235,7 +235,7 @@ int MPlayer::setOsdLevel(int level)
 	if ((hMPlayer == NULL) || (hPipeWrite == NULL))
 		return -1;
 	AnsiString msg;
-	msg.sprintf("osd %d", level);
+	msg.sprintf("pausing_keep osd %d", level);
 	return sendCommand(msg);
 }
 
@@ -267,7 +267,7 @@ int MPlayer::osdShowText(AnsiString text, int duration)
 		// not sure how to escape this...
 		return -1;
 	}
-	msg.sprintf("osd_show_text '%s' %d", text.c_str(), duration);
+	msg.sprintf("pausing_keep osd_show_text '%s' %d", text.c_str(), duration);
 	return sendCommand(msg);
 }
 
