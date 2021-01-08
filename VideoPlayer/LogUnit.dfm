@@ -13,7 +13,7 @@ object frmLog: TfrmLog
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
-  Position = poDesktopCenter
+  Position = poScreenCenter
   ScreenSnap = True
   OnClose = FormClose
   OnResize = FormResize
