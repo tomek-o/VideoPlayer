@@ -20,6 +20,7 @@ struct Action
 		TYPE_SKIP,
 		TYPE_PREV,
 		TYPE_DELETE_FILE,
+		TYPE_SHOW_LOG,
 
 		TYPE_LIMITER
 	} type;

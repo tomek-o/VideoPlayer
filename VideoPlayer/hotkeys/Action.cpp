@@ -34,6 +34,8 @@ const char* Action::getTypeDescription(enum Action::Type type)
 		return "previous";
 	case TYPE_DELETE_FILE:
 		return "delete file";
+	case TYPE_SHOW_LOG:
+		return "show log";
 
 	default:
 		return "???";

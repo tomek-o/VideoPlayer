@@ -827,125 +827,13 @@ void TfrmMain::ExecAction(const struct Action& action)
 			frmMediaBrowser->DeleteFile(filename);
 		}
 		break;
+	case Action::TYPE_SHOW_LOG:
+		actShowLogExecute(NULL);
+		break;
 
 	default:
 		break;
 	}
-
-
-#if 0
-	switch(Key)
-	{
-	case VK_ESCAPE:
-		if (WindowState != wsMaximized)
-			Close();
-		else
-			ToggleFullscreen();
-		return;
-	default:
-		break;
-	}
-
-	if (state == PLAY || state == PAUSE)
-	{
-		switch(Key)
-		{
-			case VK_RETURN:
-				UpdateFilePos();
-				mplayer.stop(false);
-				SetState(STOP);
-				break;
-			case VK_LEFT:
-				mplayer.seekRelative(-3);
-				break;
-			case VK_RIGHT:
-				mplayer.seekRelative(3);
-				break;
-			case VK_DOWN:
-				mplayer.seekRelative(-60);
-				break;
-			case VK_UP:
-				mplayer.seekRelative(60);
-				break;
-			case ' ':
-				Pause();
-				break;
-			case 'f':
-			case 'F':
-				ToggleFullscreen();
-				break;
-			case 'i':
-			case 'I': {
-				AnsiString text;
-				text.sprintf("File: %s", ExtractFileName(mplayer.getFilename()).c_str());
-				mplayer.osdShowText(text, 2000);
-				}
-				break;
-			case 'm':
-			case 'M':
-				Application->Minimize();
-				break;
-			case 'n':
-			case 'N':
-				Skip();
-				break;
-			case 'o':
-			case 'O':
-				ToggleOsd();
-				break;
-			case 'd':
-			case 'D': {
-				if (Shift.Contains(ssCtrl))
-				{
-					AnsiString filename = mplayer.getFilename();
-					AnsiString msg;
-						msg.sprintf("Delete %s?", filename.c_str());
-
-					if (MessageBox(this->Handle, msg.c_str(),
-						Application->Title.c_str(), MB_YESNO | MB_DEFBUTTON2 | MB_ICONEXCLAMATION) != IDYES)
-					{
-						return;
-					}
-					Skip();
-					Sleep(1500);	/** \todo Wait properly until mplayer quits and releases file */
-					frmMediaBrowser->DeleteFile(filename);
-				}
-				break;
-			}
-			case 'p':
-			case 'P': {
-				double position = mplayer.getFilePosition();
-				if (position < 10.0)
-				{
-					Prev();
-				}
-				else
-				{
-					mplayer.seekAbsolute(0.0);
-				}
-				break;
-			}
-			default:
-				break;
-		}
-	}
-	else if (state == STOP)
-	{
-		switch (Key) {
-			case 'f':
-			case 'F': {
-				AnsiString cname = Screen->ActiveControl->ClassName();
-				if (cname != "TEdit" && cname != "TMemo")
-				{
-					ToggleFullscreen();
-				}
-				break;
-			}
-			default:
-				break;
-		}
-	}
-#endif
 }
 
 void __fastcall TfrmMain::tmrAntirepeatTimer(TObject *Sender)
