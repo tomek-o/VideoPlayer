@@ -4,6 +4,7 @@
 #pragma hdrstop
 
 #include "Settings.h"
+#include "common\KeybKeys.h"
 #include <algorithm>
 #include <fstream>
 #include <json/json.h>
@@ -33,6 +34,110 @@ void Settings::SetDefault(void)
 	Logging.bFlush = false;
 	Logging.iMaxFileSize = Settings::_Logging::DEF_MAX_FILE_SIZE;
 	Logging.iMaxUiLogLines = 5000;
+
+	{
+		hotKeyConf.clear();
+		struct HotKeyConf hk;
+		struct Action action;
+
+		hk.keyCode = "VK_SPACE";
+		hk.modifiers = 0;
+		action.type = Action::TYPE_PLAY_PAUSE;
+		hk.action = action;
+		hotKeyConf.push_back(hk);
+
+		hk.keyCode = "VK_RETURN";
+		hk.modifiers = 0;
+		action.type = Action::TYPE_PLAY_STOP;
+		hk.action = action;
+		hotKeyConf.push_back(hk);
+
+		hk.keyCode = "VK_LEFT";
+		hk.modifiers = 0;
+		action.type = Action::TYPE_SEEK_M3;
+		hk.action = action;
+		hotKeyConf.push_back(hk);
+
+		hk.keyCode = "VK_RIGHT";
+		hk.modifiers = 0;
+		action.type = Action::TYPE_SEEK_P3;
+		hk.action = action;
+		hotKeyConf.push_back(hk);
+
+		hk.keyCode = "VK_DOWN";
+		hk.modifiers = 0;
+		action.type = Action::TYPE_SEEK_M60;
+		hk.action = action;
+		hotKeyConf.push_back(hk);
+
+		hk.keyCode = "VK_UP";
+		hk.modifiers = 0;
+		action.type = Action::TYPE_SEEK_P60;
+		hk.action = action;
+		hotKeyConf.push_back(hk);
+
+		hk.keyCode = "F key";
+		hk.modifiers = 0;
+		action.type = Action::TYPE_TOGGLE_FULLSCREEN;
+		hk.action = action;
+		hotKeyConf.push_back(hk);
+
+		hk.keyCode = "I key";
+		hk.modifiers = 0;
+		action.type = Action::TYPE_SHOW_FILE_INFO;
+		hk.action = action;
+		hotKeyConf.push_back(hk);
+
+		hk.keyCode = "M key";
+		hk.modifiers = 0;
+		action.type = Action::TYPE_MINIMIZE;
+		hk.action = action;
+		hotKeyConf.push_back(hk);
+
+		hk.keyCode = "N key";
+		hk.modifiers = 0;
+		action.type = Action::TYPE_SKIP;
+		hk.action = action;
+		hotKeyConf.push_back(hk);
+
+		hk.keyCode = "P key";
+		hk.modifiers = 0;
+		action.type = Action::TYPE_PREV;
+		hk.action = action;
+		hotKeyConf.push_back(hk);
+
+		hk.keyCode = "O key";
+		hk.modifiers = 0;
+		action.type = Action::TYPE_TOGGLE_OSD;
+		hk.action = action;
+		hotKeyConf.push_back(hk);
+
+		hk.keyCode = "D key";
+		hk.modifiers = 0;
+		action.type = Action::TYPE_DELETE_FILE;
+		hk.action = action;
+		hotKeyConf.push_back(hk);
+
+		hk.keyCode = "VK_ESCAPE";
+		hk.modifiers = 0;
+		action.type = Action::TYPE_EXIT_FS_EXIT;
+		hk.action = action;
+		hotKeyConf.push_back(hk);
+
+		for (std::list<HotKeyConf>::iterator iter = hotKeyConf.begin(); iter != hotKeyConf.end(); ++iter)
+		{
+            HotKeyConf &cfg = *iter;
+			int id = vkey_find(cfg.keyCode.c_str());
+			if (id >= 0)
+			{
+				cfg.vkCode = vkey_list[id].vkey;
+			}
+			else
+			{
+				cfg.vkCode = -1;
+			}
+		}
+	}
 }
 
 int Settings::Read(AnsiString asFileName)
@@ -120,6 +225,39 @@ int Settings::Read(AnsiString asFileName)
 		jv.getAString("LastPlaylist", mediaBrowser.asLastPlaylist);
 	}
 
+	{
+		const Json::Value &hotkeyConfJson = root["hotkeyConf"];
+		if (hotkeyConfJson.type() == Json::arrayValue)
+		{
+            hotKeyConf.resize(hotkeyConfJson.size());
+			std::list<HotKeyConf>::iterator iter = hotKeyConf.begin();
+
+			for (unsigned int i=0; i<hotkeyConfJson.size(); i++)
+			{
+				const Json::Value &hotkeyJson = hotkeyConfJson[i];
+				class HotKeyConf &cfg = *iter++;
+				if (hotkeyJson.type() == Json::objectValue)
+				{
+					cfg.keyCode = hotkeyJson.get("keyCode", cfg.keyCode.c_str()).asString().c_str();
+					int id = vkey_find(cfg.keyCode.c_str());
+					if (id >= 0)
+					{
+						cfg.vkCode = vkey_list[id].vkey;
+					}
+					else
+					{
+						cfg.vkCode = -1;
+					}
+					cfg.modifiers = hotkeyJson.get("modifiers", cfg.modifiers).asInt();
+					cfg.global = hotkeyJson.get("global", cfg.global).asBool();
+					const Json::Value &action = hotkeyJson["action"];
+					cfg.action.type = static_cast<Action::Type>(action.get("type", cfg.action.type).asInt());
+					cfg.action.id = action.get("id", cfg.action.id).asInt();
+				}
+			}
+		}
+	}	
+
 	return 0;
 }
 
@@ -155,6 +293,21 @@ int Settings::Write(AnsiString asFileName)
 		Json::Value &jv = root["MediaBrowser"];
 		jv["LastPlaylist"] = mediaBrowser.asLastPlaylist;
 	}
+
+	{
+		int i = 0;
+		std::list<HotKeyConf>::iterator iter;
+		for (iter = hotKeyConf.begin(); iter != hotKeyConf.end(); ++iter)
+		{
+			struct HotKeyConf &cfg = *iter;
+			Json::Value &cfgJson = root["hotkeyConf"][i++];
+			cfgJson["keyCode"] = cfg.keyCode.c_str();
+			cfgJson["modifiers"] = cfg.modifiers;
+			cfgJson["global"] = cfg.global;
+			cfgJson["action"]["type"] = cfg.action.type;
+			cfgJson["action"]["id"] = cfg.action.id;
+		}
+	}	
 
 	std::string outputConfig = writer.write( root );
 

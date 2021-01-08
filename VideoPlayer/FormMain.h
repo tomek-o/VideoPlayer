@@ -17,6 +17,9 @@
 #include "Settings.h"
 #include <vector>
 
+struct Action;
+struct HotkeyConf;
+
 //---------------------------------------------------------------------------
 class TfrmMain : public TForm
 {
@@ -37,6 +40,7 @@ __published:	// IDE-managed Components
 	TLabel *lblA;
 	TPanel *pnlMain;
 	TTimer *tmrGetFilePos;
+	TTimer *tmrAntirepeat;
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
 	void __fastcall actShowAboutExecute(TObject *Sender);
@@ -62,8 +66,9 @@ __published:	// IDE-managed Components
 	void __fastcall btnPauseStillClick(TObject *Sender);
 	void __fastcall tmrRefreshControlTimer(TObject *Sender);
 	void __fastcall tmrGetFilePosTimer(TObject *Sender);
+	void __fastcall tmrAntirepeatTimer(TObject *Sender);
 private:	// User declarations
-	void ApplySettings(void);
+	void ApplySettings(const Settings &prev);
 	bool allowControlHide;
 	void ShowMediaBrowser(bool state);
 	enum STATE
@@ -84,6 +89,13 @@ private:	// User declarations
 	void __fastcall WMDropFiles(TWMDropFiles &message);
 	int mouseMoveLastX, mouseMoveLastY;	// MouseMove is called 2x per second even if mouse is not moving - ?
 	void UpdateFilePos(void);
+
+	const HotKeyConf *lastHotkey;
+	void RegisterGlobalHotKeys(void);
+	void __fastcall WMHotKey(TWMHotKey &Message);
+	void ExecAction(const struct Action& action);
+
+
 protected:
 	void __fastcall CreateParams(TCreateParams   &Params);
 public:		// User declarations
@@ -91,8 +103,10 @@ public:		// User declarations
 	void CallbackStartPlayingFn(void);
 	void CallbackStopPlayingFn(void);
 	void CallbackMediaInfoUpdateFn(void);
+
 	BEGIN_MESSAGE_MAP
-	MESSAGE_HANDLER(WM_DROPFILES, TWMDropFiles, WMDropFiles)	
+		MESSAGE_HANDLER(WM_DROPFILES, TWMDropFiles, WMDropFiles)
+		VCL_MESSAGE_HANDLER(WM_HOTKEY, TWMHotKey, WMHotKey)
 	END_MESSAGE_MAP(TForm);
 };
 //---------------------------------------------------------------------------

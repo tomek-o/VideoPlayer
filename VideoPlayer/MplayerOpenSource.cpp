@@ -6,7 +6,11 @@
 /** See MPlayer slave mode manual: http://www.mplayerhq.hu/DOCS/tech/slave.txt
 */
 
-#include "Mplayer.h"
+/**	\note Do not use just "Mplayer" as this module name - link conflict with
+	another module installed with IDE.
+*/
+
+#include "MplayerOpenSource.h"
 #include "ThreadMplayerWait.h"
 #include "ThreadMplayerControl.h"
 #include "Log.h"

@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 
-#ifndef MplayerH
-#define MplayerH
+#ifndef MplayerOpenSourceH
+#define MplayerOpenSourceH
 //---------------------------------------------------------------------------
 #include <System.hpp>
 #include <Graphics.hpp>

@@ -3,6 +3,7 @@
 #include <vcl.h>
 #pragma hdrstop
 //---------------------------------------------------------------------------
+USEFORM("hotkeys\FormHotkeys.cpp", frmHotkeys);
 USEFORM("FormMain.cpp", frmMain);
 USEFORM("FormSettings.cpp", frmSettings);
 USEFORM("FormAbout.cpp", frmAbout);

@@ -7,9 +7,11 @@
 #include "FormMediaBrowser.h"
 #include "FormAbout.h"
 #include "FormSettings.h"
+#include "HotKeys.h"
 #include "LogUnit.h"
 #include "Log.h"
-#include "Mplayer.h"
+#include "MplayerOpenSource.h"
+#include "common/OS.h"
 
 
 //---------------------------------------------------------------------------
@@ -17,6 +19,13 @@
 #pragma resource "*.dfm"
 TfrmMain *frmMain;
 //---------------------------------------------------------------------------
+
+namespace
+{
+
+HotKeys hotKeys;
+
+}	// namespace
 
 void __fastcall TfrmMain::CreateParams(TCreateParams &Params) 
 {
@@ -27,7 +36,7 @@ void __fastcall TfrmMain::CreateParams(TCreateParams &Params)
 
 __fastcall TfrmMain::TfrmMain(TComponent* Owner)
 	: TForm(Owner), allowControlHide(true), state(STOP),
-	mouseMoveLastX(-1), mouseMoveLastY(-1)
+	mouseMoveLastX(-1), mouseMoveLastY(-1), lastHotkey(NULL)
 {
 	// inform OS that we accepting dropping files
 	DragAcceptFiles(Handle, True);
@@ -55,6 +64,7 @@ void __fastcall TfrmMain::FormCreate(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TfrmMain::FormCloseQuery(TObject *Sender, bool &CanClose)
 {
+	hotKeys.Unregister(Handle);
 	if (state == PLAY || state == PAUSE)
 	{
 		UpdateFilePos();
@@ -102,7 +112,8 @@ void __fastcall TfrmMain::FormShow(TObject *Sender)
 		CLog::Instance()->SetLevel(E_LOG_TRACE);
 		CLog::Instance()->callbackLog = frmLog->OnLog;
 
-		ApplySettings();
+		Settings defaultSettings;
+		ApplySettings(defaultSettings);
 
 		mplayer.callbackStopPlaying = CallbackStopPlayingFn;
 		mplayer.callbackMediaInfoUpdate = CallbackMediaInfoUpdateFn;
@@ -155,7 +166,7 @@ void __fastcall TfrmMain::btnCloseClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void TfrmMain::ApplySettings(void)
+void TfrmMain::ApplySettings(const Settings &prev)
 {
 	if (appSettings.frmMain.bAlwaysOnTop)
 		this->FormStyle = fsStayOnTop;
@@ -170,13 +181,19 @@ void TfrmMain::ApplySettings(void)
 	mcfg.softVolMax = appSettings.Mplayer.softVolMax;
 	if (mplayer.Configure(mcfg) != 0)
 		MessageBox(this->Handle, "Failed to find mplayer instance. Check mplayer.exe location in settings.", this->Caption.c_str(), MB_ICONEXCLAMATION);
+
+	if (prev.hotKeyConf != appSettings.hotKeyConf)
+	{
+		RegisterGlobalHotKeys();
+	}
 }
 
 void __fastcall TfrmMain::btnSettingsClick(TObject *Sender)
 {
+	Settings prev = appSettings;	// keep track what is changed
 	frmSettings->appSettings = &appSettings;
 	frmSettings->ShowModal();
-	ApplySettings();
+	ApplySettings(prev);
 	WriteSettings();
 }
 //---------------------------------------------------------------------------
@@ -272,116 +289,23 @@ void __fastcall TfrmMain::tmrShowControlTimer(TObject *Sender)
 void __fastcall TfrmMain::FormKeyDown(TObject *Sender, WORD &Key,
 	  TShiftState Shift)
 {
-	switch(Key)
+#if 0
+	LOG("Key = %d, CTRL = %d, SHIFT = %d, ALT = %d\n",
+		Key,
+		Shift.Contains(ssCtrl), Shift.Contains(ssShift), Shift.Contains(ssAlt));
+#endif
+	const HotKeyConf* cfg = hotKeys.Find(appSettings.hotKeyConf, Key, Shift, false);
+	if (cfg == lastHotkey)
 	{
-	case VK_ESCAPE:
-		if (WindowState != wsMaximized)
-			Close();
-		else
-			ToggleFullscreen();
+		// anti-repeat
 		return;
-	default:
-		break;
 	}
-
-	if (state == PLAY || state == PAUSE)
+	lastHotkey = cfg;
+	if (cfg)
 	{
-		switch(Key)
-		{
-			case VK_RETURN:
-				UpdateFilePos();
-				mplayer.stop(false);
-				SetState(STOP);
-				break;
-			case VK_LEFT:
-				mplayer.seekRelative(-3);
-				break;
-			case VK_RIGHT:
-				mplayer.seekRelative(3);
-				break;
-			case VK_DOWN:
-				mplayer.seekRelative(-60);
-				break;
-			case VK_UP:
-				mplayer.seekRelative(60);
-				break;
-			case ' ':
-				Pause();
-				break;
-			case 'f':
-			case 'F':
-				ToggleFullscreen();
-				break;
-			case 'i':
-			case 'I': {
-				AnsiString text;
-				text.sprintf("File: %s", ExtractFileName(mplayer.getFilename()).c_str());
-				mplayer.osdShowText(text, 2000);
-				}
-				break;
-			case 'm':
-			case 'M':
-				Application->Minimize();
-				break;
-			case 'n':
-			case 'N':
-				Skip();
-				break;
-			case 'o':
-			case 'O':
-				ToggleOsd();
-				break;
-			case 'd':
-			case 'D': {
-				if (Shift.Contains(ssCtrl))
-				{
-					AnsiString filename = mplayer.getFilename();
-					AnsiString msg;
-						msg.sprintf("Delete %s?", filename.c_str());
-
-					if (MessageBox(this->Handle, msg.c_str(),
-						Application->Title.c_str(), MB_YESNO | MB_DEFBUTTON2 | MB_ICONEXCLAMATION) != IDYES)
-					{
-						return;
-					}
-					Skip();
-					Sleep(1500);	/** \todo Wait properly until mplayer quits and releases file */
-					frmMediaBrowser->DeleteFile(filename);
-				}
-				break;
-			}
-			case 'p':
-			case 'P': {
-				double position = mplayer.getFilePosition();
-				if (position < 10.0)
-				{
-					Prev();
-				}
-				else
-				{
-					mplayer.seekAbsolute(0.0);
-				}
-				break;
-			}
-			default:
-				break;
-		}
-	}
-	else if (state == STOP)
-	{
-		switch (Key) {
-			case 'f':
-			case 'F': {
-				AnsiString cname = Screen->ActiveControl->ClassName();
-				if (cname != "TEdit" && cname != "TMemo")
-				{
-					ToggleFullscreen();
-				}
-				break;
-			}
-			default:
-				break;
-		}
+		ExecAction(cfg->action);
+		tmrAntirepeat->Enabled = false;
+		tmrAntirepeat->Enabled = true;
 	}
 }
 //---------------------------------------------------------------------------
@@ -736,4 +660,298 @@ void TfrmMain::UpdateFilePos(void)
 		frmMediaBrowser->SetFilePos(position);
 	}
 }
+
+void TfrmMain::RegisterGlobalHotKeys(void)
+{
+	int rc = hotKeys.RegisterGlobal(appSettings.hotKeyConf, Handle);
+	if (rc > 0)
+	{
+		AnsiString msg;
+		msg.sprintf("Failed to register %d global hotkey(s), see log for details", rc);
+		MessageBox(this->Handle, msg.c_str(), this->Caption.c_str(), MB_ICONINFORMATION);
+	}
+}
+
+void __fastcall TfrmMain::WMHotKey(TWMHotKey &Message)
+{
+	TForm::Dispatch(&Message);
+	const HotKeyConf* cfg = hotKeys.FindGlobal(Message.HotKey);
+	if (IsWin7OrLater() == false)
+	{
+		// MOD_NOREPEAT not supported, use own antirepeat
+		if (cfg == lastHotkey)
+		{
+			// anti-repeat
+			return;
+		}
+		lastHotkey = cfg;
+	}
+	if (cfg)
+	{
+		ExecAction(cfg->action);
+		if (IsWin7OrLater() == false)
+		{
+			tmrAntirepeat->Enabled = false;
+			tmrAntirepeat->Enabled = true;
+		}
+	}
+}
+
+void TfrmMain::ExecAction(const struct Action& action)
+{
+	switch (action.type)
+	{
+	case Action::TYPE_NONE:
+		break;
+	case Action::TYPE_PLAY_STOP:
+		if (state == PLAY || state == PAUSE)
+		{
+			UpdateFilePos();
+			mplayer.stop(false);
+			SetState(STOP);
+		}
+		break;
+	case Action::TYPE_PLAY_PAUSE:
+		if (state == PLAY || state == PAUSE)
+		{
+			Pause();
+		}
+		break;
+	case Action::TYPE_SEEK_M3:
+		if (state == PLAY || state == PAUSE)
+		{
+			mplayer.seekRelative(-3);
+		}
+		break;
+	case Action::TYPE_SEEK_P3:
+		if (state == PLAY || state == PAUSE)
+		{
+			mplayer.seekRelative(+3);
+		}
+		break;
+	case Action::TYPE_SEEK_M60:
+		if (state == PLAY || state == PAUSE)
+		{
+			mplayer.seekRelative(-60);
+		}
+		break;
+	case Action::TYPE_SEEK_P60:
+		if (state == PLAY || state == PAUSE)
+		{
+			mplayer.seekRelative(+60);
+		}
+		break;
+	case Action::TYPE_TOGGLE_FULLSCREEN:
+		if (state == PLAY || state == PAUSE)
+		{
+			ToggleFullscreen();
+		}
+		else if (state == STOP)
+		{
+			AnsiString cname = Screen->ActiveControl->ClassName();
+			if (cname != "TEdit" && cname != "TMemo")
+			{
+				ToggleFullscreen();
+			}
+		}
+		break;
+	case Action::TYPE_EXIT_FS_EXIT:
+		if (WindowState != wsMaximized)
+			Close();
+		else
+			ToggleFullscreen();
+		break;
+	case Action::TYPE_SHOW_FILE_INFO:
+		if (state == PLAY || state == PAUSE)
+		{
+			AnsiString text;
+			text.sprintf("File: %s", ExtractFileName(mplayer.getFilename()).c_str());
+			mplayer.osdShowText(text, 2000);
+		}
+		break;
+	case Action::TYPE_MINIMIZE:
+		if (state == PLAY || state == PAUSE)
+		{
+			Application->Minimize();
+		}
+		else if (state == STOP)
+		{
+			AnsiString cname = Screen->ActiveControl->ClassName();
+			if (cname != "TEdit" && cname != "TMemo")
+			{
+				Application->Minimize();
+			}
+		}
+		break;
+	case Action::TYPE_TOGGLE_OSD:
+		if (state == PLAY || state == PAUSE)
+		{
+			ToggleOsd();
+		}
+		break;
+	case Action::TYPE_SKIP:
+		if (state == PLAY || state == PAUSE)
+		{
+			Skip();
+		}
+		break;
+	case Action::TYPE_PREV:
+		if (state == PLAY || state == PAUSE)
+		{
+			double position = mplayer.getFilePosition();
+			if (position < 10.0)
+			{
+				Prev();
+			}
+			else
+			{
+				mplayer.seekAbsolute(0.0);
+			}
+			break;
+		}
+		break;
+	case Action::TYPE_DELETE_FILE:
+		if (state == PLAY || state == PAUSE)
+		{
+			AnsiString filename = mplayer.getFilename();
+			AnsiString msg;
+				msg.sprintf("Delete %s?", filename.c_str());
+
+			if (MessageBox(this->Handle, msg.c_str(),
+				Application->Title.c_str(), MB_YESNO | MB_DEFBUTTON2 | MB_ICONEXCLAMATION) != IDYES)
+			{
+				return;
+			}
+			Skip();
+			Sleep(1500);	/** \todo Wait properly until mplayer quits and releases file */
+			frmMediaBrowser->DeleteFile(filename);
+		}
+		break;
+
+	default:
+		break;
+	}
+
+
+#if 0
+	switch(Key)
+	{
+	case VK_ESCAPE:
+		if (WindowState != wsMaximized)
+			Close();
+		else
+			ToggleFullscreen();
+		return;
+	default:
+		break;
+	}
+
+	if (state == PLAY || state == PAUSE)
+	{
+		switch(Key)
+		{
+			case VK_RETURN:
+				UpdateFilePos();
+				mplayer.stop(false);
+				SetState(STOP);
+				break;
+			case VK_LEFT:
+				mplayer.seekRelative(-3);
+				break;
+			case VK_RIGHT:
+				mplayer.seekRelative(3);
+				break;
+			case VK_DOWN:
+				mplayer.seekRelative(-60);
+				break;
+			case VK_UP:
+				mplayer.seekRelative(60);
+				break;
+			case ' ':
+				Pause();
+				break;
+			case 'f':
+			case 'F':
+				ToggleFullscreen();
+				break;
+			case 'i':
+			case 'I': {
+				AnsiString text;
+				text.sprintf("File: %s", ExtractFileName(mplayer.getFilename()).c_str());
+				mplayer.osdShowText(text, 2000);
+				}
+				break;
+			case 'm':
+			case 'M':
+				Application->Minimize();
+				break;
+			case 'n':
+			case 'N':
+				Skip();
+				break;
+			case 'o':
+			case 'O':
+				ToggleOsd();
+				break;
+			case 'd':
+			case 'D': {
+				if (Shift.Contains(ssCtrl))
+				{
+					AnsiString filename = mplayer.getFilename();
+					AnsiString msg;
+						msg.sprintf("Delete %s?", filename.c_str());
+
+					if (MessageBox(this->Handle, msg.c_str(),
+						Application->Title.c_str(), MB_YESNO | MB_DEFBUTTON2 | MB_ICONEXCLAMATION) != IDYES)
+					{
+						return;
+					}
+					Skip();
+					Sleep(1500);	/** \todo Wait properly until mplayer quits and releases file */
+					frmMediaBrowser->DeleteFile(filename);
+				}
+				break;
+			}
+			case 'p':
+			case 'P': {
+				double position = mplayer.getFilePosition();
+				if (position < 10.0)
+				{
+					Prev();
+				}
+				else
+				{
+					mplayer.seekAbsolute(0.0);
+				}
+				break;
+			}
+			default:
+				break;
+		}
+	}
+	else if (state == STOP)
+	{
+		switch (Key) {
+			case 'f':
+			case 'F': {
+				AnsiString cname = Screen->ActiveControl->ClassName();
+				if (cname != "TEdit" && cname != "TMemo")
+				{
+					ToggleFullscreen();
+				}
+				break;
+			}
+			default:
+				break;
+		}
+	}
+#endif
+}
+
+void __fastcall TfrmMain::tmrAntirepeatTimer(TObject *Sender)
+{
+	tmrAntirepeat->Enabled = false;
+	lastHotkey = NULL;
+}
+//---------------------------------------------------------------------------
 

@@ -14,15 +14,17 @@
 #include <Buttons.hpp>
 #include <Dialogs.hpp>
 
+class TfrmHotkeys;
+
 class TfrmSettings : public TForm
 {
 __published:	// IDE-managed Components
 	TPanel *pnlBottom;
 	TButton *btnCancel;
 	TButton *btnApply;
-	TPageControl *pcGeneral;
-	TTabSheet *TabSheet1;
-	TTabSheet *pcLogging;
+	TPageControl *pcSettings;
+	TTabSheet *tsGeneral;
+	TTabSheet *tsLogging;
 	TCheckBox *chbAlwaysOnTop;
 	TLabel *lblUiCapacity;
 	TComboBox *cmbMaxUiLogLines;
@@ -40,6 +42,7 @@ __published:	// IDE-managed Components
 	TLabel *lblMplayerPercent;
 	TButton *btnAbout;
 	TCheckBox *chbMplayerShowFileNameOnPlayStart;
+	TTabSheet *tsHotkeys;
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall btnCancelClick(TObject *Sender);
 	void __fastcall btnApplyClick(TObject *Sender);
@@ -52,6 +55,7 @@ __published:	// IDE-managed Components
 	void __fastcall btnAboutClick(TObject *Sender);
 	void __fastcall FormKeyPress(TObject *Sender, char &Key);
 private:	// User declarations
+	TfrmHotkeys *frmHotkeys;
 
 public:		// User declarations
 	__fastcall TfrmSettings(TComponent* Owner);

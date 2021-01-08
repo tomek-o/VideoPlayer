@@ -249,4 +249,11 @@ object frmMain: TfrmMain
     Left = 8
     Top = 136
   end
+  object tmrAntirepeat: TTimer
+    Enabled = False
+    Interval = 100
+    OnTimer = tmrAntirepeatTimer
+    Left = 8
+    Top = 192
+  end
 end

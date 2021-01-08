@@ -6,6 +6,8 @@
 #define SettingsH
 //---------------------------------------------------------------------------
 #include <System.hpp>
+#include "HotKeyConf.h"
+#include <list>
 
 class Settings
 {
@@ -69,6 +71,8 @@ public:
 		MediaBrowser(void)
 		{}
 	} mediaBrowser;
+	std::list<HotKeyConf> hotKeyConf;
+
 };
 
 extern Settings appSettings;

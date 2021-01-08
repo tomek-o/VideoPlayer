@@ -115,7 +115,7 @@ int Playlist::loadFromFile(AnsiString fileName)
 	filter(filterText);
 
 	position = jPlaylist.get("position", position).asInt();
-	if (position >= static_cast<int>(filteredEntries.size()))
+	if (position < 0 || position >= static_cast<int>(filteredEntries.size()))
 	{
 		position = -1;
 		if (!filteredEntries.empty())

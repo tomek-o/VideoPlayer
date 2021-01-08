@@ -4,6 +4,7 @@
 #pragma hdrstop
 
 #include "FormSettings.h"
+#include "FormHotkeys.h"
 #include "LogUnit.h"
 #include "FormAbout.h"
 #include <SysUtils.hpp>
@@ -18,6 +19,11 @@ __fastcall TfrmSettings::TfrmSettings(TComponent* Owner)
 	: TForm(Owner)
 {
 	this->appSettings = NULL;
+	frmHotkeys = new TfrmHotkeys(tsHotkeys);
+	frmHotkeys->Parent = tsHotkeys;
+	frmHotkeys->Visible = true;
+
+	pcSettings->ActivePage = tsMplayer;
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmSettings::FormShow(TObject *Sender)
@@ -47,6 +53,8 @@ void __fastcall TfrmSettings::FormShow(TObject *Sender)
 	edMplayerSoftVolMax->Text = tmpSettings.Mplayer.softVolMax;
 	edMplayerSoftVolMax->Enabled = chbMplayerSoftVol->Checked;
 	chbMplayerShowFileNameOnPlayStart->Checked = tmpSettings.Mplayer.showFileNameOnPlayStart;
+
+	frmHotkeys->SetCfg(&tmpSettings.hotKeyConf);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmSettings::btnCancelClick(TObject *Sender)

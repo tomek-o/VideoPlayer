@@ -4,8 +4,8 @@ object frmSettings: TfrmSettings
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Settings'
-  ClientHeight = 251
-  ClientWidth = 341
+  ClientHeight = 353
+  ClientWidth = 524
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -21,45 +21,54 @@ object frmSettings: TfrmSettings
   TextHeight = 13
   object pnlBottom: TPanel
     Left = 0
-    Top = 214
-    Width = 341
+    Top = 316
+    Width = 524
     Height = 37
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitTop = 304
+    ExplicitWidth = 538
+    DesignSize = (
+      524
+      37)
     object btnCancel: TButton
-      Left = 258
+      Left = 441
       Top = 6
       Width = 75
       Height = 25
+      Anchors = [akTop, akRight]
       Caption = 'Cancel'
       TabOrder = 1
       OnClick = btnCancelClick
+      ExplicitLeft = 455
     end
     object btnApply: TButton
-      Left = 177
+      Left = 360
       Top = 6
       Width = 75
       Height = 25
+      Anchors = [akTop, akRight]
       Caption = 'Apply'
       TabOrder = 0
       OnClick = btnApplyClick
+      ExplicitLeft = 374
     end
   end
-  object pcGeneral: TPageControl
+  object pcSettings: TPageControl
     Left = 0
     Top = 0
-    Width = 341
-    Height = 214
-    ActivePage = tsMplayer
+    Width = 524
+    Height = 316
+    ActivePage = tsGeneral
     Align = alClient
     TabOrder = 0
-    object TabSheet1: TTabSheet
+    ExplicitWidth = 538
+    ExplicitHeight = 304
+    object tsGeneral: TTabSheet
       Caption = 'General'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
+      ExplicitWidth = 530
+      ExplicitHeight = 276
       object chbAlwaysOnTop: TCheckBox
         Left = 3
         Top = 3
@@ -97,10 +106,11 @@ object frmSettings: TfrmSettings
         OnClick = btnAboutClick
       end
     end
-    object pcLogging: TTabSheet
+    object tsLogging: TTabSheet
       Caption = 'Logging'
       ImageIndex = 1
       TabVisible = False
+      ExplicitWidth = 558
       object lblUiCapacity: TLabel
         Left = 5
         Top = 26
@@ -139,6 +149,10 @@ object frmSettings: TfrmSettings
     object tsMplayer: TTabSheet
       Caption = 'Mplayer'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 333
+      ExplicitHeight = 186
       object lblInstance: TLabel
         Left = 3
         Top = 4
@@ -202,6 +216,14 @@ object frmSettings: TfrmSettings
         Caption = 'Show file name (OSD) on playback start'
         TabOrder = 3
       end
+    end
+    object tsHotkeys: TTabSheet
+      Caption = 'Hotkeys'
+      ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 333
+      ExplicitHeight = 186
     end
   end
   object OpenDialog: TOpenDialog
