@@ -247,7 +247,7 @@ int MPlayer::getTimePos(void)
 int MPlayer::changeVolume(int delta)
 {
 	AnsiString msg;
-	msg.sprintf("volume %d", delta);
+	msg.sprintf("pausing_keep volume %d", delta);
 	return sendCommand(msg);
 }
 
@@ -255,7 +255,7 @@ int MPlayer::changeVolumeAbs(int val)
 {
 	AnsiString msg;
 	cfg.softVolLevel = val;
-	msg.sprintf("volume %d 1", val);
+	msg.sprintf("pausing_keep volume %d 1", val);
 	return sendCommand(msg);
 }
 
