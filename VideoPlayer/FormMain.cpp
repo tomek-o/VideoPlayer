@@ -175,7 +175,17 @@ void TfrmMain::ApplySettings(const Settings &prev)
 	MPlayer::Cfg mcfg;
 	mcfg.parent = pnlMain->Handle; //this->Handle;
 	mcfg.colorkey = this->Color;
-	mcfg.asInstance = appSettings.Mplayer.asInstance;
+
+	AnsiString asMplayerRelativePath = ExtractFileDir(Application->ExeName) + "\\" + appSettings.Mplayer.asInstance;
+	if (FileExists(asMplayerRelativePath))
+	{
+		mcfg.asInstance = asMplayerRelativePath;
+	}
+	else
+	{
+		mcfg.asInstance = appSettings.Mplayer.asInstance;
+	}
+
 	mcfg.softVol = appSettings.Mplayer.softVol;
 	mcfg.softVolLevel = appSettings.Mplayer.softVolLevel;
 	mcfg.softVolMax = appSettings.Mplayer.softVolMax;
