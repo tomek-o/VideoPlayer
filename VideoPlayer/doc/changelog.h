@@ -56,5 +56,19 @@ Version 2.0
 - added "Remove duplicates from list"
 - added "Remove missing files from list"
 
+Version 2.2
+- Ctrl+D: delete selected files (if stopped) or currently playing file
+- 'p' during playback: go to previous file (if position < 10 seconds) or go to beginning of the current file
+- added "Mark" function
+- added function marking files that are possible duplicates - by size
+- added file length to playlists
+- fixed issue with flickering at startup if multiple playlists are loaded
+- delaying load of playlists until user switches to particular playlist
+- remembering last playlist selected on restart
+- added common.lib
+- hotkeys are now configurable; previous fixed hotkeys are now default configuration
+- added "show log" action type for hotkeys
+- mplayer: use pausing_keep when changing volume and for OSD commands
+- treat mplayer configuration path as relative to VideoPlayer.exe by default, as absolute if mplayer executable was not found there 
 */
 

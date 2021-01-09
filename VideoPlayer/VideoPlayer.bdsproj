@@ -255,9 +255,9 @@
           <VersionInfo Name="IncludeVerInfo">True</VersionInfo>
           <VersionInfo Name="AutoIncBuild">False</VersionInfo>
           <VersionInfo Name="MajorVer">2</VersionInfo>
-          <VersionInfo Name="MinorVer">1</VersionInfo>
+          <VersionInfo Name="MinorVer">2</VersionInfo>
           <VersionInfo Name="Release">0</VersionInfo>
-          <VersionInfo Name="Build">2</VersionInfo>
+          <VersionInfo Name="Build">0</VersionInfo>
           <VersionInfo Name="Debug">False</VersionInfo>
           <VersionInfo Name="PreRelease">False</VersionInfo>
           <VersionInfo Name="Special">False</VersionInfo>
@@ -269,14 +269,14 @@
         <VersionInfoKeys>
           <VersionInfoKeys Name="CompanyName">Tomasz Ostrowski</VersionInfoKeys>
           <VersionInfoKeys Name="FileDescription">Video player - mplayer GUI</VersionInfoKeys>
-          <VersionInfoKeys Name="FileVersion">2.1.0.2</VersionInfoKeys>
+          <VersionInfoKeys Name="FileVersion">2.2.0.0</VersionInfoKeys>
           <VersionInfoKeys Name="InternalName"></VersionInfoKeys>
           <VersionInfoKeys Name="LegalCopyright"></VersionInfoKeys>
           <VersionInfoKeys Name="LegalTrademarks"></VersionInfoKeys>
           <VersionInfoKeys Name="OriginalFilename"></VersionInfoKeys>
           <VersionInfoKeys Name="ProductName"></VersionInfoKeys>
           <VersionInfoKeys Name="ProductVersion">2</VersionInfoKeys>
-          <VersionInfoKeys Name="Comments"></VersionInfoKeys>
+          <VersionInfoKeys Name="Comments">http://tomeko.net/software/VideoPlayer/</VersionInfoKeys>
         </VersionInfoKeys>
         <Debugging>
           <Debugging Name="DebugSourceDirs"></Debugging>
