@@ -29,6 +29,9 @@ __published:	// IDE-managed Components
 	TSaveDialog *SaveDialog;
 	TMenuItem *miDeletePlaylist;
 	TMenuItem *miRenamePlaylist;
+	TMenuItem *N1;
+	TMenuItem *miHidePlaylist;
+	TMenuItem *miUnhidePlaylist;
 	void __fastcall lvCachedFilesKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
 	void __fastcall miGoToFileClick(TObject *Sender);
@@ -43,14 +46,19 @@ __published:	// IDE-managed Components
           int Y);
 	void __fastcall miRenamePlaylistClick(TObject *Sender);
 	void __fastcall pcSourceChange(TObject *Sender);
+	void __fastcall miHidePlaylistClick(TObject *Sender);
+	void __fastcall miUnhidePlaylistClick(TObject *Sender);
 private:	// User declarations
 	AnsiString asLastSelectedFile;
 	typedef void (__closure *CallbackStartPlaying)(void);
-	void CreatePlaylistTab(AnsiString fileName);
+	void CreatePlaylistTab(AnsiString fileName, bool hidden);
 	int LoadPlaylist(TTabSheet *ts);
 	TfrmPlaylist* getPlaylist(int id);
 	int mouseDownTabIndex;
+	int tabIndexToPlaylistId(int index);
+	TTabSheet* getTabSheetAtIndex(int index);
 	void Play(void);
+	void UpdateHiddenPlaylistsList(void);
 public:		// User declarations
 	__fastcall TfrmMediaBrowser(TComponent* Owner);
 	void LoadPlaylists(void);

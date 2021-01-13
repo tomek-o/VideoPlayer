@@ -8,6 +8,7 @@
 #include <System.hpp>
 #include "HotKeyConf.h"
 #include <list>
+#include <set>
 
 class Settings
 {
@@ -72,6 +73,7 @@ public:
 		{}
 	} mediaBrowser;
 	std::list<HotKeyConf> hotKeyConf;
+	std::set<AnsiString> hiddenPlaylists;
 
 };
 

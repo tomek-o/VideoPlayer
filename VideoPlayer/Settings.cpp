@@ -256,7 +256,20 @@ int Settings::Read(AnsiString asFileName)
 				}
 			}
 		}
-	}	
+	}
+
+	{
+		const Json::Value &jv = root["hiddenPlaylists"];
+		hiddenPlaylists.clear();
+		if (jv.type() == Json::arrayValue)
+		{
+			for (unsigned int i=0; i<jv.size(); i++)
+			{
+				AnsiString name = jv[i].asAString();
+				hiddenPlaylists.insert(name);
+			}
+		}
+	}
 
 	return 0;
 }
@@ -307,7 +320,16 @@ int Settings::Write(AnsiString asFileName)
 			cfgJson["action"]["type"] = cfg.action.type;
 			cfgJson["action"]["id"] = cfg.action.id;
 		}
-	}	
+	}
+
+	{
+		Json::Value &jv = root["hiddenPlaylists"];
+        jv.resize(0);
+		for (std::set<AnsiString>::iterator iter = hiddenPlaylists.begin(); iter != hiddenPlaylists.end(); ++iter)
+		{
+        	jv.append(*iter);
+		}
+	}
 
 	std::string outputConfig = writer.write( root );
 

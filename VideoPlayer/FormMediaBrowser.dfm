@@ -48,6 +48,16 @@ object frmMediaBrowser: TfrmMediaBrowser
       Caption = 'Delete playlist'
       OnClick = miDeletePlaylistClick
     end
+    object N1: TMenuItem
+      Caption = '-'
+    end
+    object miHidePlaylist: TMenuItem
+      Caption = 'Hide playlist'
+      OnClick = miHidePlaylistClick
+    end
+    object miUnhidePlaylist: TMenuItem
+      Caption = 'Unhide'
+    end
   end
   object imListListView: TImageList
     Height = 13

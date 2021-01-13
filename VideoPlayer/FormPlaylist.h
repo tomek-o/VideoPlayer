@@ -76,6 +76,9 @@ public:		// User declarations
 	AnsiString getFileName(void) const {
     	return fileName;
 	}
+	AnsiString getCaption(void) const {
+    	return ChangeFileExt(ExtractFileName(fileName), "");
+	}
 	int renamePlaylistFile(AnsiString newName);
 	void deleteFile(AnsiString filename);
 	void setFileLength(double length);

@@ -48,7 +48,6 @@ __fastcall TfrmMediaBrowser::TfrmMediaBrowser(TComponent* Owner)
 	mouseDownTabIndex(-1)
 {
 	callbackStartPlaying = NULL;
-	//pcSource->ActivePage = tsOther;
 	if (!DirectoryExists(GetPlaylistsDir()))
 	{
 		if (CreateDir(GetPlaylistsDir()) == false)
@@ -60,12 +59,13 @@ __fastcall TfrmMediaBrowser::TfrmMediaBrowser(TComponent* Owner)
 }
 //---------------------------------------------------------------------------
 
-void TfrmMediaBrowser::CreatePlaylistTab(AnsiString fileName)
+void TfrmMediaBrowser::CreatePlaylistTab(AnsiString fileName, bool hidden)
 {
 	TTabSheet *ts = new TTabSheet(pcSource);
 	ts->Caption = ChangeFileExt(ExtractFileName(fileName), "");
 	ts->PageControl = pcSource;
-	ts->Visible = true;
+	ts->Visible = !hidden;
+	ts->TabVisible = !hidden;
 
 	TfrmPlaylist *frmPlaylist = new TfrmPlaylist(ts, fileName);
 
@@ -76,7 +76,7 @@ void TfrmMediaBrowser::CreatePlaylistTab(AnsiString fileName)
 
 int TfrmMediaBrowser::LoadPlaylist(TTabSheet *ts)
 {
-	TfrmPlaylist* frmPlaylist = getPlaylist(ts->TabIndex);
+	TfrmPlaylist* frmPlaylist = getPlaylist(tabIndexToPlaylistId(ts->TabIndex));
 	int rc = frmPlaylist->load();
 	if (rc != 0 /* && FileExists(fileName)*/)
 	{
@@ -101,8 +101,10 @@ void TfrmMediaBrowser::LoadPlaylists(void)
 	int hasfiles = (hFind != INVALID_HANDLE_VALUE);
 
 	AnsiString defaultPlaylist = DEFAULT_PLAYLIST_NAME + "." + PLAYLIST_EXTENSION;
-	CreatePlaylistTab(dir + defaultPlaylist);
+	CreatePlaylistTab(dir + defaultPlaylist, false);
 	//LoadPlaylist(dir + defaultPlaylist);
+
+	std::set<AnsiString> playlistsNames;
 
 	while (hasfiles)
 	{
@@ -110,7 +112,10 @@ void TfrmMediaBrowser::LoadPlaylists(void)
 
 		if (ExtractFileName(filename) != defaultPlaylist)
 		{
-            CreatePlaylistTab(filename);
+			AnsiString caption = ChangeFileExt(ExtractFileName(filename), "");
+			playlistsNames.insert(caption);
+			bool hidden = (appSettings.hiddenPlaylists.find(caption) != appSettings.hiddenPlaylists.end());
+			CreatePlaylistTab(filename, hidden);
 			//LoadPlaylist(filename);
 		}
 
@@ -128,7 +133,7 @@ void TfrmMediaBrowser::LoadPlaylists(void)
 	int playlistId = 0;
 	for (int i=0; i<pcSource->PageCount; i++)
 	{
-		TfrmPlaylist* frmPlaylist = getPlaylist(i);
+		TfrmPlaylist* frmPlaylist = getPlaylist(tabIndexToPlaylistId(i));
 		if (frmPlaylist)
 		{
 			AnsiString name = ExtractFileName(frmPlaylist->getFileName());
@@ -144,6 +149,24 @@ void TfrmMediaBrowser::LoadPlaylists(void)
 	pcSource->ActivePage = pcSource->Pages[playlistId];
 
 	pcSourceChange(NULL);
+
+	{
+		// remove from settings all names of hidden playlists that are not found
+		for (std::set<AnsiString>::iterator iter = appSettings.hiddenPlaylists.begin(); iter != appSettings.hiddenPlaylists.end(); )
+		{
+			const AnsiString &name = *iter;
+			if (playlistsNames.find(name) == playlistsNames.end())
+			{
+				appSettings.hiddenPlaylists.erase(iter++);
+			}
+			else
+			{
+				++iter;
+			}
+		}
+	}
+
+	UpdateHiddenPlaylistsList();	
 }
 
 TfrmPlaylist* TfrmMediaBrowser::getPlaylist(int id)
@@ -252,7 +275,7 @@ void __fastcall TfrmMediaBrowser::miNewPlaylistClick(TObject *Sender)
 	bool ret = InputQuery("Playlist name", "Name for new playlist", name);
 	if (ret == false)
 		return;
-	CreatePlaylistTab(GetPlaylistsDir() + "\\" + name + "." + PLAYLIST_EXTENSION);
+	CreatePlaylistTab(GetPlaylistsDir() + "\\" + name + "." + PLAYLIST_EXTENSION, false);
 	// switch to new playlist (bug with new playlist visible already)
 	pcSource->ActivePage = pcSource->Pages[pcSource->PageCount - 1];
 }
@@ -270,7 +293,7 @@ void __fastcall TfrmMediaBrowser::miRenamePlaylistClick(TObject *Sender)
 		MessageBox(this->Handle, "Default playlist cannot be renamed", Application->Title.c_str(), MB_ICONINFORMATION);
 		return;
 	}
-	TTabSheet *ts = pcSource->Pages[mouseDownTabIndex];
+	TTabSheet *ts = getTabSheetAtIndex(mouseDownTabIndex);
 
 	AnsiString name = ts->Caption;
 	bool ret = InputQuery("Playlist name", "Name for the playlist", name);
@@ -290,7 +313,7 @@ void __fastcall TfrmMediaBrowser::miRenamePlaylistClick(TObject *Sender)
 		}
 	}
 
-	TfrmPlaylist *frm = getPlaylist(mouseDownTabIndex);
+	TfrmPlaylist *frm = getPlaylist(tabIndexToPlaylistId(mouseDownTabIndex));
 	assert(frm);
 	if (frm->renamePlaylistFile(fileName))
 	{
@@ -306,9 +329,9 @@ void __fastcall TfrmMediaBrowser::miRenamePlaylistClick(TObject *Sender)
 void __fastcall TfrmMediaBrowser::pcSourceMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
+	mouseDownTabIndex = pcSource->IndexOfTabAt(X, Y);
 	if (Button == mbLeft)
 	{
-		mouseDownTabIndex = pcSource->IndexOfTabAt(X, Y);
 		pcSource->BeginDrag(0);
 	}
 }
@@ -326,7 +349,7 @@ void __fastcall TfrmMediaBrowser::miDeletePlaylistClick(TObject *Sender)
 		MessageBox(this->Handle, "Default playlist cannot be deleted", Application->Title.c_str(), MB_ICONINFORMATION);
 		return;
 	}
-	TTabSheet *ts = pcSource->Pages[mouseDownTabIndex];
+	TTabSheet *ts = getTabSheetAtIndex(mouseDownTabIndex);
 
 	AnsiString caption;
 	caption.sprintf("Delete %s?", ts->Caption.c_str());
@@ -336,7 +359,7 @@ void __fastcall TfrmMediaBrowser::miDeletePlaylistClick(TObject *Sender)
 		return;
 	}
 
-	TfrmPlaylist *frm = getPlaylist(mouseDownTabIndex);
+	TfrmPlaylist *frm = getPlaylist(tabIndexToPlaylistId(mouseDownTabIndex));
 	assert(frm);
 	if (frm->deletePlaylistFile())
 	{
@@ -368,6 +391,35 @@ void __fastcall TfrmMediaBrowser::pcSourceDragDrop(TObject *Sender,
 	}
 }
 //---------------------------------------------------------------------------
+
+int TfrmMediaBrowser::tabIndexToPlaylistId(int index)
+{
+	int ret = -1;
+	for (int i=0; i<pcSource->PageCount; i++)
+	{
+		TTabSheet *tsSrc = pcSource->Pages[i];
+		if (tsSrc->TabVisible)
+		{
+			if (index == 0)
+			{
+				ret = i;
+				break;
+			}
+			--index;
+		}
+	}
+	return ret;
+}
+
+TTabSheet* TfrmMediaBrowser::getTabSheetAtIndex(int index)
+{
+	int id = tabIndexToPlaylistId(index);
+	if (id >= 0)
+	{
+		return pcSource->Pages[id];
+	}
+	return NULL;
+}
 
 void TfrmMediaBrowser::Play(void)
 {
@@ -448,4 +500,73 @@ void __fastcall TfrmMediaBrowser::pcSourceChange(TObject *Sender)
 	}
 }
 //---------------------------------------------------------------------------
+
+void __fastcall TfrmMediaBrowser::miHidePlaylistClick(TObject *Sender)
+{
+	if (mouseDownTabIndex < 0)
+	{
+		LOG("Hide playlist failed: tabIndex = %d", mouseDownTabIndex);
+		return;
+	}
+	if (mouseDownTabIndex == 0)
+	{
+		MessageBox(this->Handle, "Default playlist cannot be hidden", Application->Title.c_str(), MB_ICONINFORMATION);
+		return;
+	}
+	TTabSheet *ts = getTabSheetAtIndex(mouseDownTabIndex);
+
+	TfrmPlaylist* frmPlaylist = getPlaylist(tabIndexToPlaylistId(mouseDownTabIndex));
+	AnsiString caption = frmPlaylist->getCaption();
+	appSettings.hiddenPlaylists.insert(caption);
+
+	ts->TabVisible = false;
+	ts->Visible = false;
+
+    pcSource->ActivePage = pcSource->Pages[0];
+	pcSourceChange(NULL);
+
+	UpdateHiddenPlaylistsList();
+}
+//---------------------------------------------------------------------------
+
+void TfrmMediaBrowser::UpdateHiddenPlaylistsList(void)
+{
+	miUnhidePlaylist->Clear();
+	int count = 0;
+	for (int i=0; i<pcSource->PageCount; i++)
+	{
+		TTabSheet *tsSrc = pcSource->Pages[i];
+		if (tsSrc->TabVisible == false)
+		{
+			TMenuItem* item = new TMenuItem(PopupMenu);
+			item->AutoHotkeys = maManual;
+			TfrmPlaylist *frmPlaylist = getPlaylist(i);
+			item->Caption = frmPlaylist->getCaption();
+			item->OnClick = miUnhidePlaylistClick;
+			item->Tag = i;
+			miUnhidePlaylist->Add(item);
+			count++;
+		}
+	}
+	if (count == 0)
+	{
+		TMenuItem* item = new TMenuItem(PopupMenu);
+		item->AutoHotkeys = maManual;
+		item->Caption = "- no playlist is hidden -";
+		item->OnClick = NULL;
+		miUnhidePlaylist->Add(item);
+	}
+}
+
+void __fastcall TfrmMediaBrowser::miUnhidePlaylistClick(TObject *Sender)
+{
+	TMenuItem *item = dynamic_cast<TMenuItem*>(Sender);
+	int pageId = item->Tag;
+	TTabSheet *ts = pcSource->Pages[pageId];
+	ts->TabVisible = true;
+	ts->Visible = true;
+	TfrmPlaylist* frmPlaylist = getPlaylist(tabIndexToPlaylistId(pageId));
+	appSettings.hiddenPlaylists.erase(frmPlaylist->getCaption());
+	UpdateHiddenPlaylistsList();
+}
 
