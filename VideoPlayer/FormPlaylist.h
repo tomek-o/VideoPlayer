@@ -40,6 +40,7 @@ __published:	// IDE-managed Components
 	TMenuItem *miMarkSet;
 	TMenuItem *miMarkRemove;
 	TMenuItem *miMarkDuplicatesBySize;
+	TMenuItem *miGoToFile;
 	void __fastcall miAddFilesClick(TObject *Sender);
 	void __fastcall lvPlaylistData(TObject *Sender, TListItem *Item);
 	void __fastcall lvPlaylistKeyDown(TObject *Sender, WORD &Key,
@@ -56,6 +57,7 @@ __published:	// IDE-managed Components
 	void __fastcall miMarkSetClick(TObject *Sender);
 	void __fastcall miMarkRemoveClick(TObject *Sender);
 	void __fastcall miMarkDuplicatesBySizeClick(TObject *Sender);
+	void __fastcall miGoToFileClick(TObject *Sender);
 private:	// User declarations
 	AnsiString fileName;
 	bool fileLoaded;

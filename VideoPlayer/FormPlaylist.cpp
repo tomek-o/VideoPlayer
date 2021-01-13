@@ -526,3 +526,16 @@ double TfrmPlaylist::getFilePosition(AnsiString file) const {
 	return playlist.getFilePos(file);
 }
 
+void __fastcall TfrmPlaylist::miGoToFileClick(TObject *Sender)
+{
+	if (!lvPlaylist->Selected)
+		return;
+	const std::vector<FilteredPlaylistEntry>& entries = playlist.getFilteredEntries();
+	const FilteredPlaylistEntry &entry = entries[lvPlaylist->Selected->Index];
+
+	AnsiString params;
+	params.sprintf("/e, /select, %s", entry.entry.fileName.c_str());
+	ShellExecute(NULL, "open", "explorer.exe", params.c_str(), NULL, SW_SHOWNORMAL);
+}
+//---------------------------------------------------------------------------
+

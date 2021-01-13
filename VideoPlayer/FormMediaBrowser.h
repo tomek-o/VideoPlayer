@@ -34,7 +34,6 @@ __published:	// IDE-managed Components
 	TMenuItem *miUnhidePlaylist;
 	void __fastcall lvCachedFilesKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
-	void __fastcall miGoToFileClick(TObject *Sender);
 	void __fastcall miCopyFileClick(TObject *Sender);
 	void __fastcall miNewPlaylistClick(TObject *Sender);
 	void __fastcall pcSourceMouseDown(TObject *Sender, TMouseButton Button,

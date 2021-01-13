@@ -214,20 +214,6 @@ void TfrmMediaBrowser::Focus(void)
 	}
 }
 
-void __fastcall TfrmMediaBrowser::miGoToFileClick(TObject *Sender)
-{
-#if 0
-	TListItem* item = lvCachedFiles->Selected;
-	if (item == NULL)
-		return;
-	int id = item->Index;
-	AnsiString params;
-	params.sprintf("/e, /select, %s", operaCache[id].filename.c_str());
-	ShellExecute(NULL, "open", "explorer.exe", params.c_str(), NULL, SW_SHOWNORMAL);
-#endif
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfrmMediaBrowser::miCopyFileClick(TObject *Sender)
 {
 #if 0

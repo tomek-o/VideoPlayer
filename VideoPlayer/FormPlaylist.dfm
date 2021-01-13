@@ -12,8 +12,6 @@ object frmPlaylist: TfrmPlaylist
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
-  ExplicitWidth = 320
-  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
   object lvPlaylist: TListView
@@ -99,6 +97,10 @@ object frmPlaylist: TfrmPlaylist
     object miRenameFile: TMenuItem
       Caption = 'Rename file'
       OnClick = miRenameFileClick
+    end
+    object miGoToFile: TMenuItem
+      Caption = 'Go to file'
+      OnClick = miGoToFileClick
     end
     object miDeleteFiles: TMenuItem
       Caption = 'Delete file(s)'
