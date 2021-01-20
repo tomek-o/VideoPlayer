@@ -142,7 +142,7 @@ void __fastcall TfrmPlaylist::lvPlaylistData(TObject *Sender, TListItem *Item)
 }
 //---------------------------------------------------------------------------
 
-AnsiString TfrmPlaylist::getFileToPlay(void)
+const PlaylistEntry* TfrmPlaylist::getFileToPlay(void)
 {
 	int id = -1;
 	if (lvPlaylist->Selected)
@@ -157,11 +157,11 @@ AnsiString TfrmPlaylist::getFileToPlay(void)
 	if (id >= 0)
 	{
 		const std::vector<FilteredPlaylistEntry>& entries = playlist.getFilteredEntries();
-		return entries[id].entry.fileName;
+		return &entries[id].entry;
 	}
 	else
 	{
-    	return "";
+		return NULL;
 	}
 }
 
@@ -536,6 +536,31 @@ void __fastcall TfrmPlaylist::miGoToFileClick(TObject *Sender)
 	AnsiString params;
 	params.sprintf("/e, /select, %s", entry.entry.fileName.c_str());
 	ShellExecute(NULL, "open", "explorer.exe", params.c_str(), NULL, SW_SHOWNORMAL);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmPlaylist::miSetMplayerExtraParamsClick(TObject *Sender)
+{
+	if (!lvPlaylist->Selected)
+		return;
+
+	AnsiString params;
+	{
+		const PlaylistEntry& entry = playlist.getEntry(lvPlaylist->Selected->Index);
+		params = entry.mplayerExtraParams;
+		bool ret = InputQuery("Extra parameters", "Extra parameters for mplayer", params);
+		if (ret == false)
+			return;
+	}
+
+	const std::vector<FilteredPlaylistEntry>& entries = playlist.getFilteredEntries();
+	for (int i=0; i<lvPlaylist->Items->Count; i++)
+	{
+		if (lvPlaylist->Items->Item[i]->Selected)
+		{
+			playlist.setMplayerExtraParams(entries[i].id, params);
+		}
+	}
 }
 //---------------------------------------------------------------------------
 

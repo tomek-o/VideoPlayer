@@ -123,7 +123,7 @@ void MPlayer::OnStopPlayingFn(void)
 		callbackStopPlaying();
 }
 
-int MPlayer::play(AnsiString filename)
+int MPlayer::play(AnsiString filename, AnsiString extraParams)
 {
 	AnsiString cmdLine;
 	this->filename = filename;
@@ -152,7 +152,18 @@ int MPlayer::play(AnsiString filename)
 		cmdLine.cat_printf("-softvol -af volume=%d -softvol-max %u ", db, cfg.softVolMax);
 	}
 	//cmdLine.cat_printf("-framedrop -nofs -noterm-osd -idx -hr-mp3-seek -nobps -ni ");
-	cmdLine.cat_printf("-wid %d \"%s\" ", (int)cfg.parent, filename.c_str());
+	cmdLine.cat_printf("-wid %d ", (int)cfg.parent);
+	if (cfg.asExtraParams != "")
+	{
+		cmdLine.cat_printf("%s ", cfg.asExtraParams.c_str());
+	}
+	if (extraParams != "")
+	{
+		cmdLine.cat_printf("%s ", extraParams.c_str());
+	}
+
+	cmdLine.cat_printf("\"%s\"", filename.c_str());
+	LOG("******************************\nRun: %s", cmdLine.c_str());
 	int status = run(cmdLine);
 	if (status)
 	{

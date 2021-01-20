@@ -41,6 +41,8 @@ __published:	// IDE-managed Components
 	TMenuItem *miMarkRemove;
 	TMenuItem *miMarkDuplicatesBySize;
 	TMenuItem *miGoToFile;
+	TMenuItem *N4;
+	TMenuItem *miSetMplayerExtraParams;
 	void __fastcall miAddFilesClick(TObject *Sender);
 	void __fastcall lvPlaylistData(TObject *Sender, TListItem *Item);
 	void __fastcall lvPlaylistKeyDown(TObject *Sender, WORD &Key,
@@ -58,6 +60,7 @@ __published:	// IDE-managed Components
 	void __fastcall miMarkRemoveClick(TObject *Sender);
 	void __fastcall miMarkDuplicatesBySizeClick(TObject *Sender);
 	void __fastcall miGoToFileClick(TObject *Sender);
+	void __fastcall miSetMplayerExtraParamsClick(TObject *Sender);
 private:	// User declarations
 	AnsiString fileName;
 	bool fileLoaded;
@@ -70,7 +73,7 @@ public:		// User declarations
 	int load(void);
 	int saveToFile(AnsiString fileName = "");
 	int deletePlaylistFile(void);
-	AnsiString getFileToPlay(void);
+	const PlaylistEntry* getFileToPlay(void);
 	void setFiles(const std::vector<AnsiString>& filenames);
 	CallbackStartPlaying callbackStartPlaying;
 	int playNextFile(void);

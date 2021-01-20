@@ -69,6 +69,14 @@ Version 2.2
 - hotkeys are now configurable; previous fixed hotkeys are now default configuration
 - added "show log" action type for hotkeys
 - mplayer: use pausing_keep when changing volume and for OSD commands
-- treat mplayer configuration path as relative to VideoPlayer.exe by default, as absolute if mplayer executable was not found there 
+- treat mplayer configuration path as relative to VideoPlayer.exe by default, as absolute if mplayer executable was not found there
+
+Version 2.2+
+- added "Hide playlist" function
+- added "Go to file" menu item 
+- settings: added option to add extra parameters for mplayer (added for every file after default parameters)
+- playlists can hold extra mplayer parameters for each file, added at the end of mplayer command line
+- log: show mplayer command line
+ 
 */
 

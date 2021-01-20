@@ -143,6 +143,13 @@ object frmPlaylist: TfrmPlaylist
       Caption = 'Mark duplicates by size'
       OnClick = miMarkDuplicatesBySizeClick
     end
+    object N4: TMenuItem
+      Caption = '-'
+    end
+    object miSetMplayerExtraParams: TMenuItem
+      Caption = 'Set mplayer extra parameters'
+      OnClick = miSetMplayerExtraParamsClick
+    end
   end
   object OpenDialog: TOpenDialog
     Options = [ofHideReadOnly, ofAllowMultiSelect, ofFileMustExist, ofEnableSizing]

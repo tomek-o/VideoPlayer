@@ -53,6 +53,7 @@ void __fastcall TfrmSettings::FormShow(TObject *Sender)
 	edMplayerSoftVolMax->Text = tmpSettings.Mplayer.softVolMax;
 	edMplayerSoftVolMax->Enabled = chbMplayerSoftVol->Checked;
 	chbMplayerShowFileNameOnPlayStart->Checked = tmpSettings.Mplayer.showFileNameOnPlayStart;
+	edMplayerExtraParams->Text = tmpSettings.Mplayer.asExtraParams;
 
 	frmHotkeys->SetCfg(&tmpSettings.hotKeyConf);
 }
@@ -75,6 +76,8 @@ void __fastcall TfrmSettings::btnApplyClick(TObject *Sender)
 		tmpSettings.Mplayer.softVolMax = 200;
 
 	tmpSettings.Mplayer.showFileNameOnPlayStart = chbMplayerShowFileNameOnPlayStart->Checked;
+
+	tmpSettings.Mplayer.asExtraParams = edMplayerExtraParams->Text;
 
 	*appSettings = tmpSettings;
 	this->Close();	

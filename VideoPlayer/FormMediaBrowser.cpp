@@ -180,11 +180,11 @@ TfrmPlaylist* TfrmMediaBrowser::getPlaylist(int id)
 	return frm;
 }
 
-AnsiString TfrmMediaBrowser::GetFileToPlay(void)
+const PlaylistEntry* TfrmMediaBrowser::GetFileToPlay(void)
 {
 	TfrmPlaylist *frm = getPlaylist(pcSource->ActivePageIndex);
 	if (frm == NULL)
-		return "";
+		return NULL;
 	return frm->getFileToPlay();		
 }
 

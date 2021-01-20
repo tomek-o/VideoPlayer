@@ -17,6 +17,7 @@
 //---------------------------------------------------------------------------
 
 class TfrmPlaylist;
+struct PlaylistEntry;
 
 class TfrmMediaBrowser : public TForm
 {
@@ -61,7 +62,7 @@ private:	// User declarations
 public:		// User declarations
 	__fastcall TfrmMediaBrowser(TComponent* Owner);
 	void LoadPlaylists(void);
-	AnsiString GetFileToPlay(void);
+	const PlaylistEntry* GetFileToPlay(void);
 	void Focus(void);
 	void SetFiles(const std::vector<AnsiString>& filenames, bool switchTo);
 	CallbackStartPlaying callbackStartPlaying;

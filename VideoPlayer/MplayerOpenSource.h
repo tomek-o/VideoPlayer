@@ -47,6 +47,7 @@ public:
 		bool softVol;
 		int softVolLevel;
 		int softVolMax;
+		AnsiString asExtraParams;
 	};
 	int Configure(const Cfg& cfg);
 	const Cfg& getCfg(void)
@@ -57,7 +58,7 @@ public:
 	void __fastcall lineReceived(AnsiString line);
 	void __fastcall playerExited();
 
-	int play(AnsiString filename);
+	int play(AnsiString filename, AnsiString extraParams);
 	AnsiString getFilename(void) const
 	{
     	return filename;

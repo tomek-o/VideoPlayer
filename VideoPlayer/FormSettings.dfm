@@ -27,8 +27,6 @@ object frmSettings: TfrmSettings
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 304
-    ExplicitWidth = 538
     DesignSize = (
       524
       37)
@@ -41,7 +39,6 @@ object frmSettings: TfrmSettings
       Caption = 'Cancel'
       TabOrder = 1
       OnClick = btnCancelClick
-      ExplicitLeft = 455
     end
     object btnApply: TButton
       Left = 360
@@ -52,7 +49,6 @@ object frmSettings: TfrmSettings
       Caption = 'Apply'
       TabOrder = 0
       OnClick = btnApplyClick
-      ExplicitLeft = 374
     end
   end
   object pcSettings: TPageControl
@@ -60,15 +56,11 @@ object frmSettings: TfrmSettings
     Top = 0
     Width = 524
     Height = 316
-    ActivePage = tsGeneral
+    ActivePage = tsMplayer
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 538
-    ExplicitHeight = 304
     object tsGeneral: TTabSheet
       Caption = 'General'
-      ExplicitWidth = 530
-      ExplicitHeight = 276
       object chbAlwaysOnTop: TCheckBox
         Left = 3
         Top = 3
@@ -110,7 +102,6 @@ object frmSettings: TfrmSettings
       Caption = 'Logging'
       ImageIndex = 1
       TabVisible = False
-      ExplicitWidth = 558
       object lblUiCapacity: TLabel
         Left = 5
         Top = 26
@@ -149,10 +140,6 @@ object frmSettings: TfrmSettings
     object tsMplayer: TTabSheet
       Caption = 'Mplayer'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 333
-      ExplicitHeight = 186
       object lblInstance: TLabel
         Left = 3
         Top = 4
@@ -181,6 +168,13 @@ object frmSettings: TfrmSettings
         Width = 11
         Height = 13
         Caption = '%'
+      end
+      object lblMplayerExtraParams: TLabel
+        Left = 3
+        Top = 110
+        Width = 84
+        Height = 13
+        Caption = 'Extra parameters'
       end
       object edMplayerInstance: TEdit
         Left = 51
@@ -216,14 +210,17 @@ object frmSettings: TfrmSettings
         Caption = 'Show file name (OSD) on playback start'
         TabOrder = 3
       end
+      object edMplayerExtraParams: TEdit
+        Left = 104
+        Top = 107
+        Width = 377
+        Height = 21
+        TabOrder = 4
+      end
     end
     object tsHotkeys: TTabSheet
       Caption = 'Hotkeys'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 333
-      ExplicitHeight = 186
     end
   end
   object OpenDialog: TOpenDialog

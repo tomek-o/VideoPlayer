@@ -103,6 +103,7 @@ int Playlist::loadFromFile(AnsiString fileName)
 			jv.getAString("timeStamp", entry.timeStamp);
 			jv.getBool("mark", entry.mark);
 			jv.getDouble("length", entry.length);
+			jv.getAString("mplayerExtraParams", entry.mplayerExtraParams);
 			if (entry.isValid())
 			{
 				entries.push_back(entry);
@@ -158,6 +159,10 @@ int Playlist::saveToFile(AnsiString fileName)
 		jEntry["timeStamp"] = entry.timeStamp;
 		jEntry["mark"] = entry.mark;
 		jEntry["length"] = entry.length;
+		if (entry.mplayerExtraParams != "")
+		{
+			jEntry["mplayerExtraParams"] = entry.mplayerExtraParams;
+		}
 	}
 
 	jPlaylist["position"] = position;
@@ -322,6 +327,15 @@ int Playlist::rename(unsigned int id, AnsiString newFileName)
 		return -1;
 	}
 	entry.fileName = newFileName;
+	filter(filterText);
+	modified = true;
+	return 0;
+}
+
+int Playlist::setMplayerExtraParams(unsigned int id, AnsiString params)
+{
+	PlaylistEntry& entry = entries[id];
+	entry.mplayerExtraParams = params;
 	filter(filterText);
 	modified = true;
 	return 0;

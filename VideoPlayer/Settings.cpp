@@ -218,6 +218,7 @@ int Settings::Read(AnsiString asFileName)
 		if (Mplayer.osdLevel < _Mplayer::OSD_LEVEL_MIN || Mplayer.osdLevel > _Mplayer::OSD_LEVEL_MAX)
 			Mplayer.osdLevel = _Mplayer::OSD_LEVEL_DEFAULT;
 		jv.getBool("ShowFileNameOnPlayStart", Mplayer.showFileNameOnPlayStart);
+		jv.getAString("ExtraParams", Mplayer.asExtraParams);
 	}
 
 	{
@@ -300,6 +301,7 @@ int Settings::Write(AnsiString asFileName)
 		jv["SoftVolLevel"] = Mplayer.softVolLevel;
 		jv["OsdLevel"] = Mplayer.osdLevel;
 		jv["ShowFileNameOnPlayStart"] = Mplayer.showFileNameOnPlayStart;
+		jv["ExtraParams"] = Mplayer.asExtraParams;
 	}
 
 	{

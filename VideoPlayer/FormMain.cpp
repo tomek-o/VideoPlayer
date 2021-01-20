@@ -11,6 +11,7 @@
 #include "LogUnit.h"
 #include "Log.h"
 #include "MplayerOpenSource.h"
+#include "PlaylistEntry.h"
 #include "common/OS.h"
 
 
@@ -189,6 +190,7 @@ void TfrmMain::ApplySettings(const Settings &prev)
 	mcfg.softVol = appSettings.Mplayer.softVol;
 	mcfg.softVolLevel = appSettings.Mplayer.softVolLevel;
 	mcfg.softVolMax = appSettings.Mplayer.softVolMax;
+	mcfg.asExtraParams = appSettings.Mplayer.asExtraParams;
 	if (mplayer.Configure(mcfg) != 0)
 		MessageBox(this->Handle, "Failed to find mplayer instance. Check mplayer.exe location in settings.", this->Caption.c_str(), MB_ICONEXCLAMATION);
 
@@ -392,17 +394,17 @@ void TfrmMain::Play(void)
 	enum STATE prevState = state;
 	if (state == STOP || state == PLAY /* playing next file immediately from Stop callbak */)
 	{
-		AnsiString file = frmMediaBrowser->GetFileToPlay();
-		double filePosition = frmMediaBrowser->GetFilePos(file);
-		if (file != "")
+		const PlaylistEntry *entry = frmMediaBrowser->GetFileToPlay();
+		if (entry)
 		{
+			double filePosition = frmMediaBrowser->GetFilePos(entry->fileName);
 			SetState(PLAY);
-			mplayer.play(file);
+			mplayer.play(entry->fileName, entry->mplayerExtraParams);
 			mplayer.setOsdLevel(appSettings.Mplayer.osdLevel);
 			if (appSettings.Mplayer.showFileNameOnPlayStart)
 			{
 				AnsiString text;
-				text.sprintf("File: %s", ExtractFileName(file).c_str());
+				text.sprintf("File: %s", ExtractFileName(entry->fileName).c_str());
 				mplayer.osdShowText(text, 2000);
 			}
 			if (prevState == STOP)

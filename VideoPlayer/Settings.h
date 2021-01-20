@@ -57,6 +57,7 @@ public:
 		enum { OSD_LEVEL_DEFAULT = 1 };
 		enum { OSD_LEVEL_MAX = 3 };
 		bool showFileNameOnPlayStart;
+		AnsiString asExtraParams;
 		_Mplayer(void):
 			asInstance("mplayer.exe"),
 			softVol(true),

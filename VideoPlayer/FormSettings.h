@@ -43,6 +43,8 @@ __published:	// IDE-managed Components
 	TButton *btnAbout;
 	TCheckBox *chbMplayerShowFileNameOnPlayStart;
 	TTabSheet *tsHotkeys;
+	TLabel *lblMplayerExtraParams;
+	TEdit *edMplayerExtraParams;
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall btnCancelClick(TObject *Sender);
 	void __fastcall btnApplyClick(TObject *Sender);
