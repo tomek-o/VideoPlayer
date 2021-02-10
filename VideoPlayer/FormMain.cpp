@@ -46,7 +46,17 @@ __fastcall TfrmMain::TfrmMain(TComponent* Owner)
 void __fastcall TfrmMain::FormCreate(TObject *Sender)
 {
 	AnsiString asConfigFile = ChangeFileExt( Application->ExeName, ".cfg" );
-	appSettings.Read(asConfigFile);
+	int status = appSettings.Read(asConfigFile);
+	if (status != 0)
+	{
+		// new installation - detect mplayer location - either app directory (default) or mplayer subfolder
+		AnsiString relPath = "mplayer\\mplayer.exe";
+		AnsiString asMplayerRelativePath = ExtractFileDir(Application->ExeName) + "\\" + relPath;
+		if (FileExists(asMplayerRelativePath))
+		{
+			appSettings.Mplayer.asInstance = relPath;
+		}
+	}
 	if (this->BorderStyle != bsSingle)
 	{
 		this->Width = appSettings.frmMain.iWidth;
