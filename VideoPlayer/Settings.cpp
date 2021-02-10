@@ -118,6 +118,12 @@ void Settings::SetDefault(void)
 		hk.action = action;
 		hotKeyConf.push_back(hk);
 
+		hk.keyCode = "L key";
+		hk.modifiers = 0;
+		action.type = Action::TYPE_SHOW_LOG;
+		hk.action = action;
+		hotKeyConf.push_back(hk);
+
 		hk.keyCode = "VK_ESCAPE";
 		hk.modifiers = 0;
 		action.type = Action::TYPE_EXIT_FS_EXIT;
