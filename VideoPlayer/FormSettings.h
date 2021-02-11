@@ -45,6 +45,8 @@ __published:	// IDE-managed Components
 	TTabSheet *tsHotkeys;
 	TLabel *lblMplayerExtraParams;
 	TEdit *edMplayerExtraParams;
+	TLabel *lblControlPanelPosition;
+	TComboBox *cbControlPanelPosition;
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall btnCancelClick(TObject *Sender);
 	void __fastcall btnApplyClick(TObject *Sender);

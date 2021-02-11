@@ -29,6 +29,11 @@ public:
 		bool bWindowMaximized;			///< is main window maximize?
 		bool bAlwaysOnTop;
 		bool bExitFullScreenOnStop;
+		enum ControlPanelPosition
+		{
+			CONTROL_PANEL_TOP = 0,
+			CONTROL_PANEL_BOTTOM
+		} controlPanelPosition;
 	} frmMain;
 	struct _Logging
 	{

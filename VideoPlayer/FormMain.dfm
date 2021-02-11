@@ -28,13 +28,14 @@ object frmMain: TfrmMain
   TextHeight = 13
   object pnlControl: TPanel
     Left = 0
-    Top = 227
+    Top = 0
     Width = 358
     Height = 35
-    Align = alBottom
+    Align = alTop
     TabOrder = 0
     OnMouseDown = pnlDragWindow
     OnMouseLeave = pnlControlMouseLeave
+    ExplicitTop = 227
     object btnStop: TSpeedButton
       Left = 68
       Top = 2
@@ -214,7 +215,7 @@ object frmMain: TfrmMain
   end
   object pnlMain: TPanel
     Left = 0
-    Top = 0
+    Top = 35
     Width = 358
     Height = 227
     Align = alClient
@@ -223,31 +224,32 @@ object frmMain: TfrmMain
     TabOrder = 1
     OnMouseDown = pnlDragWindow
     OnMouseMove = pnlVideoMouseMove
+    ExplicitTop = 36
   end
   object tmrShowControl: TTimer
     Enabled = False
     Interval = 500
     OnTimer = tmrShowControlTimer
     Left = 8
-    Top = 8
+    Top = 40
   end
   object tmrCursorHide: TTimer
     Enabled = False
     Interval = 3000
     OnTimer = tmrCursorHideTimer
     Left = 8
-    Top = 40
+    Top = 72
   end
   object tmrRefreshControl: TTimer
     Interval = 100
     OnTimer = tmrRefreshControlTimer
     Left = 8
-    Top = 72
+    Top = 112
   end
   object tmrGetFilePos: TTimer
     OnTimer = tmrGetFilePosTimer
     Left = 8
-    Top = 136
+    Top = 152
   end
   object tmrAntirepeat: TTimer
     Enabled = False

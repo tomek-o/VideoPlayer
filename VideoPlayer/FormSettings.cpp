@@ -32,6 +32,10 @@ void __fastcall TfrmSettings::FormShow(TObject *Sender)
 	tmpSettings = *appSettings;
 	chbAlwaysOnTop->Checked = tmpSettings.frmMain.bAlwaysOnTop;
 	chbExitFullscreenOnStop->Checked = tmpSettings.frmMain.bExitFullScreenOnStop;
+	if (tmpSettings.frmMain.controlPanelPosition < cbControlPanelPosition->Items->Count)
+	{
+		cbControlPanelPosition->ItemIndex = tmpSettings.frmMain.controlPanelPosition;
+	}
 
 	chbLogToFile->Checked = tmpSettings.Logging.bLogToFile;
 	cmbMaxUiLogLines->ItemIndex = -1;
@@ -66,6 +70,7 @@ void __fastcall TfrmSettings::btnCancelClick(TObject *Sender)
 void __fastcall TfrmSettings::btnApplyClick(TObject *Sender)
 {
 	tmpSettings.frmMain.bExitFullScreenOnStop = chbExitFullscreenOnStop->Checked;
+	tmpSettings.frmMain.controlPanelPosition = cbControlPanelPosition->ItemIndex;
 	tmpSettings.Logging.bLogToFile = chbLogToFile->Checked;
 	tmpSettings.Mplayer.asInstance = edMplayerInstance->Text;
 

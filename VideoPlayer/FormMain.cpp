@@ -183,6 +183,16 @@ void TfrmMain::ApplySettings(const Settings &prev)
 		this->FormStyle = fsStayOnTop;
 	else
 		this->FormStyle = fsNormal;
+
+	if (appSettings.frmMain.controlPanelPosition == Settings::_frmMain::CONTROL_PANEL_BOTTOM)
+	{
+		pnlControl->Align = alBottom;
+	}
+	else
+	{
+    	pnlControl->Align = alTop;
+	}
+
 	MPlayer::Cfg mcfg;
 	mcfg.parent = pnlMain->Handle; //this->Handle;
 	mcfg.colorkey = this->Color;
@@ -269,6 +279,26 @@ void __fastcall TfrmMain::pnlVideoMouseMove(TObject *Sender, TShiftState Shift,
 }
 //---------------------------------------------------------------------------
 
+bool TfrmMain::MousePosOverControlPanel(const TPoint &Position)
+{
+	if (Position.x < 0 || Position.x >= Width)
+		return false;
+
+	if (appSettings.frmMain.controlPanelPosition == Settings::_frmMain::CONTROL_PANEL_BOTTOM)
+	{
+        // bottom
+		if (Position.y >= Height - pnlControl->Height && Position.y < Height)
+			return true;
+	}
+	else
+	{
+        // top
+		if (Position.y >= 0 && Position.y < pnlControl->Height)
+			return true;
+	}
+	return false;
+}
+
 
 void __fastcall TfrmMain::tmrShowControlTimer(TObject *Sender)
 {
@@ -285,18 +315,12 @@ void __fastcall TfrmMain::tmrShowControlTimer(TObject *Sender)
 	}
 	if (pnlControl->Visible == false)
 	{
-		if (Position.y >= Height - pnlControl->Height &&
-			Position.y < Height &&
-			Position.x >= 0 &&
-			Position.x < Width)
+		if (MousePosOverControlPanel(Position) == true)
 			pnlControl->Visible = true;
 	}
 	else
 	{
-		if ((Position.y >= Height - pnlControl->Height &&
-			Position.y < Height &&
-			Position.x >= 0 &&
-			Position.x < Width) == false)
+		if (MousePosOverControlPanel(Position) == false)
 		{
 			if (allowControlHide)
 			{

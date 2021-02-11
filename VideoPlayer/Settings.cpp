@@ -29,6 +29,7 @@ void Settings::SetDefault(void)
 	frmMain.bWindowMaximized = false;
 	frmMain.bAlwaysOnTop = false;
 	frmMain.bExitFullScreenOnStop = true;
+	frmMain.controlPanelPosition = _frmMain::CONTROL_PANEL_TOP;
 
 	Logging.bLogToFile = false;
 	Logging.bFlush = false;
@@ -197,6 +198,7 @@ int Settings::Read(AnsiString asFileName)
 	frmMain.bWindowMaximized = frmMainJson.get("Maximized", false).asBool();
 	frmMain.bAlwaysOnTop = frmMainJson.get("AlwaysOnTop", false).asBool();
 	frmMain.bExitFullScreenOnStop = frmMainJson.get("ExitFullScreenOnStop", frmMain.bExitFullScreenOnStop).asBool();
+	frmMain.controlPanelPosition = static_cast<_frmMain::ControlPanelPosition>(frmMainJson.get("ControlPanelPosition", frmMain.controlPanelPosition).asInt());
 
 	const Json::Value &LoggingJson = root["Logging"];
 	Logging.bLogToFile = LoggingJson.get("LogToFile", false).asBool();
@@ -293,6 +295,8 @@ int Settings::Write(AnsiString asFileName)
 	root["frmMain"]["Maximized"] = frmMain.bWindowMaximized;
 	root["frmMain"]["AlwaysOnTop"] = frmMain.bAlwaysOnTop;
 	root["frmMain"]["ExitFullScreenOnStop"] = frmMain.bExitFullScreenOnStop;
+	root["frmMain"]["ControlPanelPosition"] = frmMain.controlPanelPosition;
+
 
 	root["Logging"]["LogToFile"] = Logging.bLogToFile;
 	root["Logging"]["Flush"] = Logging.bFlush;

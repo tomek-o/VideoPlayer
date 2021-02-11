@@ -94,7 +94,7 @@ private:	// User declarations
 	void RegisterGlobalHotKeys(void);
 	void __fastcall WMHotKey(TWMHotKey &Message);
 	void ExecAction(const struct Action& action);
-
+	bool MousePosOverControlPanel(const TPoint &Position);
 
 protected:
 	void __fastcall CreateParams(TCreateParams   &Params);

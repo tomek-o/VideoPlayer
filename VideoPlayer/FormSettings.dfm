@@ -56,11 +56,18 @@ object frmSettings: TfrmSettings
     Top = 0
     Width = 524
     Height = 316
-    ActivePage = tsMplayer
+    ActivePage = tsGeneral
     Align = alClient
     TabOrder = 0
     object tsGeneral: TTabSheet
       Caption = 'General'
+      object lblControlPanelPosition: TLabel
+        Left = 3
+        Top = 49
+        Width = 104
+        Height = 13
+        Caption = 'Control panel position'
+      end
       object chbAlwaysOnTop: TCheckBox
         Left = 3
         Top = 3
@@ -72,7 +79,7 @@ object frmSettings: TfrmSettings
       end
       object btnShowLogWindow: TButton
         Left = 3
-        Top = 50
+        Top = 82
         Width = 126
         Height = 25
         Caption = 'Show log window'
@@ -90,12 +97,26 @@ object frmSettings: TfrmSettings
       end
       object btnAbout: TButton
         Left = 3
-        Top = 81
+        Top = 113
         Width = 126
         Height = 25
         Caption = 'About...'
         TabOrder = 3
         OnClick = btnAboutClick
+      end
+      object cbControlPanelPosition: TComboBox
+        Left = 128
+        Top = 46
+        Width = 65
+        Height = 21
+        Style = csDropDownList
+        ItemHeight = 13
+        ItemIndex = 0
+        TabOrder = 4
+        Text = 'top'
+        Items.Strings = (
+          'top'
+          'bottom')
       end
     end
     object tsLogging: TTabSheet
