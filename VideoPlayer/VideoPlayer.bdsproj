@@ -226,8 +226,8 @@
         </optionset>
       </project>
       <FILELIST>
-        <FILE FILENAME="doc\changelog.h" CONTAINERID="" LOCALCOMMAND="" UNITNAME="" FORMNAME="" DESIGNCLASS=""/>
-        <FILE FILENAME="doc\doxygen.h" CONTAINERID="" LOCALCOMMAND="" UNITNAME="" FORMNAME="" DESIGNCLASS=""/>
+        <FILE FILENAME="_doc\roadmap.h" CONTAINERID="" LOCALCOMMAND=""/>
+        <FILE FILENAME="_doc\changelog.h" CONTAINERID="" LOCALCOMMAND=""/>
         <FILE FILENAME="hotkeys\Hotkeys.cpp" CONTAINERID="CCompiler" LOCALCOMMAND="" UNITNAME="Hotkeys" FORMNAME="" DESIGNCLASS="" ADDITIONAL="hotkeys\Hotkeys.h"/>
         <FILE FILENAME="hotkeys\HotKeyConf.h" CONTAINERID="" LOCALCOMMAND="" UNITNAME="" FORMNAME="" DESIGNCLASS=""/>
         <FILE FILENAME="hotkeys\HotkeyCfgPanel.cpp" CONTAINERID="CCompiler" LOCALCOMMAND="" UNITNAME="HotkeyCfgPanel" FORMNAME="" DESIGNCLASS="" ADDITIONAL="hotkeys\HotkeyCfgPanel.h"/>
@@ -248,7 +248,6 @@
         <FILE FILENAME="FormPlaylist.cpp" CONTAINERID="CCompiler" LOCALCOMMAND="" UNITNAME="FormPlaylist" FORMNAME="frmPlaylist" DESIGNCLASS="" ADDITIONAL="FormPlaylist.h"/>
         <FILE FILENAME="PlaylistEntry.cpp" CONTAINERID="CCompiler" LOCALCOMMAND="" UNITNAME="PlaylistEntry" FORMNAME="" DESIGNCLASS="" ADDITIONAL="PlaylistEntry.h"/>
         <FILE FILENAME="Playlist.cpp" CONTAINERID="CCompiler" LOCALCOMMAND="" UNITNAME="Playlist" FORMNAME="" DESIGNCLASS="" ADDITIONAL="Playlist.h"/>
-        <FILE FILENAME="doc\roadmap.h" CONTAINERID="" LOCALCOMMAND="" UNITNAME="" FORMNAME="" DESIGNCLASS=""/>
       </FILELIST>
       <IDEOPTIONS>
         <VersionInfo>
@@ -315,10 +314,10 @@
       </IDEOPTIONS>
     </BCBPROJECT>
 		<buildevents>
-			<buildevent file="turbocpp_template.bdsproj">
-				<precompile mode="0" cancancel="-1" capture="0" showconsole="0">$(PROJECTDIR)\build-tools\touch.exe $(PROJECTDIR)\FormAbout.cpp
+      <buildevent file="turbocpp_template.bdsproj">
+        <precompile mode="0" cancancel="-1" capture="0" showconsole="0">$(PROJECTDIR)\build-tools\touch.exe $(PROJECTDIR)\FormAbout.cpp
 </precompile>
-			</buildevent>
-		</buildevents>
+      </buildevent>
+    </buildevents>
 	</CPlusPlusBuilder.Personality>
 </BorlandProject>

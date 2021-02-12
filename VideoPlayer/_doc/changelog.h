@@ -77,6 +77,8 @@ Version 2.2+
 - settings: added option to add extra parameters for mplayer (added for every file after default parameters)
 - playlists can hold extra mplayer parameters for each file, added at the end of mplayer command line
 - log: show mplayer command line
- 
+- default configuration: "L" as shortcut to "show log"
+- default configuration: try also relative mplayer\mplayer.exe path if this file exists
+- add setting for control panel position: top (default) or bottom
 */
 
