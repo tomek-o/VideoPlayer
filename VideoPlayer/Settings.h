@@ -56,7 +56,7 @@ public:
 		int softVolLevel;
 		int softVolMax;
 		enum { SOFTVOL_MAX_LIMIT = 1000 };
-		enum { SOFTVOL_MAX_DEF = 300 };
+		enum { SOFTVOL_MAX_DEF = 200 };
 		int osdLevel;
 		enum { OSD_LEVEL_MIN = 0 };
 		enum { OSD_LEVEL_DEFAULT = 1 };
@@ -66,7 +66,7 @@ public:
 		_Mplayer(void):
 			asInstance("mplayer.exe"),
 			softVol(true),
-			softVolLevel(100),
+			softVolLevel(50),
 			softVolMax(SOFTVOL_MAX_DEF),
 			osdLevel(OSD_LEVEL_DEFAULT),
 			showFileNameOnPlayStart(false)
