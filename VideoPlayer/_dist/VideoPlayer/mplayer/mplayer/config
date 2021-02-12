@@ -1,0 +1,27 @@
+# Write your default config options here!
+
+fontconfig=yes
+font=Arial
+
+#subcp = cp1250
+subfont-outline = 4
+subfont-autoscale = 1    # Scale font as per movie height and not as per diagonal
+subfont-text-scale = 8
+
+# Set autoscale coefficient. (default: 6)
+subfont-osd-scale = 5
+
+#vo=directx        # Render Via DirectX; requires adapter=2 line to work on second screen
+#vo=gl
+vo=direct3d         # works with both screens - better than directx?
+#vo=directx:noaccel # For screenshots
+double=yes        # Enable Double Buffering
+#adapter=2         # second screen
+dr=yes            # Enable Direct Rendering
+ao=dsound        # Audio out via Directsound, earlier was win32
+fixed-vo=yes        # Attempts to prevent reopening a windows for each file
+priority=abovenormal    # Start mplayer with abovenormal priority
+framedrop=yes        # Drop frames in case of heavy CPU
+autoq=100        # Automatically turn off pp filters at high CPU
+quiet=yes
+vf=screenshot
