@@ -61,6 +61,10 @@ object frmSettings: TfrmSettings
     TabOrder = 0
     object tsGeneral: TTabSheet
       Caption = 'General'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lblControlPanelPosition: TLabel
         Left = 3
         Top = 49
@@ -123,6 +127,10 @@ object frmSettings: TfrmSettings
       Caption = 'Logging'
       ImageIndex = 1
       TabVisible = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lblUiCapacity: TLabel
         Left = 5
         Top = 26
@@ -161,6 +169,10 @@ object frmSettings: TfrmSettings
     object tsMplayer: TTabSheet
       Caption = 'Mplayer'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lblInstance: TLabel
         Left = 3
         Top = 4
@@ -242,6 +254,10 @@ object frmSettings: TfrmSettings
     object tsHotkeys: TTabSheet
       Caption = 'Hotkeys'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
     end
   end
   object OpenDialog: TOpenDialog

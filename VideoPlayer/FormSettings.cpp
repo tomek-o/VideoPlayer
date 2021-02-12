@@ -70,7 +70,7 @@ void __fastcall TfrmSettings::btnCancelClick(TObject *Sender)
 void __fastcall TfrmSettings::btnApplyClick(TObject *Sender)
 {
 	tmpSettings.frmMain.bExitFullScreenOnStop = chbExitFullscreenOnStop->Checked;
-	tmpSettings.frmMain.controlPanelPosition = cbControlPanelPosition->ItemIndex;
+	tmpSettings.frmMain.controlPanelPosition = static_cast<Settings::_frmMain::ControlPanelPosition>(cbControlPanelPosition->ItemIndex);
 	tmpSettings.Logging.bLogToFile = chbLogToFile->Checked;
 	tmpSettings.Mplayer.asInstance = edMplayerInstance->Text;
 
