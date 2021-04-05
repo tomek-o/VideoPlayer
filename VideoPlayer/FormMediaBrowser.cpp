@@ -133,7 +133,7 @@ void TfrmMediaBrowser::LoadPlaylists(void)
 	int playlistId = 0;
 	for (int i=0; i<pcSource->PageCount; i++)
 	{
-		TfrmPlaylist* frmPlaylist = getPlaylist(tabIndexToPlaylistId(i));
+		TfrmPlaylist* frmPlaylist = getPlaylist(i); //tabIndexToPlaylistId(i));
 		if (frmPlaylist)
 		{
 			AnsiString name = ExtractFileName(frmPlaylist->getFileName());
