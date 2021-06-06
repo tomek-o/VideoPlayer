@@ -299,9 +299,12 @@ int TfrmPlaylist::playPrevFile(void)
 
 int TfrmPlaylist::renamePlaylistFile(AnsiString newName)
 {
-	if (RenameFile(fileName, newName) == false)
+	if (FileExists(fileName))	// playlist might be not saved yet
 	{
-		return -1;
+		if (RenameFile(fileName, newName) == false)
+		{
+			return -1;
+		}
 	}
 	fileName = newName;
 	return 0;
