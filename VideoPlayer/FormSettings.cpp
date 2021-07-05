@@ -56,6 +56,7 @@ void __fastcall TfrmSettings::FormShow(TObject *Sender)
 	chbMplayerSoftVol->Checked = tmpSettings.Mplayer.softVol;
 	edMplayerSoftVolMax->Text = tmpSettings.Mplayer.softVolMax;
 	edMplayerSoftVolMax->Enabled = chbMplayerSoftVol->Checked;
+	chbUseSeparateVolumeForEachFile->Checked = tmpSettings.Mplayer.useSeparateVolumeForEachFile;
 	chbMplayerShowFileNameOnPlayStart->Checked = tmpSettings.Mplayer.showFileNameOnPlayStart;
 	edMplayerExtraParams->Text = tmpSettings.Mplayer.asExtraParams;
 
@@ -79,6 +80,7 @@ void __fastcall TfrmSettings::btnApplyClick(TObject *Sender)
 	tmpSettings.Mplayer.softVolMax = StrToIntDef(edMplayerSoftVolMax->Text, 200);
 	if (tmpSettings.Mplayer.softVolMax < 50 || tmpSettings.Mplayer.softVolMax > 1000)
 		tmpSettings.Mplayer.softVolMax = 200;
+	tmpSettings.Mplayer.useSeparateVolumeForEachFile = chbUseSeparateVolumeForEachFile->Checked;
 
 	tmpSettings.Mplayer.showFileNameOnPlayStart = chbMplayerShowFileNameOnPlayStart->Checked;
 

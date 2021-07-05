@@ -123,7 +123,7 @@ void MPlayer::OnStopPlayingFn(void)
 		callbackStopPlaying();
 }
 
-int MPlayer::play(AnsiString filename, AnsiString extraParams)
+int MPlayer::play(AnsiString filename, int softVolLevel, AnsiString extraParams)
 {
 	AnsiString cmdLine;
 	this->filename = filename;
@@ -141,6 +141,11 @@ int MPlayer::play(AnsiString filename, AnsiString extraParams)
 	if (cfg.softVol)
 	{
 		int db;
+		if (softVolLevel > 0)
+		{
+        	cfg.softVolLevel = softVolLevel;
+		}
+
 		if (cfg.softVolLevel <= 0)
 		{
 			db = -120;

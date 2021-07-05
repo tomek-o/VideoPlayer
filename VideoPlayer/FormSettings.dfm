@@ -56,15 +56,11 @@ object frmSettings: TfrmSettings
     Top = 0
     Width = 524
     Height = 316
-    ActivePage = tsGeneral
+    ActivePage = tsMplayer
     Align = alClient
     TabOrder = 0
     object tsGeneral: TTabSheet
       Caption = 'General'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object lblControlPanelPosition: TLabel
         Left = 3
         Top = 49
@@ -127,10 +123,6 @@ object frmSettings: TfrmSettings
       Caption = 'Logging'
       ImageIndex = 1
       TabVisible = False
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object lblUiCapacity: TLabel
         Left = 5
         Top = 26
@@ -169,10 +161,6 @@ object frmSettings: TfrmSettings
     object tsMplayer: TTabSheet
       Caption = 'Mplayer'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object lblInstance: TLabel
         Left = 3
         Top = 4
@@ -204,7 +192,7 @@ object frmSettings: TfrmSettings
       end
       object lblMplayerExtraParams: TLabel
         Left = 3
-        Top = 110
+        Top = 134
         Width = 84
         Height = 13
         Caption = 'Extra parameters'
@@ -237,7 +225,7 @@ object frmSettings: TfrmSettings
       end
       object chbMplayerShowFileNameOnPlayStart: TCheckBox
         Left = 3
-        Top = 87
+        Top = 111
         Width = 318
         Height = 17
         Caption = 'Show file name (OSD) on playback start'
@@ -245,19 +233,25 @@ object frmSettings: TfrmSettings
       end
       object edMplayerExtraParams: TEdit
         Left = 104
-        Top = 107
+        Top = 131
         Width = 377
         Height = 21
         TabOrder = 4
+      end
+      object chbUseSeparateVolumeForEachFile: TCheckBox
+        Left = 51
+        Top = 85
+        Width = 318
+        Height = 17
+        Caption = 'Use separate volume for each file from playlist'
+        TabOrder = 5
+        OnClick = chbMplayerSoftVolClick
+        OnKeyPress = chbMplayerSoftVolKeyPress
       end
     end
     object tsHotkeys: TTabSheet
       Caption = 'Hotkeys'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
     end
   end
   object OpenDialog: TOpenDialog

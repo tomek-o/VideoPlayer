@@ -35,7 +35,6 @@ object frmMain: TfrmMain
     TabOrder = 0
     OnMouseDown = pnlDragWindow
     OnMouseLeave = pnlControlMouseLeave
-    ExplicitTop = 227
     object btnStop: TSpeedButton
       Left = 68
       Top = 2
@@ -224,7 +223,6 @@ object frmMain: TfrmMain
     TabOrder = 1
     OnMouseDown = pnlDragWindow
     OnMouseMove = pnlVideoMouseMove
-    ExplicitTop = 36
   end
   object tmrShowControl: TTimer
     Enabled = False

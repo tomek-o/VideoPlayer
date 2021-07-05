@@ -89,6 +89,7 @@ public:		// User declarations
 	void setFileLength(double length);
 	void setFilePosition(double position);
 	double getFilePosition(AnsiString file) const;
+	void setFileSoftVol(int val);
 };
 //---------------------------------------------------------------------------
 #endif

@@ -72,6 +72,7 @@ public:		// User declarations
 	void DeleteFile(AnsiString filename);
 	void SetFileLength(double length);
 	void SetFilePos(double position);
+	void SetFileSoftVol(int val);
 	double GetFilePos(AnsiString file);
 };
 //---------------------------------------------------------------------------

@@ -460,6 +460,15 @@ void TfrmMediaBrowser::SetFilePos(double position)
 	}
 }
 
+void TfrmMediaBrowser::SetFileSoftVol(int val)
+{
+	TfrmPlaylist *frm = getPlaylist(pcSource->ActivePageIndex);
+	if (frm)
+	{
+		frm->setFileSoftVol(val);
+	}
+}
+
 double TfrmMediaBrowser::GetFilePos(AnsiString file)
 {
 	TfrmPlaylist *frm = getPlaylist(pcSource->ActivePageIndex);

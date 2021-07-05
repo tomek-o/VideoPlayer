@@ -71,7 +71,7 @@ Version 2.2
 - mplayer: use pausing_keep when changing volume and for OSD commands
 - treat mplayer configuration path as relative to VideoPlayer.exe by default, as absolute if mplayer executable was not found there
 
-Version 2.2+
+Version 2.3
 - added "Hide playlist" function
 - added "Go to file" menu item 
 - settings: added option to add extra parameters for mplayer (added for every file after default parameters)
@@ -80,5 +80,6 @@ Version 2.2+
 - default configuration: "L" as shortcut to "show log"
 - default configuration: try also relative mplayer\mplayer.exe path if this file exists
 - add setting for control panel position: top (default) or bottom
+- changed default softvol amplification to 200% and volume to 50
 */
 

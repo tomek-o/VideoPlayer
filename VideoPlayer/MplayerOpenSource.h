@@ -58,7 +58,7 @@ public:
 	void __fastcall lineReceived(AnsiString line);
 	void __fastcall playerExited();
 
-	int play(AnsiString filename, AnsiString extraParams);
+	int play(AnsiString filename, int softVolLevel, AnsiString extraParams);
 	AnsiString getFilename(void) const
 	{
     	return filename;

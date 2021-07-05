@@ -43,9 +43,10 @@ public:
 	}
 	void setPosition(int position);
 	double getFilePos(AnsiString file) const;
-	void setFilePos(unsigned int id, double position);	
+	void setFilePos(unsigned int id, double position);
+	void setFileSoftVol(unsigned int id, unsigned int filteredId, int val);
 	AnsiString getFilterText(void) const {
-    	return filterText;
+		return filterText;
 	}
 	const PlaylistEntry& getEntry(unsigned int id) {
     	return entries[id];

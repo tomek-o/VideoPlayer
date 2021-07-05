@@ -227,6 +227,7 @@ int Settings::Read(AnsiString asFileName)
 			Mplayer.osdLevel = _Mplayer::OSD_LEVEL_DEFAULT;
 		jv.getBool("ShowFileNameOnPlayStart", Mplayer.showFileNameOnPlayStart);
 		jv.getAString("ExtraParams", Mplayer.asExtraParams);
+		jv.getBool("UseSeparateVolumeForEachFile", Mplayer.useSeparateVolumeForEachFile);
 	}
 
 	{
@@ -312,6 +313,7 @@ int Settings::Write(AnsiString asFileName)
 		jv["OsdLevel"] = Mplayer.osdLevel;
 		jv["ShowFileNameOnPlayStart"] = Mplayer.showFileNameOnPlayStart;
 		jv["ExtraParams"] = Mplayer.asExtraParams;
+		jv["UseSeparateVolumeForEachFile"] = Mplayer.useSeparateVolumeForEachFile;
 	}
 
 	{

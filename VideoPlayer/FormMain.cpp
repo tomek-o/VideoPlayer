@@ -433,7 +433,13 @@ void TfrmMain::Play(void)
 		{
 			double filePosition = frmMediaBrowser->GetFilePos(entry->fileName);
 			SetState(PLAY);
-			mplayer.play(entry->fileName, entry->mplayerExtraParams);
+			int volume = -1;
+			if (appSettings.Mplayer.useSeparateVolumeForEachFile)
+			{
+				volume = entry->softVolLevel;
+				LOG("File volume: %d\n", volume);
+			}
+			mplayer.play(entry->fileName, volume, entry->mplayerExtraParams);
 			mplayer.setOsdLevel(appSettings.Mplayer.osdLevel);
 			if (appSettings.Mplayer.showFileNameOnPlayStart)
 			{
@@ -499,6 +505,10 @@ void __fastcall TfrmMain::FormMouseWheel(TObject *Sender, TShiftState Shift,
 		val = 100; //mplayer.getCfg().softVolMax;
 	appSettings.Mplayer.softVolLevel = val;
 	mplayer.changeVolumeAbs(val);
+	if (appSettings.Mplayer.useSeparateVolumeForEachFile)
+	{
+    	frmMediaBrowser->SetFileSoftVol(val);
+	}
 #endif
 }
 //---------------------------------------------------------------------------

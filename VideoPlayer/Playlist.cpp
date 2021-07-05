@@ -104,6 +104,7 @@ int Playlist::loadFromFile(AnsiString fileName)
 			jv.getBool("mark", entry.mark);
 			jv.getDouble("length", entry.length);
 			jv.getAString("mplayerExtraParams", entry.mplayerExtraParams);
+			jv.getInt("softVol", entry.softVolLevel);
 			if (entry.isValid())
 			{
 				entries.push_back(entry);
@@ -163,6 +164,10 @@ int Playlist::saveToFile(AnsiString fileName)
 		{
 			jEntry["mplayerExtraParams"] = entry.mplayerExtraParams;
 		}
+		if (entry.softVolLevel != PlaylistEntry::SOFTVOL_LEVEL_DEFAULT)
+		{
+			jEntry["softVol"] = entry.softVolLevel;
+		}
 	}
 
 	jPlaylist["position"] = position;
@@ -208,6 +213,13 @@ void Playlist::setFilePos(unsigned int id, double position)
 {
 	fileWithPosition = entries[id].fileName;
 	filePosition = position;
+	modified = true;
+}
+
+void Playlist::setFileSoftVol(unsigned int id, unsigned int filteredId, int val)
+{
+	entries[id].softVolLevel = val;
+	filteredEntries[id].entry.softVolLevel = val;
 	modified = true;
 }
 

@@ -226,8 +226,8 @@
         </optionset>
       </project>
       <FILELIST>
-        <FILE FILENAME="_doc\roadmap.h" CONTAINERID="" LOCALCOMMAND=""/>
-        <FILE FILENAME="_doc\changelog.h" CONTAINERID="" LOCALCOMMAND=""/>
+        <FILE FILENAME="_doc\roadmap.h" CONTAINERID="" LOCALCOMMAND="" UNITNAME="" FORMNAME="" DESIGNCLASS=""/>
+        <FILE FILENAME="_doc\changelog.h" CONTAINERID="" LOCALCOMMAND="" UNITNAME="" FORMNAME="" DESIGNCLASS=""/>
         <FILE FILENAME="hotkeys\Hotkeys.cpp" CONTAINERID="CCompiler" LOCALCOMMAND="" UNITNAME="Hotkeys" FORMNAME="" DESIGNCLASS="" ADDITIONAL="hotkeys\Hotkeys.h"/>
         <FILE FILENAME="hotkeys\HotKeyConf.h" CONTAINERID="" LOCALCOMMAND="" UNITNAME="" FORMNAME="" DESIGNCLASS=""/>
         <FILE FILENAME="hotkeys\HotkeyCfgPanel.cpp" CONTAINERID="CCompiler" LOCALCOMMAND="" UNITNAME="HotkeyCfgPanel" FORMNAME="" DESIGNCLASS="" ADDITIONAL="hotkeys\HotkeyCfgPanel.h"/>
@@ -256,7 +256,7 @@
           <VersionInfo Name="MajorVer">2</VersionInfo>
           <VersionInfo Name="MinorVer">3</VersionInfo>
           <VersionInfo Name="Release">0</VersionInfo>
-          <VersionInfo Name="Build">0</VersionInfo>
+          <VersionInfo Name="Build">1</VersionInfo>
           <VersionInfo Name="Debug">False</VersionInfo>
           <VersionInfo Name="PreRelease">False</VersionInfo>
           <VersionInfo Name="Special">False</VersionInfo>
@@ -268,7 +268,7 @@
         <VersionInfoKeys>
           <VersionInfoKeys Name="CompanyName">Tomasz Ostrowski</VersionInfoKeys>
           <VersionInfoKeys Name="FileDescription">Video player - mplayer GUI</VersionInfoKeys>
-          <VersionInfoKeys Name="FileVersion">2.3.0.0</VersionInfoKeys>
+          <VersionInfoKeys Name="FileVersion">2.3.0.1</VersionInfoKeys>
           <VersionInfoKeys Name="InternalName"></VersionInfoKeys>
           <VersionInfoKeys Name="LegalCopyright"></VersionInfoKeys>
           <VersionInfoKeys Name="LegalTrademarks"></VersionInfoKeys>

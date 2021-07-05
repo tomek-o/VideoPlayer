@@ -12,6 +12,8 @@ object frmPlaylist: TfrmPlaylist
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  ExplicitWidth = 320
+  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
   object lvPlaylist: TListView
