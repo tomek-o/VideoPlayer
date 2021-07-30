@@ -400,6 +400,7 @@ void TfrmMain::CallbackMediaInfoUpdateFn(void)
 	if (mediaInfo.videoBitrateKnown)
 	{
 		text.sprintf("V: %d", mediaInfo.videoBitrate);
+		frmMediaBrowser->SetFileBitrateVideo(mediaInfo.videoBitrate);
 	}
 	else
 	{
@@ -409,6 +410,7 @@ void TfrmMain::CallbackMediaInfoUpdateFn(void)
 	if (mediaInfo.audioBitrateKnown)
 	{
 		text.sprintf("A: %d", mediaInfo.audioBitrate);
+		frmMediaBrowser->SetFileBitrateAudio(mediaInfo.audioBitrate);
 	}
 	else
 	{

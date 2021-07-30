@@ -71,6 +71,8 @@ public:		// User declarations
 	int PlayPrevFile(void);
 	void DeleteFile(AnsiString filename);
 	void SetFileLength(double length);
+	void SetFileBitrateVideo(int val);
+	void SetFileBitrateAudio(int val);
 	void SetFilePos(double position);
 	void SetFileSoftVol(int val);
 	double GetFilePos(AnsiString file);

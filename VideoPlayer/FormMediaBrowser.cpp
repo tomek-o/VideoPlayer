@@ -451,6 +451,24 @@ void TfrmMediaBrowser::SetFileLength(double length)
 	}
 }
 
+void TfrmMediaBrowser::SetFileBitrateVideo(int val)
+{
+	TfrmPlaylist *frm = getPlaylist(pcSource->ActivePageIndex);
+	if (frm)
+	{
+		frm->setFileBitrateVideo(val);
+	}
+}
+
+void TfrmMediaBrowser::SetFileBitrateAudio(int val)
+{
+	TfrmPlaylist *frm = getPlaylist(pcSource->ActivePageIndex);
+	if (frm)
+	{
+		frm->setFileBitrateAudio(val);
+	}
+}
+
 void TfrmMediaBrowser::SetFilePos(double position)
 {
 	TfrmPlaylist *frm = getPlaylist(pcSource->ActivePageIndex);

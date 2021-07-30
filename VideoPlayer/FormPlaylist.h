@@ -89,6 +89,8 @@ public:		// User declarations
 	void setFileLength(double length);
 	void setFilePosition(double position);
 	double getFilePosition(AnsiString file) const;
+	void setFileBitrateVideo(int val);
+	void setFileBitrateAudio(int val);
 	void setFileSoftVol(int val);
 };
 //---------------------------------------------------------------------------

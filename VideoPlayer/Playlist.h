@@ -64,6 +64,8 @@ public:
 	void markClear(unsigned int id);
 	void markDuplicatesBySize(void);
 	void setLength(unsigned int id, double length);
+	void setBitrateVideo(unsigned int id, int val);
+	void setBitrateAudio(unsigned int id, int val);
 
 
 	enum SortType {
@@ -73,6 +75,8 @@ public:
 		SortByTimeStamp,
 		SortByMark,
 		SortByLength,
+		SortByBitrateVideo,
+		SortByBitrateAudio,
 
 		SortTypeLimiter
 	};

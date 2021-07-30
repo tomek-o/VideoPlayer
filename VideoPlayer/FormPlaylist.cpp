@@ -139,6 +139,22 @@ void __fastcall TfrmPlaylist::lvPlaylistData(TObject *Sender, TListItem *Item)
 		Item->SubItems->Add("?");
 	}
 	Item->SubItems->Add(entry.entry.timeStamp);
+	if (entry.entry.bitrateVideo != PlaylistEntry::BITRATE_DEFAULT)
+	{
+		Item->SubItems->Add(entry.entry.bitrateVideo);
+	}
+	else
+	{
+		Item->SubItems->Add("");
+	}
+	if (entry.entry.bitrateAudio != PlaylistEntry::BITRATE_DEFAULT)
+	{
+		Item->SubItems->Add(entry.entry.bitrateAudio);
+	}
+	else
+	{
+		Item->SubItems->Add("");
+	}
 }
 //---------------------------------------------------------------------------
 
@@ -430,6 +446,12 @@ void __fastcall TfrmPlaylist::lvPlaylistColumnClick(TObject *Sender,
 	case 4:
 		sortType = Playlist::SortByTimeStamp;
 		break;
+	case 5:
+		sortType = Playlist::SortByBitrateVideo;
+		break;
+	case 6:
+		sortType = Playlist::SortByBitrateAudio;
+		break;
 	default:
 		assert(!"Unhandled sort column!");
 		return;
@@ -511,6 +533,30 @@ void TfrmPlaylist::setFileLength(double length)
 	const std::vector<FilteredPlaylistEntry>& entries = playlist.getFilteredEntries();
 	const FilteredPlaylistEntry &entry = entries[id];
     playlist.setLength(entry.id, length);
+	update();
+}
+
+void TfrmPlaylist::setFileBitrateVideo(int val)
+{
+	TListItem *item = lvPlaylist->Selected;
+	if (item == NULL)
+		return;
+	int id = item->Index;
+	const std::vector<FilteredPlaylistEntry>& entries = playlist.getFilteredEntries();
+	const FilteredPlaylistEntry &entry = entries[id];
+	playlist.setBitrateVideo(entry.id, val);
+	update();
+}
+
+void TfrmPlaylist::setFileBitrateAudio(int val)
+{
+	TListItem *item = lvPlaylist->Selected;
+	if (item == NULL)
+		return;
+	int id = item->Index;
+	const std::vector<FilteredPlaylistEntry>& entries = playlist.getFilteredEntries();
+	const FilteredPlaylistEntry &entry = entries[id];
+    playlist.setBitrateAudio(entry.id, val);
 	update();
 }
 

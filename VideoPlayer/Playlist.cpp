@@ -98,13 +98,7 @@ int Playlist::loadFromFile(AnsiString fileName)
 		{
 			const Json::Value& jv = jEntries[i];
 			PlaylistEntry entry;
-			jv.getAString("fileName", entry.fileName);
-			entry.size = jv.get("size", entry.size).asUInt64();
-			jv.getAString("timeStamp", entry.timeStamp);
-			jv.getBool("mark", entry.mark);
-			jv.getDouble("length", entry.length);
-			jv.getAString("mplayerExtraParams", entry.mplayerExtraParams);
-			jv.getInt("softVol", entry.softVolLevel);
+			entry.fromJson(jv);
 			if (entry.isValid())
 			{
 				entries.push_back(entry);
@@ -155,19 +149,7 @@ int Playlist::saveToFile(AnsiString fileName)
 	{
 		Json::Value &jEntry = jEntries.append(Json::Value(Json::objectValue));
 		const PlaylistEntry &entry = entries[i];
-		jEntry["fileName"] = entry.fileName;
-		jEntry["size"] = entry.size;
-		jEntry["timeStamp"] = entry.timeStamp;
-		jEntry["mark"] = entry.mark;
-		jEntry["length"] = entry.length;
-		if (entry.mplayerExtraParams != "")
-		{
-			jEntry["mplayerExtraParams"] = entry.mplayerExtraParams;
-		}
-		if (entry.softVolLevel != PlaylistEntry::SOFTVOL_LEVEL_DEFAULT)
-		{
-			jEntry["softVol"] = entry.softVolLevel;
-		}
+		entry.toJson(jEntry);
 	}
 
 	jPlaylist["position"] = position;
@@ -440,6 +422,25 @@ bool compareLengthDesc(const PlaylistEntry& e1, const PlaylistEntry& e2)
 	return e1.length < e2.length;
 }
 
+bool compareBitrateVideoAsc(const PlaylistEntry& e1, const PlaylistEntry& e2)
+{
+	return e1.bitrateVideo > e2.bitrateVideo;
+}
+
+bool compareBitrateVideoDesc(const PlaylistEntry& e1, const PlaylistEntry& e2)
+{
+	return e1.bitrateVideo < e2.bitrateVideo;
+}
+
+bool compareBitrateAudioAsc(const PlaylistEntry& e1, const PlaylistEntry& e2)
+{
+	return e1.bitrateAudio > e2.bitrateAudio;
+}
+
+bool compareBitrateAudioDesc(const PlaylistEntry& e1, const PlaylistEntry& e2)
+{
+	return e1.bitrateAudio < e2.bitrateAudio;
+}
 
 }
 
@@ -481,6 +482,18 @@ int Playlist::sort(enum SortType type, bool ascending)
 			std::stable_sort(entries.begin(), entries.end(), compareLengthAsc);
 		else
 			std::stable_sort(entries.begin(), entries.end(), compareLengthDesc);
+		break;
+	case SortByBitrateVideo:
+		if (ascending)
+			std::stable_sort(entries.begin(), entries.end(), compareBitrateVideoAsc);
+		else
+			std::stable_sort(entries.begin(), entries.end(), compareBitrateVideoDesc);
+		break;
+	case SortByBitrateAudio:
+		if (ascending)
+			std::stable_sort(entries.begin(), entries.end(), compareBitrateAudioAsc);
+		else
+			std::stable_sort(entries.begin(), entries.end(), compareBitrateAudioDesc);
 		break;
 	default:
 		return -1;
@@ -541,6 +554,29 @@ void Playlist::setLength(unsigned int id, double length)
 		modified = true;
 	}
 }
+
+void Playlist::setBitrateVideo(unsigned int id, int val)
+{
+	PlaylistEntry& entry = entries[id];
+	if (entry.bitrateVideo != val)
+	{
+		entry.bitrateVideo = val;
+		filter(filterText);
+		modified = true;
+	}
+}
+
+void Playlist::setBitrateAudio(unsigned int id, int val)
+{
+	PlaylistEntry& entry = entries[id];
+	if (entry.bitrateAudio != val)
+	{
+		entry.bitrateAudio = val;
+		filter(filterText);
+		modified = true;
+	}
+}
+
 
 
 
