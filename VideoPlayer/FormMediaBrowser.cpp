@@ -578,7 +578,7 @@ void __fastcall TfrmMediaBrowser::miUnhidePlaylistClick(TObject *Sender)
 	TTabSheet *ts = pcSource->Pages[pageId];
 	ts->TabVisible = true;
 	ts->Visible = true;
-	TfrmPlaylist* frmPlaylist = getPlaylist(tabIndexToPlaylistId(pageId));
+	TfrmPlaylist* frmPlaylist = getPlaylist(pageId);
 	appSettings.hiddenPlaylists.erase(frmPlaylist->getCaption());
 	UpdateHiddenPlaylistsList();
 }
