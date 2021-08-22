@@ -82,6 +82,7 @@ public:
 	} mediaBrowser;
 	std::list<HotKeyConf> hotKeyConf;
 	std::set<AnsiString> hiddenPlaylists;
+	bool hiddenPlaylistsModified;
 
 };
 

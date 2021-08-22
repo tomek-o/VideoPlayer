@@ -256,4 +256,10 @@ object frmMain: TfrmMain
     Left = 8
     Top = 192
   end
+  object tmrSavePlaylists: TTimer
+    Interval = 120000
+    OnTimer = tmrSavePlaylistsTimer
+    Left = 56
+    Top = 40
+  end
 end

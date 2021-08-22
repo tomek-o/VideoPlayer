@@ -134,9 +134,9 @@ int Playlist::saveToFile(AnsiString fileName)
 {
 	if (!modified)
 	{
-		LOG("Skipping saving %s (not modified)", fileName.c_str());
 		return 0;
 	}
+	LOG("Saving %s (modified)", fileName.c_str());	
 
 	Json::Value root;
 	Json::StyledWriter writer("\t");
@@ -169,6 +169,7 @@ int Playlist::saveToFile(AnsiString fileName)
 		return 1;
 	}
 
+	modified = false;
 	return 0;
 }
 

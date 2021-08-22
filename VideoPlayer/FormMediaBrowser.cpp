@@ -531,6 +531,7 @@ void __fastcall TfrmMediaBrowser::miHidePlaylistClick(TObject *Sender)
 	TfrmPlaylist* frmPlaylist = getPlaylist(tabIndexToPlaylistId(mouseDownTabIndex));
 	AnsiString caption = frmPlaylist->getCaption();
 	appSettings.hiddenPlaylists.insert(caption);
+	appSettings.hiddenPlaylistsModified = true;
 
 	ts->TabVisible = false;
 	ts->Visible = false;
@@ -580,6 +581,7 @@ void __fastcall TfrmMediaBrowser::miUnhidePlaylistClick(TObject *Sender)
 	ts->Visible = true;
 	TfrmPlaylist* frmPlaylist = getPlaylist(pageId);
 	appSettings.hiddenPlaylists.erase(frmPlaylist->getCaption());
+	appSettings.hiddenPlaylistsModified = true;
 	UpdateHiddenPlaylistsList();
 }
 

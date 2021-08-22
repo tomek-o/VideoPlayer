@@ -145,6 +145,8 @@ void Settings::SetDefault(void)
 			}
 		}
 	}
+
+	hiddenPlaylistsModified = false;
 }
 
 int Settings::Read(AnsiString asFileName)

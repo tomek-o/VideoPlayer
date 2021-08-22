@@ -901,3 +901,14 @@ void __fastcall TfrmMain::tmrAntirepeatTimer(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmMain::tmrSavePlaylistsTimer(TObject *Sender)
+{
+	if (appSettings.hiddenPlaylistsModified)
+	{
+		appSettings.hiddenPlaylistsModified = false;
+		WriteSettings();
+	}
+	frmMediaBrowser->SavePlaylists();
+}
+//---------------------------------------------------------------------------
+

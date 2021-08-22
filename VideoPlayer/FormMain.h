@@ -41,6 +41,7 @@ __published:	// IDE-managed Components
 	TPanel *pnlMain;
 	TTimer *tmrGetFilePos;
 	TTimer *tmrAntirepeat;
+	TTimer *tmrSavePlaylists;
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
 	void __fastcall actShowAboutExecute(TObject *Sender);
@@ -67,6 +68,7 @@ __published:	// IDE-managed Components
 	void __fastcall tmrRefreshControlTimer(TObject *Sender);
 	void __fastcall tmrGetFilePosTimer(TObject *Sender);
 	void __fastcall tmrAntirepeatTimer(TObject *Sender);
+	void __fastcall tmrSavePlaylistsTimer(TObject *Sender);
 private:	// User declarations
 	void ApplySettings(const Settings &prev);
 	bool allowControlHide;
