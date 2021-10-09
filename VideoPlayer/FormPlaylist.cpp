@@ -185,26 +185,15 @@ const PlaylistEntry* TfrmPlaylist::getFileToPlay(void)
 	}
 }
 
-void TfrmPlaylist::setFiles(const std::vector<AnsiString>& filenames)
+void TfrmPlaylist::setFiles(const std::vector<AnsiString>& filenames, bool switchTo)
 {
-	for (int i=0; i<lvPlaylist->Items->Count; i++)
+	if (switchTo)
 	{
-		lvPlaylist->Items->Item[i]->Selected = false;
-	}
-	if (filenames.size() > 1)
-	{
-		int originalCount = lvPlaylist->Items->Count;
-		playlist.add(filenames);
-		update();
-		if (lvPlaylist->Items->Count > originalCount)
+		for (int i=0; i<lvPlaylist->Items->Count; i++)
 		{
-			lvPlaylist->Items->Item[originalCount]->Selected = true;
+			lvPlaylist->Items->Item[i]->Selected = false;
 		}
-	}
-	else if (filenames.size() == 1)
-	{
-		int id = playlist.findByName(filenames[0]);
-		if (id < 0)
+		if (filenames.size() > 1)
 		{
 			int originalCount = lvPlaylist->Items->Count;
 			playlist.add(filenames);
@@ -214,13 +203,32 @@ void TfrmPlaylist::setFiles(const std::vector<AnsiString>& filenames)
 				lvPlaylist->Items->Item[originalCount]->Selected = true;
 			}
 		}
-		else
+		else if (filenames.size() == 1)
 		{
-			if (lvPlaylist->Items->Count > id)
+			int id = playlist.findByName(filenames[0]);
+			if (id < 0)
 			{
-				lvPlaylist->Items->Item[id]->Selected = true;
+				int originalCount = lvPlaylist->Items->Count;
+				playlist.add(filenames);
+				update();
+				if (lvPlaylist->Items->Count > originalCount)
+				{
+					lvPlaylist->Items->Item[originalCount]->Selected = true;
+				}
+			}
+			else
+			{
+				if (lvPlaylist->Items->Count > id)
+				{
+					lvPlaylist->Items->Item[id]->Selected = true;
+				}
 			}
 		}
+	}
+	else
+	{
+		playlist.add(filenames);
+		update();
 	}
 }
 

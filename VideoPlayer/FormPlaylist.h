@@ -74,7 +74,7 @@ public:		// User declarations
 	int saveToFile(AnsiString fileName = "");
 	int deletePlaylistFile(void);
 	const PlaylistEntry* getFileToPlay(void);
-	void setFiles(const std::vector<AnsiString>& filenames);
+	void setFiles(const std::vector<AnsiString>& filenames, bool switchTo);
 	CallbackStartPlaying callbackStartPlaying;
 	int playNextFile(void);
 	int playPrevFile(void);

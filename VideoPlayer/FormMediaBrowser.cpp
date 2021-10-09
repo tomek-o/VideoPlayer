@@ -241,7 +241,7 @@ void __fastcall TfrmMediaBrowser::miCopyFileClick(TObject *Sender)
 void TfrmMediaBrowser::SetFiles(const std::vector<AnsiString>& filenames, bool switchTo)
 {
 	TfrmPlaylist *frm = getPlaylist(pcSource->ActivePageIndex);
-	frm->setFiles(filenames);
+	frm->setFiles(filenames, switchTo);
 }
 
 void TfrmMediaBrowser::SavePlaylists(void)

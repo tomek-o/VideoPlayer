@@ -591,7 +591,11 @@ void __fastcall TfrmMain::WMDropFiles(TWMDropFiles &message)
         // the Win32.hlp Windows API help file.
 		fname.SetLength(DragQueryFile((HDROP)message.Drop, index, fname.c_str(), MAX_PATH));
 	}
+#if 0
 	OpenFiles(fileNames);
+#else
+	frmMediaBrowser->SetFiles(fileNames, false);
+#endif
 
 	// tell the OS that you're finished...
 	DragFinish((HDROP) message.Drop);
@@ -600,7 +604,7 @@ void __fastcall TfrmMain::WMDropFiles(TWMDropFiles &message)
 void TfrmMain::OpenFiles(std::vector<AnsiString> filenames)
 {
 	frmMediaBrowser->SetFiles(filenames, true);
-	frmMediaBrowser->SetFilePos(0.0);	
+	frmMediaBrowser->SetFilePos(0.0);
 	mplayer.stop(false);
 	SetState(STOP);
 	Play();
