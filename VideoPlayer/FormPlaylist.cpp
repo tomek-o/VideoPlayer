@@ -173,7 +173,11 @@ const PlaylistEntry* TfrmPlaylist::getFileToPlay(void)
 	if (id >= 0)
 	{
 		const std::vector<FilteredPlaylistEntry>& entries = playlist.getFilteredEntries();
-		return &entries[id].entry;
+        assert(entries.size() > id);
+		int realId = entries[id].id;
+		// return entry from basic, unfiltered container as this have longer life span
+		// entry from filtered list might be deleted when re-filtering after bitrate info is received from played file
+		return &playlist.getEntry(realId);
 	}
 	else
 	{

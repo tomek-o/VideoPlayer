@@ -446,8 +446,16 @@ void TfrmMain::Play(void)
 			if (appSettings.Mplayer.showFileNameOnPlayStart)
 			{
 				AnsiString text;
-				text.sprintf("File: %s", ExtractFileName(entry->fileName).c_str());
-				mplayer.osdShowText(text, 2000);
+				assert(entry);
+				if (entry->fileName != "")
+				{
+					text.sprintf("File: %s", ExtractFileName(entry->fileName).c_str());
+					mplayer.osdShowText(text, 2000);					
+				}
+				else
+				{
+					LOG("Strange: entry without filename?\n");
+				}
 			}
 			if (prevState == STOP)
 			{
