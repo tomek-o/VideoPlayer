@@ -81,5 +81,14 @@ Version 2.3
 - default configuration: try also relative mplayer\mplayer.exe path if this file exists
 - add setting for control panel position: top (default) or bottom
 - changed default softvol amplification to 200% and volume to 50
+
+Version 2.4
+- FIXED default playlist selection when playlist are hidden
+- FIXED "Rename playlist" for newly created playlist (not saved yet)
+- added option to store separate volume setting for each file from playlist
+- store and show video and audio bitrates for playlist entries (files can be softed by bitrate)
+- FIXED Access Violation when unhiding playlist
+- saving modified playlists with 120 s timer event (not only on exit) to prevent possible playlist loss in case of e.g. crash/reboot
+- files dropped to playlist are now not played automatically (to avoid unintentional loss of previously played file bookmark)
 */
 
