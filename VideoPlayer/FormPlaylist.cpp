@@ -636,3 +636,67 @@ void __fastcall TfrmPlaylist::miSetMplayerExtraParamsClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmPlaylist::miAddRemainingFilesFromFolderClick(
+      TObject *Sender)
+{
+	const std::vector<PlaylistEntry>& entries = playlist.getEntries();
+	if (entries.empty())
+	{
+		MessageBox(this->Handle, "Playlist is empty - cannot determine associated folder.", Application->Title.c_str(), MB_ICONWARNING);
+		return;
+	}
+
+	const AnsiString& fname = entries[entries.size()-1].fileName;
+	AnsiString dir = ExtractFileDir(fname);
+	if (DirectoryExists(dir) == false)
+	{
+		MessageBox(this->Handle, "Directory associated with last playlist entry does not exist.", Application->Title.c_str(), MB_ICONWARNING);
+		return;
+	}
+
+	std::set<AnsiString> playlistSet;
+	for (unsigned int i=0; i<entries.size(); i++)
+	{
+		playlistSet.insert(entries[i].fileName);
+	}
+
+	std::vector<AnsiString> filesToAdd;
+	const char* extensions[] = {".mp4", ".avi", ".mpg", ".mpeg", ".flv", ".mov",
+		".mkv", ".wmv", ".webm", ".qt"};
+
+	int iAttributes = faAnyFile;
+	Sysutils::TSearchRec sr;
+	AnsiString path = dir + "\\*.*";
+	if (FindFirst(path, iAttributes, sr) == 0)
+    {
+        do
+        {
+            // subdirs
+			if (sr.Attr & faDirectory) {
+				// skip
+            }
+            else
+            {
+				AnsiString ext = ExtractFileExt(sr.Name);
+				for (unsigned int i=0; i<sizeof(extensions)/sizeof(extensions[0]); i++)
+				{
+					if (extensions[i] == ext)
+					{
+						AnsiString Path = ExtractFilePath(path) + sr.Name;
+						if (playlistSet.find(Path) == playlistSet.end())
+						{
+							filesToAdd.push_back(Path);
+						}
+						break;
+					}
+				}
+			}
+        } while (FindNext(sr) == 0);
+        FindClose(sr);
+	}
+
+	playlist.add(filesToAdd);
+	update();
+}
+//---------------------------------------------------------------------------
+

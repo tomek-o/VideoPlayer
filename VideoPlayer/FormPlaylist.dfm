@@ -12,8 +12,6 @@ object frmPlaylist: TfrmPlaylist
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
-  ExplicitWidth = 320
-  ExplicitHeight = 240
   PixelsPerInch = 96
   TextHeight = 13
   object lvPlaylist: TListView
@@ -63,7 +61,6 @@ object frmPlaylist: TfrmPlaylist
     OnData = lvPlaylistData
     OnDblClick = lvPlaylistDblClick
     OnKeyDown = lvPlaylistKeyDown
-    ExplicitWidth = 559
   end
   object pnlBottom: TPanel
     Left = 0
@@ -73,7 +70,6 @@ object frmPlaylist: TfrmPlaylist
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitWidth = 559
     object lblFilter: TLabel
       Left = 8
       Top = 6
@@ -105,6 +101,10 @@ object frmPlaylist: TfrmPlaylist
     object miAddFiles: TMenuItem
       Caption = 'Add file(s)'
       OnClick = miAddFilesClick
+    end
+    object miAddRemainingFilesFromFolder: TMenuItem
+      Caption = 'Add remaining files from last folder'
+      OnClick = miAddRemainingFilesFromFolderClick
     end
     object miRenameFile: TMenuItem
       Caption = 'Rename file'

@@ -43,6 +43,7 @@ __published:	// IDE-managed Components
 	TMenuItem *miGoToFile;
 	TMenuItem *N4;
 	TMenuItem *miSetMplayerExtraParams;
+	TMenuItem *miAddRemainingFilesFromFolder;
 	void __fastcall miAddFilesClick(TObject *Sender);
 	void __fastcall lvPlaylistData(TObject *Sender, TListItem *Item);
 	void __fastcall lvPlaylistKeyDown(TObject *Sender, WORD &Key,
@@ -61,6 +62,7 @@ __published:	// IDE-managed Components
 	void __fastcall miMarkDuplicatesBySizeClick(TObject *Sender);
 	void __fastcall miGoToFileClick(TObject *Sender);
 	void __fastcall miSetMplayerExtraParamsClick(TObject *Sender);
+	void __fastcall miAddRemainingFilesFromFolderClick(TObject *Sender);
 private:	// User declarations
 	AnsiString fileName;
 	bool fileLoaded;
