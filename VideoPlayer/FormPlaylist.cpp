@@ -67,7 +67,7 @@ int TfrmPlaylist::deletePlaylistFile(void)
 
 void __fastcall TfrmPlaylist::miAddFilesClick(TObject *Sender)
 {
-	OpenDialog->Filter = "Video files|*.mp4;*.avi;*.mpg;*.wmv;*.flv;*.mov;*.rmvb|All files|*.*";
+	OpenDialog->Filter = "Video files|*.mp4;*.mkv;*.avi;*.mpg;*.wmv;*.flv;*.mov;*.rmvb;*.webm;*.3gp;*.asf|All files|*.*";
 	OpenDialog->FilterIndex = 0;
 	const std::vector<PlaylistEntry>& entries = playlist.getEntries();
 	if (!entries.empty())
