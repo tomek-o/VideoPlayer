@@ -24,6 +24,7 @@ void PlaylistEntry::fromJson(const Json::Value &jv)
 	jv.getAString("timeStamp", timeStamp);
 	jv.getBool("mark", mark);
 	jv.getDouble("length", length);
+	jv.getDouble("playbackProgress", playbackProgress);
 	jv.getInt("bitrateVideo", bitrateVideo);
 	jv.getInt("bitrateAudio", bitrateAudio);
 	jv.getAString("mplayerExtraParams", mplayerExtraParams);
@@ -37,6 +38,7 @@ void PlaylistEntry::toJson(Json::Value &jv) const
 	jv["timeStamp"] = timeStamp;
 	jv["mark"] = mark;
 	jv["length"] = length;
+	jv["playbackProgress"] = playbackProgress;
 	if (bitrateVideo != BITRATE_DEFAULT)
 	{
 		jv["bitrateVideo"] = bitrateVideo;

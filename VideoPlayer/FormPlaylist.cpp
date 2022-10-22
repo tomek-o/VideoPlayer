@@ -155,6 +155,20 @@ void __fastcall TfrmPlaylist::lvPlaylistData(TObject *Sender, TListItem *Item)
 	{
 		Item->SubItems->Add("");
 	}
+	// playback progress
+	if (entry.entry.length > 0)
+	{
+		AnsiString text;
+		double percents = 100.0 * entry.entry.playbackProgress / entry.entry.length;
+		if (entry.entry.playbackProgress > 0 && entry.entry.playbackProgress + 3 >= entry.entry.length)
+			percents = 100.0;
+		text.sprintf("%d%%", static_cast<int>(percents + 0.5));
+		Item->SubItems->Add(text);
+	}
+	else
+	{
+		Item->SubItems->Add("");
+	}
 }
 //---------------------------------------------------------------------------
 
@@ -173,7 +187,7 @@ const PlaylistEntry* TfrmPlaylist::getFileToPlay(void)
 	if (id >= 0)
 	{
 		const std::vector<FilteredPlaylistEntry>& entries = playlist.getFilteredEntries();
-        assert(entries.size() > id);
+        assert(static_cast<int>(entries.size()) > id);
 		int realId = entries[id].id;
 		// return entry from basic, unfiltered container as this have longer life span
 		// entry from filtered list might be deleted when re-filtering after bitrate info is received from played file
@@ -464,6 +478,9 @@ void __fastcall TfrmPlaylist::lvPlaylistColumnClick(TObject *Sender,
 	case 6:
 		sortType = Playlist::SortByBitrateAudio;
 		break;
+	case 7:
+		sortType = Playlist::SortByPlaybackProgress;
+		break;
 	default:
 		assert(!"Unhandled sort column!");
 		return;
@@ -581,6 +598,7 @@ void TfrmPlaylist::setFilePosition(double position)
 	const std::vector<FilteredPlaylistEntry>& entries = playlist.getFilteredEntries();
 	const FilteredPlaylistEntry &entry = entries[id];
 	playlist.setFilePos(entry.id, position);
+	update();
 }
 
 void TfrmPlaylist::setFileSoftVol(int val)

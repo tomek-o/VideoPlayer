@@ -19,6 +19,7 @@ struct PlaylistEntry
 	AnsiString timeStamp;
 	bool mark;
 	double length;			// value < 0 if not checked; value = 0 if not recognized by mplayer
+	double playbackProgress;// storing highest playback position in relation to file time
     enum { BITRATE_DEFAULT = -1 };
 	int bitrateVideo;
 	int bitrateAudio;
@@ -29,6 +30,7 @@ struct PlaylistEntry
 		size(0),
 		mark(false),
 		length(-1.0),
+		playbackProgress(0.0),
 		bitrateVideo(BITRATE_DEFAULT),
 		bitrateAudio(BITRATE_DEFAULT),
 		softVolLevel(SOFTVOL_LEVEL_DEFAULT)

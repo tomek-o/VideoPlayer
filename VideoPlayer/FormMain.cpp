@@ -382,6 +382,7 @@ void TfrmMain::CallbackStartPlayingFn(void)
 
 void TfrmMain::CallbackStopPlayingFn(void)
 {
+    UpdateFilePos();
 	int status = frmMediaBrowser->PlayNextFile();
 	if (status != 0)
 	{
@@ -459,7 +460,7 @@ void TfrmMain::Play(void)
 			}
 			if (prevState == STOP)
 			{
-				if (filePosition > 1.0)
+				if (filePosition > 1.0 && filePosition + 10 < entry->length)
 				{
 					mplayer.seekAbsolute(filePosition);
 				}

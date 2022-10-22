@@ -196,6 +196,11 @@ void Playlist::setFilePos(unsigned int id, double position)
 {
 	fileWithPosition = entries[id].fileName;
 	filePosition = position;
+	if (position > entries[id].playbackProgress)
+	{
+		entries[id].playbackProgress = position;
+		filter(filterText);
+	}
 	modified = true;
 }
 
@@ -443,6 +448,40 @@ bool compareBitrateAudioDesc(const PlaylistEntry& e1, const PlaylistEntry& e2)
 	return e1.bitrateAudio < e2.bitrateAudio;
 }
 
+bool comparePlaybackProgressAsc(const PlaylistEntry& e1, const PlaylistEntry& e2)
+{
+	double p1;
+	double p2;
+	if (e1.length > 0) {
+		p1 = 100.0 * e1.playbackProgress / e1.length;
+	} else {
+		p1 = -1;
+	}
+	if (e2.length > 0) {
+		p2 = 100.0 * e2.playbackProgress / e2.length;
+	} else {
+		p2 = -1;
+	}
+	return static_cast<int>(p1 + 0.5) > static_cast<int>(p2 + 0.5);
+}
+
+bool comparePlaybackProgressDesc(const PlaylistEntry& e1, const PlaylistEntry& e2)
+{
+	double p1;
+	double p2;
+	if (e1.length > 0) {
+		p1 = 100.0 * e1.playbackProgress / e1.length;
+	} else {
+		p1 = -1;
+	}
+	if (e2.length > 0) {
+		p2 = 100.0 * e2.playbackProgress / e2.length;
+	} else {
+		p2 = -1;
+	}
+	return static_cast<int>(p1 + 0.5) < static_cast<int>(p2 + 0.5);
+}
+
 }
 
 int Playlist::sort(enum SortType type, bool ascending)
@@ -495,6 +534,12 @@ int Playlist::sort(enum SortType type, bool ascending)
 			std::stable_sort(entries.begin(), entries.end(), compareBitrateAudioAsc);
 		else
 			std::stable_sort(entries.begin(), entries.end(), compareBitrateAudioDesc);
+		break;
+	case SortByPlaybackProgress:
+		if (ascending)
+			std::stable_sort(entries.begin(), entries.end(), comparePlaybackProgressAsc);
+		else
+			std::stable_sort(entries.begin(), entries.end(), comparePlaybackProgressDesc);
 		break;
 	default:
 		return -1;

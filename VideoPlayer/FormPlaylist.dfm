@@ -3,8 +3,8 @@ object frmPlaylist: TfrmPlaylist
   Top = 0
   Align = alClient
   BorderStyle = bsNone
-  ClientHeight = 345
-  ClientWidth = 703
+  ClientHeight = 348
+  ClientWidth = 726
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -17,8 +17,8 @@ object frmPlaylist: TfrmPlaylist
   object lvPlaylist: TListView
     Left = 0
     Top = 0
-    Width = 703
-    Height = 317
+    Width = 726
+    Height = 320
     Align = alClient
     Columns = <
       item
@@ -47,6 +47,9 @@ object frmPlaylist: TfrmPlaylist
       item
         Caption = 'Audio bps'
         Width = 70
+      end
+      item
+        Caption = 'Played'
       end>
     HideSelection = False
     MultiSelect = True
@@ -61,15 +64,20 @@ object frmPlaylist: TfrmPlaylist
     OnData = lvPlaylistData
     OnDblClick = lvPlaylistDblClick
     OnKeyDown = lvPlaylistKeyDown
+    ExplicitLeft = 16
+    ExplicitWidth = 703
+    ExplicitHeight = 317
   end
   object pnlBottom: TPanel
     Left = 0
-    Top = 317
-    Width = 703
+    Top = 320
+    Width = 726
     Height = 28
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitTop = 317
+    ExplicitWidth = 703
     object lblFilter: TLabel
       Left = 8
       Top = 6

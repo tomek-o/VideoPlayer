@@ -203,6 +203,7 @@ int MPlayer::seekRelative(int seconds)
 			// seeking at time higher than file length => stop/go to next file
 			if (filePosition + seconds >= fileLength - 2)
 			{
+                filePosition = fileLength;
 				stop();
 				return 0;
 			}

@@ -77,6 +77,7 @@ public:
 		SortByLength,
 		SortByBitrateVideo,
 		SortByBitrateAudio,
+		SortByPlaybackProgress,
 
 		SortTypeLimiter
 	};
